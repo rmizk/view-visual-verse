@@ -1,43 +1,33 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { TabNavigation } from '@/components/TabNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { LogOut } from 'lucide-react';
-
 const Profil: React.FC = () => {
   const [activeTab, setActiveTab] = useState('personnel');
-  const { logout } = useAuth();
-
-  const tabs = [
-    { id: 'personnel', label: 'Informations personnelles' },
-    { id: 'parametres', label: 'Paramètres du profil' },
-    { id: 'securite', label: 'Sécurité' }
-  ];
-
-  const breadcrumbItems = [
-    { label: "Profil utilisateur" }
-  ];
-
+  const {
+    logout
+  } = useAuth();
+  const tabs = [{
+    id: 'personnel',
+    label: 'Informations personnelles'
+  }, {
+    id: 'parametres',
+    label: 'Paramètres du profil'
+  }, {
+    id: 'securite',
+    label: 'Sécurité'
+  }];
+  const breadcrumbItems = [{
+    label: "Profil utilisateur"
+  }];
   const handleLogout = () => {
     logout();
   };
-
-  return (
-    <Layout pageTitle="Profil" breadcrumbItems={breadcrumbItems}>
+  return <Layout pageTitle="Profil" breadcrumbItems={breadcrumbItems}>
       {/* Header */}
       <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
         <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
@@ -53,23 +43,14 @@ const Profil: React.FC = () => {
       </div>
 
       {/* Tab Navigation */}
-      <TabNavigation 
-        tabs={tabs}
-        onTabChange={setActiveTab}
-        defaultActiveTab="personnel"
-      />
+      <TabNavigation tabs={tabs} onTabChange={setActiveTab} defaultActiveTab="personnel" />
 
       {/* Profile Content */}
       <div className="flex flex-col items-start gap-4 self-stretch">
         <div className="w-full bg-white border border-slate-200 rounded-lg p-6">
-          {activeTab === 'personnel' && (
-            <div className="space-y-6">
+          {activeTab === 'personnel' && <div className="space-y-6">
               <div className="flex items-center gap-6 mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
-                  alt="Photo de profil"
-                  className="w-20 h-20 rounded-full object-cover"
-                />
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Photo de profil" className="w-20 h-20 rounded-full object-cover" />
                 <div>
                   <h3 className="text-lg font-semibold text-slate-950">Ramzi Hammami</h3>
                   <p className="text-slate-600">Administrateur</p>
@@ -84,41 +65,25 @@ const Profil: React.FC = () => {
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Prénom
                   </label>
-                  <input
-                    type="text"
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    defaultValue="Ramzi"
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Ramzi" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Nom
                   </label>
-                  <input
-                    type="text"
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    defaultValue="Hammami"
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Hammami" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Email
                   </label>
-                  <input
-                    type="email"
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    defaultValue="ramzi.hammami@zetabox.com"
-                  />
+                  <input type="email" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="ramzi.hammami@zetabox.com" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Téléphone
                   </label>
-                  <input
-                    type="tel"
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    defaultValue="+33 1 23 45 67 89"
-                  />
+                  <input type="tel" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="+33 1 23 45 67 89" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -129,8 +94,8 @@ const Profil: React.FC = () => {
                     <option>Administration</option>
                     <option>Développement</option>
                     <option>Marketing</option>
-                   </select> 
-                   */}
+                    </select> 
+                    */}
 
                    <Select>
                                <SelectTrigger className="w-full text-md font-normal mb-2">
@@ -148,18 +113,12 @@ const Profil: React.FC = () => {
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Poste
                   </label>
-                  <input
-                    type="text"
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    defaultValue="Administrateur système"
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Administrateur système" />
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {activeTab === 'parametres' && (
-            <div className="space-y-6">
+          {activeTab === 'parametres' && <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-slate-950 mb-4">Paramètres du profil</h3>
                 <div className="space-y-4">
@@ -193,11 +152,9 @@ const Profil: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {activeTab === 'securite' && (
-            <div className="space-y-6">
+          {activeTab === 'securite' && <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-slate-950 mb-4">Sécurité du compte</h3>
                 <div className="space-y-4">
@@ -205,28 +162,19 @@ const Profil: React.FC = () => {
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Mot de passe actuel
                     </label>
-                    <input
-                      type="password"
-                      className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    />
+                    <input type="password" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Nouveau mot de passe
                     </label>
-                    <input
-                      type="password"
-                      className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    />
+                    <input type="password" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Confirmer le nouveau mot de passe
                     </label>
-                    <input
-                      type="password"
-                      className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    />
+                    <input type="password" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-slate-700">Authentification à deux facteurs</span>
@@ -237,8 +185,7 @@ const Profil: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Logout Section */}
@@ -274,8 +221,6 @@ const Profil: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Profil;
