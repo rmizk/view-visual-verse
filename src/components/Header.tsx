@@ -1,47 +1,57 @@
 
 import React from 'react';
-import { Menu, Download, Calendar } from 'lucide-react';
+import { PanelLeft, ChevronRight } from 'lucide-react';
 
-interface HeaderProps {
-  onMenuToggle: () => void;
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
 }
 
-const Header = ({ onMenuToggle }: HeaderProps) => {
+interface HeaderProps {
+  onToggleSidebar?: () => void;
+  pageTitle?: string;
+  breadcrumbItems?: BreadcrumbItem[];
+}
+
+export const Header: React.FC<HeaderProps> = ({ 
+  onToggleSidebar, 
+  pageTitle = "Dashboard",
+  breadcrumbItems = [
+    { label: "Dashboard" },
+    { label: "Aperçu général" }
+  ]
+}) => {
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={onMenuToggle}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          
-          <div>
-            <nav className="flex items-center space-x-2 text-sm text-gray-500">
-              <span>Dashboard</span>
-              <span>/</span>
-              <span className="text-gray-900 font-medium">Aperçu général</span>
-            </nav>
-            <h1 className="text-2xl font-bold text-gray-900 mt-1">Dashboard</h1>
+    <header className="flex justify-between items-center self-stretch bg-slate-50 px-4 py-3 max-sm:px-4 max-sm:py-2">
+      <div className="flex items-center gap-4">
+        <nav className="flex items-center content-center gap-[4px_8px] flex-wrap" aria-label="Breadcrumb">
+          <div className="flex items-center gap-2 pr-2">
+            <button
+              onClick={onToggleSidebar}
+              className="flex justify-center items-center p-1.5 rounded-md hover:bg-slate-100 transition-colors"
+              aria-label="Toggle sidebar"
+            >
+              <PanelLeft className="w-4 h-4 text-slate-700" />
+            </button>
+            <div className="flex w-0 h-4 flex-col items-start p-0">
+              <div className="w-px h-4 bg-slate-200" />
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Calendar className="w-4 h-4" />
-            <span>Oct 17, 2024 - Nov 6, 2024</span>
-          </div>
-          
-          <button className="flex items-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-            <Download className="w-4 h-4" />
-            <span>Download</span>
-          </button>
-        </div>
+          {breadcrumbItems.map((item, index) => (
+            <React.Fragment key={index}>
+              <span className={`text-sm font-normal leading-[20.02px] p-0 ${
+                index === breadcrumbItems.length - 1 ? 'text-slate-950' : 'text-slate-500'
+              }`}>
+                {item.label}
+              </span>
+              {index < breadcrumbItems.length - 1 && (
+                <ChevronRight className="w-4 h-4 text-slate-500" />
+              )}
+            </React.Fragment>
+          ))}
+        </nav>
       </div>
+      <div className="flex w-[290px] h-9 items-center gap-4" />
     </header>
   );
 };
-
-export default Header;

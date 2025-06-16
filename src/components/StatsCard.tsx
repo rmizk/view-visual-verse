@@ -1,36 +1,51 @@
-
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
 
 interface StatsCardProps {
   title: string;
-  value: string;
+  value: string | number;
   subtitle: string;
-  icon: LucideIcon;
-  color?: 'blue' | 'green' | 'red' | 'orange';
+  icon: string;
+  trend?: {
+    value: string;
+    label: string;
+  };
 }
 
-const StatsCard = ({ title, value, subtitle, icon: Icon, color = 'blue' }: StatsCardProps) => {
-  const colorClasses = {
-    blue: 'text-blue-600',
-    green: 'text-green-600',
-    red: 'text-red-600',
-    orange: 'text-orange-600'
-  };
-
+export const StatsCard: React.FC<StatsCardProps> = ({ 
+  title, 
+  value, 
+  subtitle, 
+  icon, 
+  trend 
+}) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-gray-600">{title}</h3>
-        <Icon className={`w-5 h-5 ${colorClasses[color]}`} />
+    <article className="flex min-w-60 max-w-xs flex-col items-start flex-[1_0_0] border border-slate-200 bg-slate-50 rounded-lg border-solid max-sm:min-w-full max-sm:max-w-full">
+      <header className="flex items-center gap-4 self-stretch pt-6 pb-3 px-6">
+        <h3 className="flex-[1_0_0] text-slate-950 text-sm font-normal leading-[20.02px]">
+          {title}
+        </h3>
+        <div className="opacity-50" dangerouslySetInnerHTML={{ __html: icon }} />
+      </header>
+      <div className="flex flex-col items-start gap-1 self-stretch pt-0 pb-6 px-6">
+        <div className="text-slate-950 text-2xl font-bold leading-6 tracking-[-0.6px]">
+          {value}
+        </div>
+        {trend && (
+          <div className="flex justify-center items-center gap-1 px-0 py-0.5">
+            <span className="text-slate-500 text-xs font-normal leading-[15.96px]">
+              {trend.value}
+            </span>
+            <span className="text-slate-500 text-xs font-normal leading-[15.96px]">
+              {trend.label}
+            </span>
+          </div>
+        )}
+        {!trend && (
+          <div className="text-slate-500 text-xs font-normal leading-[15.96px]">
+            {subtitle}
+          </div>
+        )}
       </div>
-      
-      <div className="space-y-2">
-        <p className="text-3xl font-bold text-gray-900">{value}</p>
-        <p className="text-sm text-gray-500">{subtitle}</p>
-      </div>
-    </div>
+    </article>
   );
 };
-
-export default StatsCard;
