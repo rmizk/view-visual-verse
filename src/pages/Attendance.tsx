@@ -94,6 +94,7 @@ const Attendance: React.FC = () => {
     console.log('New pointeuse data:', data);
     // Here you would typically send the data to your backend
     alert('Pointeuse ajoutée avec succès!');
+    setIsAddPointeuseFormOpen(false); // Close the form after submission
   };
 
   const handleEditPointeuse = (pointeuseId: string) => {
