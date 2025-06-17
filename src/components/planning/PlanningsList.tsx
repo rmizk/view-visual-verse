@@ -7,7 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 
-export const PlanningsList: React.FC = () => {
+interface PlanningsListProps {
+  showCreateButton?: boolean;
+}
+
+export const PlanningsList: React.FC<PlanningsListProps> = ({ showCreateButton = false }) => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -64,8 +68,8 @@ export const PlanningsList: React.FC = () => {
   });
 
   const handleCreatePlanning = () => {
-    // Navigate to planning creation form
-    navigate('/planning/create');
+    // This will be handled by the parent component
+    console.log('Create planning clicked from list');
   };
 
   const handleViewPlanning = (planningId: number) => {
@@ -103,13 +107,15 @@ export const PlanningsList: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">Tous les plannings</h2>
-        <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
-          <Plus className="w-4 h-4 mr-2" />
-          Créer un planning
-        </Button>
-      </div>
+      {showCreateButton && (
+        <div className="flex justify-between items-center">
+          <div></div>
+          <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
+            <Plus className="w-4 h-4 mr-2" />
+            Créer un planning
+          </Button>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
