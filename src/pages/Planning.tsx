@@ -11,14 +11,23 @@ const Planning: React.FC = () => {
 
   return (
     <Layout pageTitle="Planning" breadcrumbItems={planningBreadcrumbs}>
-      <TabNavigation 
-        tabs={planningTabs}
-        onTabChange={setActiveTab}
-        defaultActiveTab="overview"
-      />
+      <div className="space-y-6">
+        {/* Page Title */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-slate-900">Planning</h1>
+        </div>
 
-      {activeTab === 'overview' && <PlanningOverview />}
-      {activeTab === 'plannings' && <PlanningsList />}
+        {/* Tab Navigation */}
+        <TabNavigation 
+          tabs={planningTabs}
+          onTabChange={setActiveTab}
+          defaultActiveTab="overview"
+        />
+
+        {/* Tab Content */}
+        {activeTab === 'overview' && <PlanningOverview />}
+        {activeTab === 'plannings' && <PlanningsList />}
+      </div>
     </Layout>
   );
 };

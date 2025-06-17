@@ -1,14 +1,11 @@
 
 import React from 'react';
-import { Plus, Calendar as CalendarIcon, Users, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
 
 export const PlanningOverview: React.FC = () => {
-  const navigate = useNavigate();
-
   const summaryStats = [
     {
       title: "Plannings actifs",
@@ -75,10 +72,6 @@ export const PlanningOverview: React.FC = () => {
     }
   ];
 
-  const handleCreatePlanning = () => {
-    navigate('/planning/create');
-  };
-
   const handleApproveSwap = (requestId: number) => {
     toast({
       title: "Demande approuvée",
@@ -95,15 +88,6 @@ export const PlanningOverview: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Quick Action */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">Vue d'ensemble</h2>
-        <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
-          <Plus className="w-4 h-4 mr-2" />
-          Créer un planning
-        </Button>
-      </div>
-
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {summaryStats.map((stat, index) => (

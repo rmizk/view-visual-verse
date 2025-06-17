@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Filter, Calendar as CalendarIcon, Users, Eye, Edit, Archive } from 'lucide-react';
+import { Search, Filter, Calendar as CalendarIcon, Users, Eye, Edit, Archive, Plus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -63,6 +63,11 @@ export const PlanningsList: React.FC = () => {
     return matchesSearch && matchesType && matchesStatus;
   });
 
+  const handleCreatePlanning = () => {
+    // Navigate to planning creation form
+    navigate('/planning/create');
+  };
+
   const handleViewPlanning = (planningId: number) => {
     navigate(`/planning/${planningId}`);
   };
@@ -100,6 +105,10 @@ export const PlanningsList: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-900">Tous les plannings</h2>
+        <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
+          <Plus className="w-4 h-4 mr-2" />
+          Créer un planning
+        </Button>
       </div>
 
       {/* Filters */}
