@@ -120,19 +120,26 @@ const PlanningDetail: React.FC = () => {
 
         {/* Week Navigation */}
         <div className="flex justify-between items-center">
-          <Button variant="outline" size="sm" onClick={() => navigateWeek('prev')}>
-            <ChevronLeft className="w-4 h-4" />
-            Semaine précédente
-          </Button>
-          
+
           <h3 className="text-lg font-semibold">
             Semaine du {weekDates[0]?.toLocaleDateString('fr-FR')} au {weekDates[5]?.toLocaleDateString('fr-FR')}
           </h3>
+            <div className="flex items-center gap-4" >
+              <Button variant="outline" size="sm" onClick={() => navigateWeek('prev')}>
+            <ChevronLeft className="w-4 h-4" />
+            Semaine précédente
+          </Button>
           
           <Button variant="outline" size="sm" onClick={() => navigateWeek('next')}>
             Semaine suivante
             <ChevronRight className="w-4 h-4" />
           </Button>
+
+
+            </div>
+            
+          
+
         </div>
 
         {/* Planning Table */}
@@ -155,7 +162,7 @@ const PlanningDetail: React.FC = () => {
                 <tbody>
                   {shifts.map((shift) => (
                     <tr key={shift.id} className="border-b border-slate-100">
-                      <td className="p-4 sticky left-0 z-10 bg-white border-r border-slate-200">
+                      <td className="p-4 sticky left-0 z-10 bg-white border-r border-slate-00">
                         <div className="space-y-1">
                           <div className="font-medium text-sm text-slate-900">{shift.name}</div>
                           <div className="text-xs text-slate-600">{shift.time}</div>
@@ -171,16 +178,16 @@ const PlanningDetail: React.FC = () => {
                               {assignedEmployees.map((employeeId) => {
                                 const employee = employees.find(e => e.id === employeeId);
                                 return (
-                                  <div key={employeeId} className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg p-2 text-xs">
-                                    <div className="w-6 h-6 bg-purple-200 rounded-full flex items-center justify-center text-purple-700 font-medium">
+                                  <div key={employeeId} className="flex items-center gap-2 bg-slate-50 border border-white rounded-lg p-0 text-xs">
+                                    <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center text-slate-700 font-medium">
                                       {employee?.initials}
                                     </div>
                                     <span className="text-slate-900 font-medium">{employee?.name}</span>
                                   </div>
                                 );
                               })}
-                              <button className="w-full flex items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-2 hover:border-slate-400 hover:bg-slate-50 transition-colors text-slate-500 text-xs">
-                                + ajouter
+                              <button className="w-full flex items-center justify-center border-2 border-dashed border-slate-200 rounded-lg p-2 hover:border-slate-400 hover:bg-slate-50 transition-colors text-slate-500 text-xs">
+                                + Ajouter
                               </button>
                             </div>
                           </td>
