@@ -11,6 +11,7 @@ import Analytics from "./pages/Analytics";
 import Departements from "./pages/Departements";
 import Employes from "./pages/Employes";
 import Planning from "./pages/Planning";
+import PlanningDetail from "./pages/PlanningDetail";
 import Attendance from "./pages/Attendance";
 import Presence from "./pages/Presence";
 import Pointages from "./pages/Pointages";
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/entreprise/departements" element={<Departements />} />
               <Route path="/entreprise/employes" element={<Employes />} />
               <Route path="/planning" element={<Planning />} />
+              <Route path="/planning/:id" element={<PlanningDetail />} />
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/attendance/presence" element={<Presence />} />
               <Route path="/attendance/pointages" element={<Pointages />} />
