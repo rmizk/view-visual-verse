@@ -2,7 +2,6 @@
 import React from 'react';
 import { TabNavigation } from '@/components/TabNavigation';
 import { EmployeePersonalInfo } from '@/components/EmployeePersonalInfo';
-import { EmployeePresence } from '@/components/EmployeePresence';
 import { EmployeeHistory } from '@/components/EmployeeHistory';
 import { EmployeePermissions } from '@/components/EmployeePermissions';
 
@@ -38,7 +37,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 }) => {
   const employeeDetailsTabs = [
     { id: 'personnel', label: 'Informations personnelles' },
-    { id: 'presence', label: 'Présence' },
     { id: 'historique', label: 'Historique du pointage' },
     { id: 'permissions', label: 'Permissions' }
   ];
@@ -58,10 +56,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
       <div className="flex flex-col items-start gap-4 self-stretch">
         {employeeDetailsTab === 'personnel' && (
           <EmployeePersonalInfo employee={employee} />
-        )}
-
-        {employeeDetailsTab === 'presence' && (
-          <EmployeePresence />
         )}
 
         {employeeDetailsTab === 'historique' && (
