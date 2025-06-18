@@ -19,7 +19,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   trend 
 }) => {
   return (
-    <article className="flex min-w-60 max-w-xs flex-col items-start flex-[1_0_0] border border-slate-200 bg-slate-50 rounded-lg border-solid max-sm:min-w-full max-sm:max-w-full">
+    <article className="flex min-w-40 max-w-s flex-col items-start flex-[1_0_0] border border-slate-200 bg-white rounded-lg border-solid max-sm:min-w-full max-sm:max-w-full">
       <header className="flex items-center gap-4 self-stretch pt-6 pb-3 px-6">
         <h3 className="flex-[1_0_0] text-slate-950 text-sm font-normal leading-[20.02px]">
           {title}
