@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -513,7 +512,7 @@ export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onCl
                     <SelectValue placeholder="Tous les départements" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tous les départements</SelectItem>
+                    <SelectItem value="all">Tous les départements</SelectItem>
                     {departments.map(dept => (
                       <SelectItem key={dept} value={dept}>{dept}</SelectItem>
                     ))}
