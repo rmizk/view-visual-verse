@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, X } from 'lucide-react';
 
 interface Shift {
   id: string;
@@ -41,21 +41,32 @@ export const ShiftManager: React.FC<ShiftManagerProps> = ({
     }
   };
 
+  const handleClose = () => {
+    setNewShiftName('');
+    setNewShiftTime('');
+    setIsAddingShift(false);
+  };
+
   return (
     <div className="flex items-center gap-2">
       <Sheet open={isAddingShift} onOpenChange={setIsAddingShift}>
         <SheetTrigger asChild>
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <Button size="sm" className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Ajouter un shift
           </Button>
         </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Ajouter un nouveau shift</SheetTitle>
+        <SheetContent className="w-[400px] sm:w-[500px] flex flex-col">
+          <SheetHeader className="border-b pb-4">
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-lg font-semibold">Ajouter un nouveau shift</SheetTitle>
+              <Button variant="ghost" size="icon" onClick={handleClose}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </SheetHeader>
           
-          <div className="mt-6 space-y-4">
+          <div className="flex-1 flex flex-col space-y-6 py-6">
             <div className="space-y-2">
               <Label htmlFor="shift-name">Nom du shift</Label>
               <Input
@@ -75,13 +86,19 @@ export const ShiftManager: React.FC<ShiftManagerProps> = ({
                 placeholder="Ex: 8:00 - 14:00"
               />
             </div>
-            
-            <div className="flex gap-2 pt-4">
-              <Button onClick={handleAddShift} disabled={!newShiftName.trim() || !newShiftTime.trim()}>
-                Ajouter
-              </Button>
-              <Button variant="outline" onClick={() => setIsAddingShift(false)}>
+          </div>
+          
+          <div className="border-t pt-4 space-y-3">
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={handleClose} className="flex-1">
                 Annuler
+              </Button>
+              <Button 
+                onClick={handleAddShift} 
+                disabled={!newShiftName.trim() || !newShiftTime.trim()}
+                className="flex-1"
+              >
+                Ajouter
               </Button>
             </div>
           </div>

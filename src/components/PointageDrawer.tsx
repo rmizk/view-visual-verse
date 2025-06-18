@@ -1,13 +1,6 @@
 
 import React, { useState } from 'react';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerClose,
-  DrawerFooter,
-} from '@/components/ui/drawer';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -38,21 +31,27 @@ export const PointageDrawer: React.FC<PointageDrawerProps> = ({
     }
   };
 
+  const handleClose = () => {
+    setTime('');
+    setType('entry');
+    onOpenChange(false);
+  };
+
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[400px]">
-        <DrawerHeader className="text-left">
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="w-[400px] sm:w-[500px] flex flex-col">
+        <SheetHeader className="border-b pb-4">
           <div className="flex items-center justify-between">
-            <DrawerTitle>Ajouter un pointage - {selectedDate}</DrawerTitle>
-            <DrawerClose asChild>
-              <Button variant="ghost" size="icon">
-                <X className="h-4 w-4" />
-              </Button>
-            </DrawerClose>
+            <SheetTitle className="text-lg font-semibold">
+              Ajouter un pointage - {selectedDate}
+            </SheetTitle>
+            <Button variant="ghost" size="icon" onClick={handleClose}>
+              <X className="h-4 w-4" />
+            </Button>
           </div>
-        </DrawerHeader>
+        </SheetHeader>
         
-        <div className="px-4 space-y-4">
+        <div className="flex-1 flex flex-col space-y-6 py-6">
           <div className="space-y-2">
             <Label htmlFor="time">Heure</Label>
             <Input
@@ -64,42 +63,44 @@ export const PointageDrawer: React.FC<PointageDrawerProps> = ({
             />
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label>Type de pointage</Label>
-            <div className="flex gap-4">
-              <label className="flex items-center space-x-2">
+            <div className="space-y-3">
+              <label className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                 <input
                   type="radio"
                   value="entry"
                   checked={type === 'entry'}
                   onChange={(e) => setType(e.target.value as 'entry' | 'exit')}
+                  className="w-4 h-4 text-slate-900"
                 />
-                <span>Entrée</span>
+                <span className="font-medium text-slate-900">Entrée</span>
               </label>
-              <label className="flex items-center space-x-2">
+              <label className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                 <input
                   type="radio"
                   value="exit"
                   checked={type === 'exit'}
                   onChange={(e) => setType(e.target.value as 'entry' | 'exit')}
+                  className="w-4 h-4 text-slate-900"
                 />
-                <span>Sortie</span>
+                <span className="font-medium text-slate-900">Sortie</span>
               </label>
             </div>
           </div>
         </div>
         
-        <DrawerFooter>
-          <div className="flex gap-2">
-            <Button onClick={handleSubmit} className="flex-1">
-              Ajouter le pointage
-            </Button>
-            <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
+        <div className="border-t pt-4 space-y-3">
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={handleClose} className="flex-1">
               Annuler
             </Button>
+            <Button onClick={handleSubmit} disabled={!time} className="flex-1">
+              Ajouter le pointage
+            </Button>
           </div>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };

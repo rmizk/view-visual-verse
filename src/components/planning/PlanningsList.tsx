@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Filter, Calendar as CalendarIcon, Users, Eye, Edit, Archive, Plus } from 'lucide-react';
+import { Search, Filter, Calendar as CalendarIcon, Users, Eye, Edit, Archive } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -107,16 +106,6 @@ export const PlanningsList: React.FC<PlanningsListProps> = ({ showCreateButton =
 
   return (
     <div className="space-y-6">
-      {showCreateButton && (
-        <div className="flex justify-between items-center">
-          <div></div>
-          <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
-            <Plus className="w-4 h-4 mr-2" />
-            Créer un planning
-          </Button>
-        </div>
-      )}
-
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
