@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Plus, Trash2, X } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 interface Shift {
   id: string;
@@ -56,14 +56,9 @@ export const ShiftManager: React.FC<ShiftManagerProps> = ({
             Ajouter un shift
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-3xl pt-8 pr-8 pb-8">
+        <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
           <SheetHeader className="border-b pb-4">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-lg font-semibold">Ajouter un nouveau shift</SheetTitle>
-              <Button variant="ghost" size="icon" onClick={handleClose}>
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <SheetTitle className="text-lg font-semibold">Ajouter un nouveau shift</SheetTitle>
           </SheetHeader>
           
           <div className="flex-1 flex flex-col space-y-6 py-6">

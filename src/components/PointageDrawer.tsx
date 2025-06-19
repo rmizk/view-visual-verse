@@ -4,7 +4,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { X } from 'lucide-react';
 
 interface PointageDrawerProps {
   open: boolean;
@@ -39,16 +38,11 @@ export const PointageDrawer: React.FC<PointageDrawerProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-3xl pt-8 pr-8 pb-8">
+      <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
         <SheetHeader className="border-b pb-4">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="text-lg font-semibold">
-              Ajouter un pointage - {selectedDate}
-            </SheetTitle>
-            <Button variant="ghost" size="icon" onClick={handleClose}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <SheetTitle className="text-lg font-semibold">
+            Ajouter un pointage - {selectedDate}
+          </SheetTitle>
         </SheetHeader>
         
         <div className="flex-1 flex flex-col space-y-6 py-6">
