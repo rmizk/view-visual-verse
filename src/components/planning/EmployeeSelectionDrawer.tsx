@@ -80,12 +80,13 @@ export const EmployeeSelectionDrawer: React.FC<EmployeeSelectionDrawerProps> = (
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
-        <SheetHeader className="border-b pb-4">
+      <SheetContent className="w-[500px] sm:w-[600px] flex flex-col rounded-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
+        <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2 text-lg font-semibold">
             <Users className="w-5 h-5" />
             Sélectionner des employés
           </SheetTitle>
+          <p className="text-sm text-slate-600 mt-2">Choisissez les employés à assigner à ce créneau horaire.</p>
         </SheetHeader>
         
         <div className="flex-1 flex flex-col space-y-4 py-4">
@@ -155,8 +156,8 @@ export const EmployeeSelectionDrawer: React.FC<EmployeeSelectionDrawerProps> = (
         
         {/* Footer */}
         <div className="border-t pt-4 space-y-3">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-600">
+          <div className="text-center">
+            <span className="text-sm text-slate-600">
               {selectedEmployees.length} employé(s) sélectionné(s)
             </span>
           </div>

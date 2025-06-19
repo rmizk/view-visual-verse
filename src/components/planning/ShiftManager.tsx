@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,9 +55,10 @@ export const ShiftManager: React.FC<ShiftManagerProps> = ({
             Ajouter un shift
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
-          <SheetHeader className="border-b pb-4">
+        <SheetContent className="w-[500px] sm:w-[600px] flex flex-col rounded-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
+          <SheetHeader className="pb-4">
             <SheetTitle className="text-lg font-semibold">Ajouter un nouveau shift</SheetTitle>
+            <p className="text-sm text-slate-600 mt-2">Créez un nouveau créneau horaire pour organiser le travail de vos équipes.</p>
           </SheetHeader>
           
           <div className="flex-1 flex flex-col space-y-6 py-6">

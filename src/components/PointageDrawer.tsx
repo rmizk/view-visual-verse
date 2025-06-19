@@ -38,11 +38,12 @@ export const PointageDrawer: React.FC<PointageDrawerProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
-        <SheetHeader className="border-b pb-4">
+      <SheetContent className="w-[500px] sm:w-[600px] flex flex-col rounded-xl mt-8 mr-8 mb-8 h-[calc(100vh-64px)]">
+        <SheetHeader className="pb-4">
           <SheetTitle className="text-lg font-semibold">
             Ajouter un pointage - {selectedDate}
           </SheetTitle>
+          <p className="text-sm text-slate-600 mt-2">Enregistrez une nouvelle entrée ou sortie pour la date sélectionnée.</p>
         </SheetHeader>
         
         <div className="flex-1 flex flex-col space-y-6 py-6">
