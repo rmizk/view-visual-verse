@@ -39,7 +39,7 @@ export const PointageDrawer: React.FC<PointageDrawerProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[400px] sm:w-[500px] flex flex-col">
+      <SheetContent className="w-[450px] sm:w-[550px] flex flex-col rounded-l-3xl pt-8 pr-8 pb-8">
         <SheetHeader className="border-b pb-4">
           <div className="flex items-center justify-between">
             <SheetTitle className="text-lg font-semibold">
