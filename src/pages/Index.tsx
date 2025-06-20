@@ -46,27 +46,27 @@ const Index: React.FC = () => {
   const employeeStatsData = [
     {
       title: "Heures travaillées",
-      value: "142h",
-      subtitle: "ce mois",
-      trend: { value: "+8h", label: "vs mois dernier" },
+      value: "37h",
+      subtitle: "cette semaine",
+      trend: { value: "+2h", label: "vs semaine dernière" },
+    },
+    {
+      title: "Jours présents",
+      value: "4",
+      subtitle: "cette semaine",
+      trend: { value: "100%", label: "taux de présence" },
+    },
+    {
+      title: "Plannings assignés",
+      value: "2",
+      subtitle: "cette semaine",
+      trend: { value: "Matin & Soir", label: "shifts" },
     },
     {
       title: "Heures supplémentaires",
-      value: "6h",
+      value: "2h",
       subtitle: "ce mois",
       trend: { value: "+2h", label: "vs mois dernier" },
-    },
-    {
-      title: "Plannings actifs",
-      value: "3",
-      subtitle: "plannings assignés",
-      trend: { value: "Matin, Soir, Weekend", label: "shifts" },
-    },
-    {
-      title: "Solde congés payés",
-      value: "18j",
-      subtitle: "jours restants",
-      trend: { value: "Expire le 31/12", label: "cette année" },
     }
   ];
 
@@ -110,30 +110,7 @@ const Index: React.FC = () => {
     return 'Dashboard';
   };
 
-  const getGreeting = () => {
-    if (user?.role === 'employee') {
-      return {
-        title: `Bonjour ${user?.name || 'Employé'}`,
-        subtitle: "Voici un aperçu de votre activité récente."
-      };
-    }
-    return null;
-  };
-
-  const getNextWorkDay = () => {
-    if (user?.role === 'employee') {
-      return {
-        date: "Lundi 25 Novembre 2024",
-        time: "08:00 - 16:00",
-        location: "Bureau principal"
-      };
-    }
-    return null;
-  };
-
   const currentStatsData = getCurrentStatsData();
-  const greeting = getGreeting();
-  const nextWorkDay = getNextWorkDay();
 
   // Render appropriate sidebar based on user role
   const renderSidebar = () => {
@@ -156,30 +133,19 @@ const Index: React.FC = () => {
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">
             <div className="p-8 max-sm:p-4 space-y-6">
-              {/* Employee Greeting or Dashboard Header */}
-              {greeting ? (
-                <div className="space-y-2">
-                  <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-                    {greeting.title}
-                  </h1>
-                  <p className="text-slate-600 text-lg">
-                    {greeting.subtitle}
-                  </p>
+              {/* Dashboard Header */}
+              <div className="flex h-10 justify-between items-center max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
+                <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
+                  {getPageTitle()}
+                </h1>
+                <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
+                  <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+                    <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
+                      Download
+                    </span>
+                  </button>
                 </div>
-              ) : (
-                <div className="flex h-10 justify-between items-center max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-                  <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-                    {getPageTitle()}
-                  </h1>
-                  <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
-                    <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
-                      <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
-                        Download
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              )}
+              </div>
 
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
@@ -194,27 +160,6 @@ const Index: React.FC = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Next Work Day for Employee */}
-              {nextWorkDay && (
-                <div className="bg-white border border-slate-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-slate-950 mb-4">Prochaine journée de travail</h3>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-slate-700">{nextWorkDay.date}</p>
-                      <p className="text-sm text-slate-600">{nextWorkDay.time}</p>
-                      <p className="text-xs text-slate-500">{nextWorkDay.location}</p>
-                    </div>
-                    <div className="text-blue-600">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M15.6947 13.7002H15.7037M11.9955 13.7002H12.0045M8.29431 13.7002H8.30329" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M15.6947 17.7002H15.7037M11.9955 17.7002H12.0045M8.29431 17.7002H8.30329" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {/* Recent Activities */}
               <div className="w-full">

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { TabNavigation } from '@/components/TabNavigation';
@@ -7,65 +6,28 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { LogOut } from 'lucide-react';
-
 const Profil: React.FC = () => {
   const [activeTab, setActiveTab] = useState('personnel');
-  const { logout, user } = useAuth();
-
-  const isEmployee = user?.role === 'employee';
-
-  // Define tabs based on user role
-  const getTabsForRole = () => {
-    if (isEmployee) {
-      return [
-        { id: 'personnel', label: 'Informations personnelles' },
-        { id: 'parametres', label: 'Paramètres' },
-        { id: 'securite', label: 'Sécurité' }
-      ];
-    }
-    return [
-      { id: 'personnel', label: 'Informations personnelles' },
-      { id: 'parametres', label: 'Paramètres du profil' },
-      { id: 'securite', label: 'Sécurité' }
-    ];
-  };
-
-  const tabs = getTabsForRole();
-  const breadcrumbItems = [{ label: "Profil utilisateur" }];
-
+  const {
+    logout
+  } = useAuth();
+  const tabs = [{
+    id: 'personnel',
+    label: 'Informations personnelles'
+  }, {
+    id: 'parametres',
+    label: 'Paramètres du profil'
+  }, {
+    id: 'securite',
+    label: 'Sécurité'
+  }];
+  const breadcrumbItems = [{
+    label: "Profil utilisateur"
+  }];
   const handleLogout = () => {
     logout();
   };
-
-  const getUserData = () => {
-    if (isEmployee) {
-      return {
-        firstName: user?.name?.split(' ')[0] || 'Hassen',
-        lastName: user?.name?.split(' ')[1] || 'Knani',
-        email: user?.email || 'employe@gmail.com',
-        phone: '+33 6 12 34 56 78',
-        department: 'Développement',
-        position: 'Développeur Frontend',
-        matricule: 'EMP001',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face'
-      };
-    }
-    return {
-      firstName: 'Ramzi',
-      lastName: 'Hammami',
-      email: 'ramzi.hammami@zetabox.com',
-      phone: '+33 1 23 45 67 89',
-      department: 'Administration',
-      position: 'Administrateur système',
-      matricule: 'ADM001',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face'
-    };
-  };
-
-  const userData = getUserData();
-
-  return (
-    <Layout pageTitle="Profil" breadcrumbItems={breadcrumbItems}>
+  return <Layout pageTitle="Profil" breadcrumbItems={breadcrumbItems}>
       {/* Header */}
       <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
         <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
@@ -86,19 +48,12 @@ const Profil: React.FC = () => {
       {/* Profile Content */}
       <div className="flex flex-col items-start gap-4 self-stretch">
         <div className="w-full bg-white border border-slate-200 rounded-lg p-6">
-          {activeTab === 'personnel' && (
-            <div className="space-y-6">
+          {activeTab === 'personnel' && <div className="space-y-6">
               <div className="flex items-center gap-6 mb-6">
-                <img 
-                  src={userData.avatar} 
-                  alt="Photo de profil" 
-                  className="w-20 h-20 rounded-full object-cover" 
-                />
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Photo de profil" className="w-20 h-20 rounded-full object-cover" />
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-950">
-                    {userData.firstName} {userData.lastName}
-                  </h3>
-                  <p className="text-slate-600">{userData.position}</p>
+                  <h3 className="text-lg font-semibold text-slate-950">Ramzi Hammami</h3>
+                  <p className="text-slate-600">Administrateur</p>
                   <button className="mt-2 text-sm text-blue-600 hover:text-blue-800">
                     Changer la photo
                   </button>
@@ -110,108 +65,62 @@ const Profil: React.FC = () => {
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Prénom
                   </label>
-                  <input 
-                    type="text" 
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" 
-                    defaultValue={userData.firstName} 
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Ramzi" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Nom
                   </label>
-                  <input 
-                    type="text" 
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" 
-                    defaultValue={userData.lastName} 
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Hammami" />
                 </div>
-                
-                {/* Read-only fields for employees */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email {isEmployee && <span className="text-xs text-slate-500">(lecture seule)</span>}
+                    Email
                   </label>
-                  <input 
-                    type="email" 
-                    className={`w-full border border-slate-300 rounded-md px-3 py-2 ${isEmployee ? 'bg-slate-50' : ''} focus:outline-none focus:ring-2 focus:ring-slate-500`}
-                    defaultValue={userData.email} 
-                    readOnly={isEmployee}
-                  />
+                  <input type="email" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="ramzi.hammami@zetabox.com" />
                 </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Téléphone
                   </label>
-                  <input 
-                    type="tel" 
-                    className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" 
-                    defaultValue={userData.phone} 
-                  />
+                  <input type="tel" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="+33 1 23 45 67 89" />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Département
+                  </label>
 
-                {isEmployee && (
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Matricule <span className="text-xs text-slate-500">(lecture seule)</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      className="w-full border border-slate-300 rounded-md px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500" 
-                      defaultValue={userData.matricule} 
-                      readOnly 
-                    />
-                  </div>
-                )}
-                
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Département {isEmployee && <span className="text-xs text-slate-500">(lecture seule)</span>}
-                  </label>
-                  {isEmployee ? (
-                    <input 
-                      type="text" 
-                      className="w-full border border-slate-300 rounded-md px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500" 
-                      defaultValue={userData.department} 
-                      readOnly 
-                    />
-                  ) : (
-                    <Select>
-                      <SelectTrigger className="w-full text-md font-normal mb-2">
-                        <SelectValue placeholder="Sélectionner le département ..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="administration">Administration</SelectItem>
-                        <SelectItem value="développement">Développement</SelectItem>
-                        <SelectItem value="ux/ui design">UX/UI Design</SelectItem>
-                        <SelectItem value="vente">Vente</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                   {/*  <select className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500">
+                    <option>Administration</option>
+                    <option>Développement</option>
+                    <option>Marketing</option>
+                    </select> 
+                    */}
+
+                   <Select>
+                               <SelectTrigger className="w-full text-md font-normal mb-2">
+                                 <SelectValue placeholder="Sélectionner le département ..." />
+                               </SelectTrigger>
+                               <SelectContent>
+                                 <SelectItem value="administration">Administration</SelectItem>
+                                 <SelectItem value="développement">Développement</SelectItem>
+                                 <SelectItem value="ux/ui design">UX/UI Design</SelectItem>
+                                 <SelectItem value="vente">Venteee</SelectItem>
+                               </SelectContent>
+                             </Select>
                 </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Poste {isEmployee && <span className="text-xs text-slate-500">(lecture seule)</span>}
+                    Poste
                   </label>
-                  <input 
-                    type="text" 
-                    className={`w-full border border-slate-300 rounded-md px-3 py-2 ${isEmployee ? 'bg-slate-50' : ''} focus:outline-none focus:ring-2 focus:ring-slate-500`}
-                    defaultValue={userData.position} 
-                    readOnly={isEmployee}
-                  />
+                  <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" defaultValue="Administrateur système" />
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {activeTab === 'parametres' && (
-            <div className="space-y-6">
+          {activeTab === 'parametres' && <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-slate-950 mb-4">
-                  {isEmployee ? 'Paramètres' : 'Paramètres du profil'}
-                </h3>
+                <h3 className="text-lg font-semibold text-slate-950 mb-4">Paramètres du profil</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -223,20 +132,16 @@ const Profil: React.FC = () => {
                       <option>Español</option>
                     </select>
                   </div>
-                  
-                  {!isEmployee && (
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Fuseau horaire
-                      </label>
-                      <select className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500">
-                        <option>Europe/Paris</option>
-                        <option>Europe/London</option>
-                        <option>America/New_York</option>
-                      </select>
-                    </div>
-                  )}
-                  
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Fuseau horaire
+                    </label>
+                    <select className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500">
+                      <option>Europe/Paris</option>
+                      <option>Europe/London</option>
+                      <option>America/New_York</option>
+                    </select>
+                  </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-slate-700">Notifications par email</span>
                     <input type="checkbox" className="rounded" defaultChecked />
@@ -245,20 +150,11 @@ const Profil: React.FC = () => {
                     <span className="text-sm text-slate-700">Notifications push</span>
                     <input type="checkbox" className="rounded" defaultChecked />
                   </div>
-                  
-                  {isEmployee && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-700">Notifications de planning</span>
-                      <input type="checkbox" className="rounded" defaultChecked />
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {activeTab === 'securite' && (
-            <div className="space-y-6">
+          {activeTab === 'securite' && <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-slate-950 mb-4">Sécurité du compte</h3>
                 <div className="space-y-4">
@@ -280,21 +176,16 @@ const Profil: React.FC = () => {
                     </label>
                     <input type="password" className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                   </div>
-                  
-                  {!isEmployee && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-700">Authentification à deux facteurs</span>
-                      <input type="checkbox" className="rounded" />
-                    </div>
-                  )}
-                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-700">Authentification à deux facteurs</span>
+                    <input type="checkbox" className="rounded" />
+                  </div>
                   <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
                     Changer le mot de passe
                   </button>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Logout Section */}
@@ -330,8 +221,6 @@ const Profil: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Profil;
