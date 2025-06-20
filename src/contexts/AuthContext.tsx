@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
   email: string;
   organizationId: string;
+  role: 'admin' | 'employee';
+  name: string;
 }
 
 interface AuthContextType {
@@ -45,13 +47,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = async (organizationId: string, email: string, password: string): Promise<boolean> => {
-    // Simulate API call - replace with real authentication
+    // Admin account
     if (organizationId === '123456' && email === 'rmiz@gmail.com' && password === '123456789') {
-      const userData = { email, organizationId };
+      const userData = { 
+        email, 
+        organizationId, 
+        role: 'admin' as const,
+        name: 'Ramzi Hammami'
+      };
       setUser(userData);
       localStorage.setItem('auth-user', JSON.stringify(userData));
       return true;
     }
+    
+    // Employee account
+    if (organizationId === '123456' && email === 'employe@gmail.com' && password === '123456789') {
+      const userData = { 
+        email, 
+        organizationId, 
+        role: 'employee' as const,
+        name: 'Hassen Knani'
+      };
+      setUser(userData);
+      localStorage.setItem('auth-user', JSON.stringify(userData));
+      return true;
+    }
+    
     return false;
   };
 

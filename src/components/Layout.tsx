@@ -1,6 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
+import { EmployeeSidebar } from './EmployeeSidebar';
 import { Header } from './Header';
+import { useAuth } from '@/contexts/AuthContext';
+
 interface LayoutProps {
   children: React.ReactNode;
   pageTitle: string;
@@ -9,11 +13,14 @@ interface LayoutProps {
     href?: string;
   }[];
 }
+
 export const Layout: React.FC<LayoutProps> = ({
   children,
   pageTitle,
   breadcrumbItems
 }) => {
+  const { user } = useAuth();
+  
   // Initialize from localStorage or default to false (expanded)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = localStorage.getItem('sidebar-collapsed');
@@ -24,11 +31,22 @@ export const Layout: React.FC<LayoutProps> = ({
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', JSON.stringify(sidebarCollapsed));
   }, [sidebarCollapsed]);
+
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
-  return <div className="flex h-screen w-full bg-white rounded-lg max-md:flex-col">
-      <Sidebar isCollapsed={sidebarCollapsed} />
+
+  // Render appropriate sidebar based on user role
+  const renderSidebar = () => {
+    if (user?.role === 'employee') {
+      return <EmployeeSidebar isCollapsed={sidebarCollapsed} />;
+    }
+    return <Sidebar isCollapsed={sidebarCollapsed} />;
+  };
+
+  return (
+    <div className="flex h-screen w-full bg-white rounded-lg max-md:flex-col">
+      {renderSidebar()}
       
       <main className="flex flex-col flex-1 min-w-0 max-md:w-full">
         <Header onToggleSidebar={toggleSidebar} pageTitle={pageTitle} breadcrumbItems={breadcrumbItems} />
@@ -41,5 +59,6 @@ export const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </main>
-    </div>;
+    </div>
+  );
 };
