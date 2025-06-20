@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
   email: string;
   organizationId: string;
-  role: 'admin' | 'employee';
+  role: 'admin' | 'employee' | 'responsable';
   name: string;
 }
 
@@ -67,6 +67,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         organizationId, 
         role: 'employee' as const,
         name: 'Hassen Knani'
+      };
+      setUser(userData);
+      localStorage.setItem('auth-user', JSON.stringify(userData));
+      return true;
+    }
+    
+    // Responsible account
+    if (organizationId === '123456' && email === 'responsable@gmail.com' && password === '123456789') {
+      const userData = { 
+        email, 
+        organizationId, 
+        role: 'responsable' as const,
+        name: 'Sarah Bentahar'
       };
       setUser(userData);
       localStorage.setItem('auth-user', JSON.stringify(userData));

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { EmployeeSidebar } from './EmployeeSidebar';
+import { ResponsableSidebar } from './ResponsableSidebar';
 import { Header } from './Header';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -40,6 +41,9 @@ export const Layout: React.FC<LayoutProps> = ({
   const renderSidebar = () => {
     if (user?.role === 'employee') {
       return <EmployeeSidebar isCollapsed={sidebarCollapsed} />;
+    }
+    if (user?.role === 'responsable') {
+      return <ResponsableSidebar isCollapsed={sidebarCollapsed} />;
     }
     return <Sidebar isCollapsed={sidebarCollapsed} />;
   };

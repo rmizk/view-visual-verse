@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { EmployeeSidebar } from '@/components/EmployeeSidebar';
+import { ResponsableSidebar } from '@/components/ResponsableSidebar';
 import { Header } from '@/components/Header';
 import { RecentActivities } from '@/components/RecentActivities';
 import { useAuth } from '@/contexts/AuthContext';
@@ -69,12 +70,55 @@ const Index: React.FC = () => {
     }
   ];
 
-  const currentStatsData = user?.role === 'employee' ? employeeStatsData : statsData;
+  // Responsable-specific stats
+  const responsableStatsData = [
+    {
+      title: "Équipe sous supervision",
+      value: "15",
+      subtitle: "Employés gérés",
+      trend: { value: "+2", label: "ce mois" },
+    },
+    {
+      title: "Présents aujourd'hui",
+      value: "13",
+      subtitle: "Taux de présence",
+      trend: { value: "86.7%", label: "équipe" },
+    },
+    {
+      title: "Demandes en attente",
+      value: "3",
+      subtitle: "À valider",
+      trend: { value: "Congés & Absences", label: "type" },
+    },
+    {
+      title: "Heures d'équipe",
+      value: "142h",
+      subtitle: "cette semaine",
+      trend: { value: "+18h", label: "vs semaine dernière" },
+    }
+  ];
+
+  const getCurrentStatsData = () => {
+    if (user?.role === 'employee') return employeeStatsData;
+    if (user?.role === 'responsable') return responsableStatsData;
+    return statsData;
+  };
+
+  const getPageTitle = () => {
+    if (user?.role === 'employee') return 'Accueil';
+    if (user?.role === 'responsable') return 'Tableau de bord - Responsable';
+    return 'Dashboard';
+  };
+
+  const currentStatsData = getCurrentStatsData();
 
   // Render appropriate sidebar based on user role
   const renderSidebar = () => {
     if (user?.role === 'employee') {
       return <EmployeeSidebar isCollapsed={sidebarCollapsed} />;
+    }
+    if (user?.role === 'responsable') {
+      return <ResponsableSidebar isCollapsed={sidebarCollapsed} />;
     }
     return <Sidebar isCollapsed={sidebarCollapsed} />;
   };
@@ -92,7 +136,7 @@ const Index: React.FC = () => {
               {/* Dashboard Header */}
               <div className="flex h-10 justify-between items-center max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
                 <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-                  {user?.role === 'employee' ? 'Accueil' : 'Dashboard'}
+                  {getPageTitle()}
                 </h1>
                 <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
                   <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
