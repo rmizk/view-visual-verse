@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -277,72 +277,84 @@ const CreateRole: React.FC = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
+                  <Accordion type="multiple" className="space-y-4">
                     {modules.map((module) => {
                       const { isFullySelected, isPartiallySelected, modulePermissions } = moduleStates[module.name];
 
                       return (
-                        <div key={module.name} className="border border-slate-200 rounded-lg p-6">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
+                        <AccordionItem key={module.name} value={module.name} className="border border-slate-200 rounded-lg">
+                          <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                            <div className="flex items-center justify-between w-full">
+                              <div className="flex items-center gap-3">
                                 <div className="flex items-center">
                                   <input
                                     type="checkbox"
                                     checked={isFullySelected}
                                     onChange={(e) => toggleAllModulePermissions(module.name, e.target.checked)}
                                     className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded"
+                                    onClick={(e) => e.stopPropagation()}
                                   />
                                 </div>
-                                <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
+                                <div className="text-left">
+                                  <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
+                                  <p className="text-slate-600 text-sm">{module.description}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
                                 {isPartiallySelected && (
                                   <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
                                     Partiel
                                   </span>
                                 )}
+                                {isFullySelected && (
+                                  <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                    Complet
+                                  </span>
+                                )}
                               </div>
-                              <p className="text-slate-600 text-sm">{module.description}</p>
                             </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {module.permissions.map((permission) => {
-                              const isSelected = modulePermissions.includes(permission.key);
-                              
-                              return (
-                                <div
-                                  key={permission.key}
-                                  className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-slate-300 ${
-                                    isSelected 
-                                      ? 'border-slate-900 bg-slate-50' 
-                                      : 'border-slate-200'
-                                  }`}
-                                  onClick={() => togglePermission(module.name, permission.key)}
-                                >
-                                  <div className="flex items-start gap-3">
-                                    <input
-                                      type="checkbox"
-                                      checked={isSelected}
-                                      onChange={() => {}} // Handled by parent div onClick
-                                      className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded mt-0.5"
-                                    />
-                                    <div className="flex-1">
-                                      <h5 className="font-medium text-slate-900 mb-1">
-                                        {permission.label}
-                                      </h5>
-                                      <p className="text-xs text-slate-600">
-                                        {permission.description}
-                                      </p>
+                          </AccordionTrigger>
+                          
+                          <AccordionContent className="px-6 pb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {module.permissions.map((permission) => {
+                                const isSelected = modulePermissions.includes(permission.key);
+                                
+                                return (
+                                  <div
+                                    key={permission.key}
+                                    className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-slate-300 ${
+                                      isSelected 
+                                        ? 'border-slate-900 bg-slate-50' 
+                                        : 'border-slate-200'
+                                    }`}
+                                    onClick={() => togglePermission(module.name, permission.key)}
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <input
+                                        type="checkbox"
+                                        checked={isSelected}
+                                        onChange={() => {}} // Handled by parent div onClick
+                                        className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded mt-0.5"
+                                      />
+                                      <div className="flex-1">
+                                        <h5 className="font-medium text-slate-900 mb-1">
+                                          {permission.label}
+                                        </h5>
+                                        <p className="text-xs text-slate-600">
+                                          {permission.description}
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
+                                );
+                              })}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
                       );
                     })}
-                  </div>
+                  </Accordion>
 
                   {/* Navigation buttons for step 2 */}
                   <div className="flex justify-between pt-6">
