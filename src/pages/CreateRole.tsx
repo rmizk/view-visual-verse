@@ -327,7 +327,6 @@ const CreateRole: React.FC = () => {
                                     <Checkbox 
                                       checked={isSelected}
                                       className="mt-0.5"
-                                      readOnly
                                     />
                                     <div className="flex-1">
                                       <h5 className="font-medium text-slate-900 mb-1">
