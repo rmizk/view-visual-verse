@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,7 +56,7 @@ const CreateRole: React.FC = () => {
         { key: 'view', label: 'Consulter', description: 'Voir les départements' },
         { key: 'create', label: 'Créer', description: 'Créer de nouveaux départements' },
         { key: 'edit', label: 'Modifier', description: 'Modifier les départements' },
-        { key: 'delete', label: 'Supprimer', description: 'Supprimer des départements' }
+        { key: 'delete', label: 'Supprimer des départements' }
       ]
     },
     {
@@ -66,7 +66,7 @@ const CreateRole: React.FC = () => {
         { key: 'view', label: 'Consulter', description: 'Voir les plannings' },
         { key: 'create', label: 'Créer', description: 'Créer de nouveaux plannings' },
         { key: 'edit', label: 'Modifier', description: 'Modifier les plannings existants' },
-        { key: 'delete', label: 'Supprimer', description: 'Supprimer des plannings' },
+        { key: 'delete', label: 'Supprimer des plannings' },
         { key: 'assign', label: 'Assigner', description: 'Assigner des employés aux plannings' }
       ]
     },
@@ -288,17 +288,17 @@ const CreateRole: React.FC = () => {
                             <div className="flex items-center justify-between w-full">
                               <div className="flex items-center gap-3">
                                 <div className="flex items-center">
-                                  <input
-                                    type="checkbox"
+                                  <Checkbox
                                     checked={isFullySelected}
+                                    onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked === true)}
                                     ref={(el) => {
                                       if (el) {
-                                        el.indeterminate = isPartiallySelected;
+                                        const input = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
+                                        if (input) {
+                                          input.indeterminate = isPartiallySelected;
+                                        }
                                       }
                                     }}
-                                    onChange={(e) => toggleAllModulePermissions(module.name, e.target.checked)}
-                                    className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
-                                    onClick={(e) => e.stopPropagation()}
                                   />
                                 </div>
                                 <div className="text-left">
@@ -337,11 +337,9 @@ const CreateRole: React.FC = () => {
                                     onClick={() => togglePermission(module.name, permission.key)}
                                   >
                                     <div className="flex items-start gap-3">
-                                      <input
-                                        type="checkbox"
+                                      <Checkbox
                                         checked={isSelected}
-                                        onChange={() => {}} // Handled by parent div onClick
-                                        className="h-4 w-4 text-primary focus:ring-primary border-border rounded mt-0.5"
+                                        onCheckedChange={() => togglePermission(module.name, permission.key)}
                                       />
                                       <div className="flex-1">
                                         <h5 className="font-medium text-foreground mb-1">
