@@ -56,7 +56,7 @@ const CreateRole: React.FC = () => {
         { key: 'view', label: 'Consulter', description: 'Voir les départements' },
         { key: 'create', label: 'Créer', description: 'Créer de nouveaux départements' },
         { key: 'edit', label: 'Modifier', description: 'Modifier les départements' },
-        { key: 'delete', label: 'Supprimer des départements' }
+        { key: 'delete', label: 'Supprimer', description: 'Supprimer des départements' }
       ]
     },
     {
@@ -176,6 +176,20 @@ const CreateRole: React.FC = () => {
     navigate('/parametres/roles-permissions');
   }, [navigate]);
 
+  // Custom checkbox component for indeterminate state
+  const IndeterminateCheckbox = ({ checked, onCheckedChange, indeterminate }: {
+    checked: boolean;
+    onCheckedChange: (checked: boolean) => void;
+    indeterminate?: boolean;
+  }) => {
+    return (
+      <Checkbox
+        checked={indeterminate ? "indeterminate" : checked}
+        onCheckedChange={onCheckedChange}
+      />
+    );
+  };
+
   // Memoize module permission states to prevent recalculation on each render
   const moduleStates = useMemo(() => {
     return modules.reduce((acc, module) => {
@@ -288,17 +302,10 @@ const CreateRole: React.FC = () => {
                             <div className="flex items-center justify-between w-full">
                               <div className="flex items-center gap-3">
                                 <div className="flex items-center">
-                                  <Checkbox
+                                  <IndeterminateCheckbox
                                     checked={isFullySelected}
-                                    onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked === true)}
-                                    ref={(el) => {
-                                      if (el) {
-                                        const input = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
-                                        if (input) {
-                                          input.indeterminate = isPartiallySelected;
-                                        }
-                                      }
-                                    }}
+                                    onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
+                                    indeterminate={isPartiallySelected}
                                   />
                                 </div>
                                 <div className="text-left">
