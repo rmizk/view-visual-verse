@@ -9,7 +9,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Switch } from '@/components/ui/switch';
 
 const CreateRole: React.FC = () => {
   const navigate = useNavigate();
@@ -277,11 +276,14 @@ const CreateRole: React.FC = () => {
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <Switch
-                                  checked={isFullySelected}
-                                  onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
-                                  className="data-[state=checked]:bg-slate-900"
-                                />
+                                <div className="flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={isFullySelected}
+                                    onChange={(e) => toggleAllModulePermissions(module.name, e.target.checked)}
+                                    className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded"
+                                  />
+                                </div>
                                 <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
                                 {isPartiallySelected && (
                                   <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
