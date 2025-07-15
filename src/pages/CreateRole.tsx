@@ -175,6 +175,18 @@ const CreateRole: React.FC = () => {
     navigate('/parametres/roles-permissions');
   }, [navigate]);
 
+  // Memoize module permission states to prevent recalculation on each render
+  const moduleStates = useMemo(() => {
+    return modules.reduce((acc, module) => {
+      const modulePermissions = selectedPermissions[module.name] || [];
+      const isFullySelected = modulePermissions.length === module.permissions.length && module.permissions.length > 0;
+      const isPartiallySelected = modulePermissions.length > 0 && !isFullySelected;
+      
+      acc[module.name] = { isFullySelected, isPartiallySelected, modulePermissions };
+      return acc;
+    }, {} as Record<string, { isFullySelected: boolean; isPartiallySelected: boolean; modulePermissions: string[] }>);
+  }, [modules, selectedPermissions]);
+
   return (
     <Layout pageTitle="Créer un rôle" breadcrumbItems={breadcrumbItems}>
       <div className="space-y-6">
@@ -267,9 +279,7 @@ const CreateRole: React.FC = () => {
                 <CardContent>
                   <div className="space-y-6">
                     {modules.map((module) => {
-                      const modulePermissions = selectedPermissions[module.name] || [];
-                      const isFullySelected = modulePermissions.length === module.permissions.length && module.permissions.length > 0;
-                      const isPartiallySelected = modulePermissions.length > 0 && !isFullySelected;
+                      const { isFullySelected, isPartiallySelected, modulePermissions } = moduleStates[module.name];
 
                       return (
                         <div key={module.name} className="border border-slate-200 rounded-lg p-6">
@@ -310,9 +320,11 @@ const CreateRole: React.FC = () => {
                                   onClick={() => togglePermission(module.name, permission.key)}
                                 >
                                   <div className="flex items-start gap-3">
-                                    <Checkbox 
+                                    <input
+                                      type="checkbox"
                                       checked={isSelected}
-                                      className="mt-0.5"
+                                      onChange={() => {}} // Handled by parent div onClick
+                                      className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded mt-0.5"
                                     />
                                     <div className="flex-1">
                                       <h5 className="font-medium text-slate-900 mb-1">
