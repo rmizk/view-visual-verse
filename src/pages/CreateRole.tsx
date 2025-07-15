@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -150,13 +151,12 @@ const CreateRole: React.FC = () => {
     navigate('/parametres/roles-permissions');
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 1) {
-      form.trigger(['name', 'description']).then((isValid) => {
-        if (isValid) {
-          setCurrentStep(2);
-        }
-      });
+      const isValid = await form.trigger(['name', 'description']);
+      if (isValid) {
+        setCurrentStep(2);
+      }
     }
   };
 
@@ -172,37 +172,12 @@ const CreateRole: React.FC = () => {
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
-              size="sm"
+              size="icon"
               onClick={handleCancel}
-              className="flex items-center gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              Retour
             </Button>
             <h1 className="text-3xl font-bold text-slate-900">Créer un nouveau rôle</h1>
-          </div>
-        </div>
-
-        {/* Progress indicator */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className={`flex items-center gap-2 ${currentStep >= 1 ? 'text-slate-900' : 'text-slate-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep >= 1 ? 'bg-slate-900 text-white' : 'bg-slate-200'
-            }`}>
-              {currentStep > 1 ? <Check className="w-4 h-4" /> : '1'}
-            </div>
-            <span className="font-medium">Informations générales</span>
-          </div>
-          
-          <div className={`h-px flex-1 ${currentStep > 1 ? 'bg-slate-900' : 'bg-slate-200'}`} />
-          
-          <div className={`flex items-center gap-2 ${currentStep >= 2 ? 'text-slate-900' : 'text-slate-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep >= 2 ? 'bg-slate-900 text-white' : 'bg-slate-200'
-            }`}>
-              2
-            </div>
-            <span className="font-medium">Sélection des permissions</span>
           </div>
         </div>
 
@@ -253,6 +228,28 @@ const CreateRole: React.FC = () => {
                       </FormItem>
                     )} 
                   />
+
+                  {/* Navigation buttons for step 1 */}
+                  <div className="flex justify-between pt-6">
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={handleCancel}
+                      className="flex items-center gap-2"
+                    >
+                      <X className="w-4 h-4" />
+                      Annuler
+                    </Button>
+                    
+                    <Button 
+                      type="button" 
+                      onClick={handleNext}
+                      className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
+                    >
+                      Suivant
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -329,56 +326,43 @@ const CreateRole: React.FC = () => {
                         );
                       })}
                     </div>
+
+                    {/* Navigation buttons for step 2 */}
+                    <div className="flex justify-between pt-6">
+                      <div className="flex gap-3">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={handleCancel}
+                          className="flex items-center gap-2"
+                        >
+                          <X className="w-4 h-4" />
+                          Annuler
+                        </Button>
+                        
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => setCurrentStep(1)}
+                          className="flex items-center gap-2"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                          Précédent
+                        </Button>
+                      </div>
+
+                      <Button 
+                        type="submit" 
+                        className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        Créer le rôle
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             )}
-
-            {/* Navigation buttons */}
-            <div className="flex justify-between pt-6">
-              <div className="flex gap-3">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={handleCancel}
-                  className="flex items-center gap-2"
-                >
-                  <X className="w-4 h-4" />
-                  Annuler
-                </Button>
-                
-                {currentStep > 1 && (
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => setCurrentStep(1)}
-                    className="flex items-center gap-2"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    Précédent
-                  </Button>
-                )}
-              </div>
-
-              {currentStep < 2 ? (
-                <Button 
-                  type="button" 
-                  onClick={handleNext}
-                  className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
-                >
-                  Suivant
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              ) : (
-                <Button 
-                  type="submit" 
-                  className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
-                >
-                  <Check className="w-4 h-4" />
-                  Créer le rôle
-                </Button>
-              )}
-            </div>
           </form>
         </Form>
       </div>
