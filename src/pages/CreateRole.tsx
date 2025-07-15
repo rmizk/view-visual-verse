@@ -29,6 +29,7 @@ const CreateRole: React.FC = () => {
     { label: "Créer un rôle" }
   ];
 
+  // Reordered modules to match sidebar navigation
   const modules = useMemo(() => [
     {
       name: 'Dashboard',
@@ -46,6 +47,16 @@ const CreateRole: React.FC = () => {
         { key: 'create', label: 'Créer', description: 'Ajouter de nouveaux employés' },
         { key: 'edit', label: 'Modifier', description: 'Modifier les informations des employés' },
         { key: 'delete', label: 'Supprimer', description: 'Supprimer des employés' }
+      ]
+    },
+    {
+      name: 'Départements',
+      description: 'Gestion des départements',
+      permissions: [
+        { key: 'view', label: 'Consulter', description: 'Voir les départements' },
+        { key: 'create', label: 'Créer', description: 'Créer de nouveaux départements' },
+        { key: 'edit', label: 'Modifier', description: 'Modifier les départements' },
+        { key: 'delete', label: 'Supprimer', description: 'Supprimer des départements' }
       ]
     },
     {
@@ -76,16 +87,6 @@ const CreateRole: React.FC = () => {
         { key: 'view', label: 'Consulter', description: 'Voir les rapports' },
         { key: 'export', label: 'Exporter', description: 'Exporter les rapports' },
         { key: 'create', label: 'Créer', description: 'Créer des rapports personnalisés' }
-      ]
-    },
-    {
-      name: 'Départements',
-      description: 'Gestion des départements',
-      permissions: [
-        { key: 'view', label: 'Consulter', description: 'Voir les départements' },
-        { key: 'create', label: 'Créer', description: 'Créer de nouveaux départements' },
-        { key: 'edit', label: 'Modifier', description: 'Modifier les départements' },
-        { key: 'delete', label: 'Supprimer', description: 'Supprimer des départements' }
       ]
     }
   ], []);
@@ -200,7 +201,7 @@ const CreateRole: React.FC = () => {
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
-            <h1 className="text-3xl font-bold text-slate-900">Créer un nouveau rôle</h1>
+            <h1 className="text-3xl font-bold text-foreground">Créer un nouveau rôle</h1>
           </div>
         </div>
 
@@ -257,7 +258,7 @@ const CreateRole: React.FC = () => {
                   
                   <Button 
                     type="submit"
-                    className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
+                    className="bg-primary hover:bg-primary/90 flex items-center gap-2"
                   >
                     Suivant
                     <ChevronRight className="w-4 h-4" />
@@ -282,7 +283,7 @@ const CreateRole: React.FC = () => {
                       const { isFullySelected, isPartiallySelected, modulePermissions } = moduleStates[module.name];
 
                       return (
-                        <AccordionItem key={module.name} value={module.name} className="border border-slate-200 rounded-lg">
+                        <AccordionItem key={module.name} value={module.name} className="border border-border rounded-lg">
                           <AccordionTrigger className="px-6 py-4 hover:no-underline">
                             <div className="flex items-center justify-between w-full">
                               <div className="flex items-center gap-3">
@@ -290,24 +291,29 @@ const CreateRole: React.FC = () => {
                                   <input
                                     type="checkbox"
                                     checked={isFullySelected}
+                                    ref={(el) => {
+                                      if (el) {
+                                        el.indeterminate = isPartiallySelected;
+                                      }
+                                    }}
                                     onChange={(e) => toggleAllModulePermissions(module.name, e.target.checked)}
-                                    className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded"
+                                    className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                                     onClick={(e) => e.stopPropagation()}
                                   />
                                 </div>
                                 <div className="text-left">
-                                  <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
-                                  <p className="text-slate-600 text-sm">{module.description}</p>
+                                  <h4 className="font-semibold text-foreground text-lg">{module.name}</h4>
+                                  <p className="text-muted-foreground text-sm">{module.description}</p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
                                 {isPartiallySelected && (
-                                  <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                                  <span className="px-2 py-1 bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400 text-xs rounded-full">
                                     Partiel
                                   </span>
                                 )}
                                 {isFullySelected && (
-                                  <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                  <span className="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 text-xs rounded-full">
                                     Complet
                                   </span>
                                 )}
@@ -323,10 +329,10 @@ const CreateRole: React.FC = () => {
                                 return (
                                   <div
                                     key={permission.key}
-                                    className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-slate-300 ${
+                                    className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-muted-foreground ${
                                       isSelected 
-                                        ? 'border-slate-900 bg-slate-50' 
-                                        : 'border-slate-200'
+                                        ? 'border-primary bg-accent' 
+                                        : 'border-border'
                                     }`}
                                     onClick={() => togglePermission(module.name, permission.key)}
                                   >
@@ -335,13 +341,13 @@ const CreateRole: React.FC = () => {
                                         type="checkbox"
                                         checked={isSelected}
                                         onChange={() => {}} // Handled by parent div onClick
-                                        className="h-4 w-4 text-slate-900 focus:ring-slate-500 border-gray-300 rounded mt-0.5"
+                                        className="h-4 w-4 text-primary focus:ring-primary border-border rounded mt-0.5"
                                       />
                                       <div className="flex-1">
-                                        <h5 className="font-medium text-slate-900 mb-1">
+                                        <h5 className="font-medium text-foreground mb-1">
                                           {permission.label}
                                         </h5>
-                                        <p className="text-xs text-slate-600">
+                                        <p className="text-xs text-muted-foreground">
                                           {permission.description}
                                         </p>
                                       </div>
@@ -382,7 +388,7 @@ const CreateRole: React.FC = () => {
 
                     <Button 
                       type="submit" 
-                      className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
                     >
                       <Check className="w-4 h-4" />
                       Créer le rôle
