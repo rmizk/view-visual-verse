@@ -299,7 +299,13 @@ const OrganizationStructure = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      pageTitle="Structure organisationnelle"
+      breadcrumbItems={[
+        { label: "Paramètres", href: "/parametres" },
+        { label: "Structure organisationnelle" }
+      ]}
+    >
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
