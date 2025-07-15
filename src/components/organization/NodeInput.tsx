@@ -44,7 +44,7 @@ export const NodeInput: React.FC<NodeInputProps> = ({
 
   return (
     <div className="space-y-2">
-      <div className={`flex items-center gap-2 p-3 border rounded-lg bg-white ${level > 0 ? 'ml-6' : ''}`}>
+      <div className={`flex items-center gap-2 p-3 border rounded-lg bg-white`} style={{ marginLeft: `${level * 24}px` }}>
         {hasChildren && (
           <Button
             variant="ghost"
@@ -83,18 +83,7 @@ export const NodeInput: React.FC<NodeInputProps> = ({
           <Plus className="w-4 h-4" />
         </Button>
         
-        {level > 0 && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onAddSibling(node.id)}
-            className="px-2"
-          >
-            <Plus className="w-4 h-4" />
-          </Button>
-        )}
-        
-        {canRemove && (
+        {level > 0 && canRemove && (
           <Button
             variant="outline"
             size="sm"

@@ -33,6 +33,8 @@ export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes }) => {
   };
 
   const renderNode = (node: OrganizationNode, level: number = 0) => {
+    const hasChildren = node.children.length > 0;
+    
     return (
       <div key={node.id} className="flex flex-col items-center">
         <div className={`
@@ -44,15 +46,31 @@ export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes }) => {
           <span>{node.name}</span>
         </div>
         
-        {node.children.length > 0 && (
-          <div className="mt-4">
-            <div className="w-px h-4 bg-gray-300 mx-auto"></div>
-            <div className="flex justify-center gap-8">
+        {hasChildren && (
+          <div className="relative mt-4">
+            {/* Vertical line down from parent */}
+            <div className="w-px h-6 bg-gray-300 mx-auto"></div>
+            
+            {/* Children container */}
+            <div className="flex justify-center items-start gap-8 relative">
+              {/* Horizontal connector line for multiple children */}
+              {node.children.length > 1 && (
+                <div 
+                  className="absolute top-0 h-px bg-gray-300"
+                  style={{
+                    left: '12.5%',
+                    right: '12.5%',
+                    width: '75%'
+                  }}
+                ></div>
+              )}
+              
               {node.children.map((child, index) => (
-                <div key={child.id} className="relative">
-                  {index > 0 && (
-                    <div className="absolute top-0 left-0 w-full h-px bg-gray-300 -translate-y-4"></div>
-                  )}
+                <div key={child.id} className="relative flex flex-col items-center">
+                  {/* Vertical line up to horizontal connector */}
+                  <div className="w-px h-6 bg-gray-300 mx-auto"></div>
+                  
+                  {/* Render child node */}
                   {renderNode(child, level + 1)}
                 </div>
               ))}
@@ -76,7 +94,7 @@ export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes }) => {
 
   return (
     <div className="p-8 bg-gray-50 rounded-lg min-h-[400px] overflow-auto">
-      <div className="space-y-8">
+      <div className="space-y-12">
         {nodes.map(node => renderNode(node))}
       </div>
     </div>
