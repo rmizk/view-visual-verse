@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Eye, Edit, Save, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,11 +5,19 @@ import { NodeInput } from './NodeInput';
 import { OrganigramView } from './OrganigramView';
 import { toast } from '@/components/ui/use-toast';
 
+interface User {
+  id: string;
+  name: string;
+  initials: string;
+  avatar?: string;
+}
+
 interface OrganizationNode {
   id: string;
   name: string;
   type: 'department' | 'team' | 'position';
   children: OrganizationNode[];
+  assignedUsers?: User[];
 }
 
 interface StructureBuilderProps {
@@ -30,11 +37,13 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
         id: '1',
         name: '',
         type: 'department',
-        children: []
+        children: [],
+        assignedUsers: []
       }
     ]
   );
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [assignedUsers, setAssignedUsers] = useState<Record<string, User[]>>({});
 
   const findNodeById = useCallback((nodes: OrganizationNode[], id: string): OrganizationNode | null => {
     for (const node of nodes) {
@@ -62,7 +71,8 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
       id: Date.now().toString(),
       name: '',
       type: 'department',
-      children: []
+      children: [],
+      assignedUsers: []
     };
 
     const addToTree = (nodes: OrganizationNode[]): OrganizationNode[] => {
@@ -83,32 +93,14 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
     setStructure(addToTree(structure));
   }, [structure]);
 
-  const addSiblingNode = useCallback((nodeId: string) => {
-    const newNode: OrganizationNode = {
-      id: Date.now().toString(),
-      name: '',
-      type: 'department',
-      children: []
-    };
-
-    const addSibling = (nodes: OrganizationNode[], targetId: string): OrganizationNode[] => {
-      const targetIndex = nodes.findIndex(node => node.id === targetId);
-      if (targetIndex !== -1) {
-        const newNodes = [...nodes];
-        newNodes.splice(targetIndex + 1, 0, newNode);
-        return newNodes;
-      }
-      
-      return nodes.map(node => ({
-        ...node,
-        children: addSibling(node.children, targetId)
-      }));
-    };
-
-    setStructure(addSibling(structure, nodeId));
-  }, [structure]);
-
   const removeNode = useCallback((nodeId: string) => {
+    // Remove users from this node
+    setAssignedUsers(prev => {
+      const updated = { ...prev };
+      delete updated[nodeId];
+      return updated;
+    });
+
     const removeFromTree = (nodes: OrganizationNode[]): OrganizationNode[] => {
       return nodes.filter(node => node.id !== nodeId).map(node => ({
         ...node,
@@ -123,6 +115,13 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
     setStructure(updateNode(structure, nodeId, updates));
   }, [structure, updateNode]);
 
+  const handleUsersAssigned = useCallback((nodeId: string, users: User[]) => {
+    setAssignedUsers(prev => ({
+      ...prev,
+      [nodeId]: users
+    }));
+  }, []);
+
   const handleSave = () => {
     const hasEmptyNames = structure.some(node => !node.name.trim());
     if (hasEmptyNames) {
@@ -134,7 +133,13 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
       return;
     }
 
-    onSave(structure);
+    // Merge assigned users into structure
+    const structureWithUsers = structure.map(node => ({
+      ...node,
+      assignedUsers: assignedUsers[node.id] || []
+    }));
+
+    onSave(structureWithUsers);
     toast({
       title: "Structure sauvegardée",
       description: "La structure organisationnelle a été sauvegardée avec succès."
@@ -185,9 +190,10 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
                 level={0}
                 onUpdate={handleNodeUpdate}
                 onAddChild={addChildNode}
-                onAddSibling={addSiblingNode}
                 onRemove={removeNode}
                 canRemove={structure.length > 1}
+                assignedUsers={assignedUsers}
+                onUsersAssigned={handleUsersAssigned}
               />
             ))}
           </div>
@@ -195,7 +201,7 @@ export const StructureBuilder: React.FC<StructureBuilderProps> = ({
       ) : (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Aperçu de la structure</h3>
-          <OrganigramView nodes={structure} />
+          <OrganigramView nodes={structure} assignedUsers={assignedUsers} />
         </div>
       )}
     </div>

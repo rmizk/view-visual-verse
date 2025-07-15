@@ -1,19 +1,30 @@
 
 import React from 'react';
 import { Building, Users, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+interface User {
+  id: string;
+  name: string;
+  initials: string;
+  avatar?: string;
+}
 
 interface OrganizationNode {
   id: string;
   name: string;
   type: 'department' | 'team' | 'position';
   children: OrganizationNode[];
+  assignedUsers?: User[];
 }
 
 interface OrganigramViewProps {
   nodes: OrganizationNode[];
+  assignedUsers?: Record<string, User[]>;
 }
 
-export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes }) => {
+export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes, assignedUsers = {} }) => {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'department': return <Building className="w-4 h-4" />;
@@ -34,16 +45,45 @@ export const OrganigramView: React.FC<OrganigramViewProps> = ({ nodes }) => {
 
   const renderNode = (node: OrganizationNode, level: number = 0) => {
     const hasChildren = node.children.length > 0;
+    const nodeUsers = assignedUsers[node.id] || [];
     
     return (
       <div key={node.id} className="flex flex-col items-center">
-        <div className={`
-          flex items-center gap-2 px-4 py-2 rounded-lg border-2 shadow-sm
-          ${getTypeColor(node.type)}
-          ${level === 0 ? 'text-lg font-semibold' : 'text-sm'}
-        `}>
-          {getTypeIcon(node.type)}
-          <span>{node.name}</span>
+        <div className="flex flex-col items-center gap-2">
+          <div className={`
+            flex items-center gap-2 px-4 py-2 rounded-lg border-2 shadow-sm
+            ${getTypeColor(node.type)}
+            ${level === 0 ? 'text-lg font-semibold' : 'text-sm'}
+          `}>
+            {getTypeIcon(node.type)}
+            <span>{node.name}</span>
+          </div>
+          
+          {/* Assigned Users Display */}
+          {nodeUsers.length > 0 && (
+            <div className="flex items-center gap-1 flex-wrap">
+              <TooltipProvider>
+                {nodeUsers.map((user) => (
+                  <Tooltip key={user.id}>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <Avatar className="w-6 h-6 cursor-pointer border border-gray-200">
+                          {user.avatar ? (
+                            <AvatarImage src={user.avatar} alt={user.name} />
+                          ) : (
+                            <AvatarFallback className="text-xs">{user.initials}</AvatarFallback>
+                          )}
+                        </Avatar>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{user.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </TooltipProvider>
+            </div>
+          )}
         </div>
         
         {hasChildren && (
