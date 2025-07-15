@@ -52,6 +52,12 @@ export const NodeInput: React.FC<NodeInputProps> = ({
     onUpdate(node.id, { name: value });
   };
 
+  const handleAssignClick = () => {
+    if (!isDrawerOpen) {
+      setIsDrawerOpen(true);
+    }
+  };
+
   const handleRemoveUser = (userId: string) => {
     const updatedUsers = nodeUsers.filter(user => user.id !== userId);
     onUsersAssigned(node.id, updatedUsers);
@@ -82,7 +88,7 @@ export const NodeInput: React.FC<NodeInputProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={handleAssignClick}
             className="px-3"
           >
             <Users className="w-4 h-4 mr-1" />

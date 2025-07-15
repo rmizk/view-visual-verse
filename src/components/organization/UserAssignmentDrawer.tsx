@@ -48,7 +48,7 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
     { id: 'NC', name: 'Nour Chaaben', initials: 'NC' },
   ];
 
-  // Filter available users (exclude already assigned to other nodes)
+  // Filter available users (exclude already assigned to other nodes, but include current node users)
   const alreadyAssignedIds = alreadyAssignedUsers.map(user => user.id);
   const currentNodeUserIds = currentNodeUsers.map(user => user.id);
   
