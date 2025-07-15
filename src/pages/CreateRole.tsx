@@ -141,31 +141,13 @@ const CreateRole: React.FC = () => {
 
   const toggleAllModulePermissions = useCallback((moduleName: string, checked: boolean) => {
     const moduleData = modules.find(m => m.name === moduleName);
-    if (moduleData) {
-      setSelectedPermissions(prev => ({
-        ...prev,
-        [moduleName]: checked ? moduleData.permissions.map(p => p.key) : []
-      }));
-    }
+    if (!moduleData) return;
+    
+    setSelectedPermissions(prev => ({
+      ...prev,
+      [moduleName]: checked ? moduleData.permissions.map(p => p.key) : []
+    }));
   }, [modules]);
-
-  // Memoize the module states to prevent recalculation on every render
-  const moduleStates = useMemo(() => {
-    return modules.reduce((acc, module) => {
-      const modulePermissions = selectedPermissions[module.name] || [];
-      const isFullySelected = modulePermissions.length === module.permissions.length;
-      const isPartiallySelected = modulePermissions.length > 0 && !isFullySelected;
-      
-      acc[module.name] = {
-        isFullySelected,
-        isPartiallySelected,
-        selectedCount: modulePermissions.length,
-        totalCount: module.permissions.length
-      };
-      
-      return acc;
-    }, {} as Record<string, { isFullySelected: boolean; isPartiallySelected: boolean; selectedCount: number; totalCount: number; }>);
-  }, [modules, selectedPermissions]);
 
   const handleNext = useCallback(() => {
     if (currentStep === 1) {
@@ -286,7 +268,9 @@ const CreateRole: React.FC = () => {
                 <CardContent>
                   <div className="space-y-6">
                     {modules.map((module) => {
-                      const moduleState = moduleStates[module.name];
+                      const modulePermissions = selectedPermissions[module.name] || [];
+                      const isFullySelected = modulePermissions.length === module.permissions.length && module.permissions.length > 0;
+                      const isPartiallySelected = modulePermissions.length > 0 && !isFullySelected;
 
                       return (
                         <div key={module.name} className="border border-slate-200 rounded-lg p-6">
@@ -294,12 +278,12 @@ const CreateRole: React.FC = () => {
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
                                 <Switch
-                                  checked={moduleState.isFullySelected}
+                                  checked={isFullySelected}
                                   onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
                                   className="data-[state=checked]:bg-slate-900"
                                 />
                                 <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
-                                {moduleState.isPartiallySelected && (
+                                {isPartiallySelected && (
                                   <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
                                     Partiel
                                   </span>
@@ -311,7 +295,7 @@ const CreateRole: React.FC = () => {
 
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {module.permissions.map((permission) => {
-                              const isSelected = (selectedPermissions[module.name] || []).includes(permission.key);
+                              const isSelected = modulePermissions.includes(permission.key);
                               
                               return (
                                 <div
