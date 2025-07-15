@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,7 +30,7 @@ const CreateRole: React.FC = () => {
     { label: "Créer un rôle" }
   ];
 
-  const modules = [
+  const modules = useMemo(() => [
     {
       name: 'Dashboard',
       description: 'Accès au tableau de bord principal',
@@ -89,9 +89,9 @@ const CreateRole: React.FC = () => {
         { key: 'delete', label: 'Supprimer', description: 'Supprimer des départements' }
       ]
     }
-  ];
+  ], []);
 
-  const validateStep1 = () => {
+  const validateStep1 = useCallback(() => {
     const errors = { name: '', description: '' };
     let isValid = true;
 
@@ -107,17 +107,20 @@ const CreateRole: React.FC = () => {
 
     setFormErrors(errors);
     return isValid;
-  };
+  }, [formData.name, formData.description]);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = useCallback((field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
-    if (formErrors[field as keyof typeof formErrors]) {
-      setFormErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+    setFormErrors(prev => {
+      if (prev[field as keyof typeof prev]) {
+        return { ...prev, [field]: '' };
+      }
+      return prev;
+    });
+  }, []);
 
-  const togglePermission = (moduleName: string, permissionKey: string) => {
+  const togglePermission = useCallback((moduleName: string, permissionKey: string) => {
     setSelectedPermissions(prev => {
       const modulePermissions = prev[moduleName] || [];
       const hasPermission = modulePermissions.includes(permissionKey);
@@ -134,9 +137,9 @@ const CreateRole: React.FC = () => {
         };
       }
     });
-  };
+  }, []);
 
-  const toggleAllModulePermissions = (moduleName: string, checked: boolean) => {
+  const toggleAllModulePermissions = useCallback((moduleName: string, checked: boolean) => {
     const moduleData = modules.find(m => m.name === moduleName);
     if (moduleData) {
       setSelectedPermissions(prev => ({
@@ -144,28 +147,35 @@ const CreateRole: React.FC = () => {
         [moduleName]: checked ? moduleData.permissions.map(p => p.key) : []
       }));
     }
-  };
+  }, [modules]);
 
-  const isModuleFullySelected = (moduleName: string) => {
-    const moduleData = modules.find(m => m.name === moduleName);
-    const modulePermissions = selectedPermissions[moduleName] || [];
-    return moduleData && modulePermissions.length === moduleData.permissions.length;
-  };
+  // Memoize the module states to prevent recalculation on every render
+  const moduleStates = useMemo(() => {
+    return modules.reduce((acc, module) => {
+      const modulePermissions = selectedPermissions[module.name] || [];
+      const isFullySelected = modulePermissions.length === module.permissions.length;
+      const isPartiallySelected = modulePermissions.length > 0 && !isFullySelected;
+      
+      acc[module.name] = {
+        isFullySelected,
+        isPartiallySelected,
+        selectedCount: modulePermissions.length,
+        totalCount: module.permissions.length
+      };
+      
+      return acc;
+    }, {} as Record<string, { isFullySelected: boolean; isPartiallySelected: boolean; selectedCount: number; totalCount: number; }>);
+  }, [modules, selectedPermissions]);
 
-  const isModulePartiallySelected = (moduleName: string) => {
-    const modulePermissions = selectedPermissions[moduleName] || [];
-    return modulePermissions.length > 0 && !isModuleFullySelected(moduleName);
-  };
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentStep === 1) {
       if (validateStep1()) {
         setCurrentStep(2);
       }
     }
-  };
+  }, [currentStep, validateStep1]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     if (currentStep === 1) {
@@ -178,11 +188,11 @@ const CreateRole: React.FC = () => {
       console.log('Nouveau rôle créé:', roleData);
       navigate('/parametres/roles-permissions');
     }
-  };
+  }, [currentStep, formData, selectedPermissions, handleNext, navigate]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     navigate('/parametres/roles-permissions');
-  };
+  }, [navigate]);
 
   return (
     <Layout pageTitle="Créer un rôle" breadcrumbItems={breadcrumbItems}>
@@ -276,8 +286,7 @@ const CreateRole: React.FC = () => {
                 <CardContent>
                   <div className="space-y-6">
                     {modules.map((module) => {
-                      const isFullySelected = isModuleFullySelected(module.name);
-                      const isPartiallySelected = isModulePartiallySelected(module.name);
+                      const moduleState = moduleStates[module.name];
 
                       return (
                         <div key={module.name} className="border border-slate-200 rounded-lg p-6">
@@ -285,12 +294,12 @@ const CreateRole: React.FC = () => {
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
                                 <Switch
-                                  checked={isFullySelected}
+                                  checked={moduleState.isFullySelected}
                                   onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
                                   className="data-[state=checked]:bg-slate-900"
                                 />
                                 <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
-                                {isPartiallySelected && (
+                                {moduleState.isPartiallySelected && (
                                   <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
                                     Partiel
                                   </span>
@@ -318,6 +327,7 @@ const CreateRole: React.FC = () => {
                                     <Checkbox 
                                       checked={isSelected}
                                       className="mt-0.5"
+                                      readOnly
                                     />
                                     <div className="flex-1">
                                       <h5 className="font-medium text-slate-900 mb-1">
