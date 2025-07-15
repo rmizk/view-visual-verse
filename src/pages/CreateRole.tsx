@@ -8,32 +8,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useNavigate } from 'react-router-dom';
 import { Switch } from '@/components/ui/switch';
-
-const roleSchema = z.object({
-  name: z.string().min(1, 'Le nom du rôle est requis'),
-  description: z.string().min(1, 'La description est requise'),
-  permissions: z.record(z.array(z.string())).default({})
-});
 
 const CreateRole: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedPermissions, setSelectedPermissions] = useState<Record<string, string[]>>({});
-
-  const form = useForm<z.infer<typeof roleSchema>>({
-    resolver: zodResolver(roleSchema),
-    defaultValues: { 
-      name: '', 
-      description: '', 
-      permissions: {} 
-    }
+  const [formData, setFormData] = useState({
+    name: '',
+    description: ''
   });
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    description: ''
+  });
+  const [selectedPermissions, setSelectedPermissions] = useState<Record<string, string[]>>({});
 
   const breadcrumbItems = [
     { label: "Paramètres" },
@@ -102,6 +91,32 @@ const CreateRole: React.FC = () => {
     }
   ];
 
+  const validateStep1 = () => {
+    const errors = { name: '', description: '' };
+    let isValid = true;
+
+    if (!formData.name.trim()) {
+      errors.name = 'Le nom du rôle est requis';
+      isValid = false;
+    }
+
+    if (!formData.description.trim()) {
+      errors.description = 'La description est requise';
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (formErrors[field as keyof typeof formErrors]) {
+      setFormErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
   const togglePermission = (moduleName: string, permissionKey: string) => {
     setSelectedPermissions(prev => {
       const modulePermissions = prev[moduleName] || [];
@@ -142,21 +157,26 @@ const CreateRole: React.FC = () => {
     return modulePermissions.length > 0 && !isModuleFullySelected(moduleName);
   };
 
-  const onSubmit = (data: z.infer<typeof roleSchema>) => {
-    const roleData = {
-      ...data,
-      permissions: selectedPermissions
-    };
-    console.log('Nouveau rôle créé:', roleData);
-    navigate('/parametres/roles-permissions');
-  };
-
-  const handleNext = async () => {
+  const handleNext = () => {
     if (currentStep === 1) {
-      const isValid = await form.trigger(['name', 'description']);
-      if (isValid) {
+      if (validateStep1()) {
         setCurrentStep(2);
       }
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (currentStep === 1) {
+      handleNext();
+    } else {
+      const roleData = {
+        ...formData,
+        permissions: selectedPermissions
+      };
+      console.log('Nouveau rôle créé:', roleData);
+      navigate('/parametres/roles-permissions');
     }
   };
 
@@ -181,190 +201,179 @@ const CreateRole: React.FC = () => {
           </div>
         </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {currentStep === 1 && (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {currentStep === 1 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Informations générales</CardTitle>
+                <CardDescription>
+                  Définissez les informations de base pour ce rôle
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nom du rôle</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="Ex: Responsable RH, Manager, etc."
+                    className="max-w-md"
+                  />
+                  {formErrors.name && (
+                    <p className="text-sm font-medium text-destructive">{formErrors.name}</p>
+                  )}
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    placeholder="Décrivez les responsabilités et le périmètre de ce rôle..."
+                    className="max-w-2xl"
+                    rows={4}
+                  />
+                  {formErrors.description && (
+                    <p className="text-sm font-medium text-destructive">{formErrors.description}</p>
+                  )}
+                </div>
+
+                {/* Navigation buttons for step 1 */}
+                <div className="flex justify-between pt-6">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={handleCancel}
+                    className="flex items-center gap-2"
+                  >
+                    <X className="w-4 h-4" />
+                    Annuler
+                  </Button>
+                  
+                  <Button 
+                    type="submit"
+                    className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
+                  >
+                    Suivant
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {currentStep === 2 && (
+            <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Informations générales</CardTitle>
+                  <CardTitle>Sélection des permissions</CardTitle>
                   <CardDescription>
-                    Définissez les informations de base pour ce rôle
+                    Définissez les permissions pour chaque module de l'application
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <FormField 
-                    control={form.control} 
-                    name="name" 
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nom du rôle</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="Ex: Responsable RH, Manager, etc."
-                            className="max-w-md"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} 
-                  />
-                  
-                  <FormField 
-                    control={form.control} 
-                    name="description" 
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            {...field} 
-                            placeholder="Décrivez les responsabilités et le périmètre de ce rôle..."
-                            className="max-w-2xl"
-                            rows={4}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} 
-                  />
+                <CardContent>
+                  <div className="space-y-6">
+                    {modules.map((module) => {
+                      const isFullySelected = isModuleFullySelected(module.name);
+                      const isPartiallySelected = isModulePartiallySelected(module.name);
 
-                  {/* Navigation buttons for step 1 */}
+                      return (
+                        <div key={module.name} className="border border-slate-200 rounded-lg p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <Switch
+                                  checked={isFullySelected}
+                                  onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
+                                  className="data-[state=checked]:bg-slate-900"
+                                />
+                                <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
+                                {isPartiallySelected && (
+                                  <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                                    Partiel
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-slate-600 text-sm">{module.description}</p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {module.permissions.map((permission) => {
+                              const isSelected = (selectedPermissions[module.name] || []).includes(permission.key);
+                              
+                              return (
+                                <div
+                                  key={permission.key}
+                                  className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-slate-300 ${
+                                    isSelected 
+                                      ? 'border-slate-900 bg-slate-50' 
+                                      : 'border-slate-200'
+                                  }`}
+                                  onClick={() => togglePermission(module.name, permission.key)}
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <Checkbox 
+                                      checked={isSelected}
+                                      className="mt-0.5"
+                                    />
+                                    <div className="flex-1">
+                                      <h5 className="font-medium text-slate-900 mb-1">
+                                        {permission.label}
+                                      </h5>
+                                      <p className="text-xs text-slate-600">
+                                        {permission.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Navigation buttons for step 2 */}
                   <div className="flex justify-between pt-6">
+                    <div className="flex gap-3">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={handleCancel}
+                        className="flex items-center gap-2"
+                      >
+                        <X className="w-4 h-4" />
+                        Annuler
+                      </Button>
+                      
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setCurrentStep(1)}
+                        className="flex items-center gap-2"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Précédent
+                      </Button>
+                    </div>
+
                     <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={handleCancel}
-                      className="flex items-center gap-2"
-                    >
-                      <X className="w-4 h-4" />
-                      Annuler
-                    </Button>
-                    
-                    <Button 
-                      type="button" 
-                      onClick={handleNext}
+                      type="submit" 
                       className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
                     >
-                      Suivant
-                      <ChevronRight className="w-4 h-4" />
+                      <Check className="w-4 h-4" />
+                      Créer le rôle
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            )}
-
-            {currentStep === 2 && (
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Sélection des permissions</CardTitle>
-                    <CardDescription>
-                      Définissez les permissions pour chaque module de l'application
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      {modules.map((module) => {
-                        const isFullySelected = isModuleFullySelected(module.name);
-                        const isPartiallySelected = isModulePartiallySelected(module.name);
-
-                        return (
-                          <div key={module.name} className="border border-slate-200 rounded-lg p-6">
-                            <div className="flex items-start justify-between mb-4">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <Switch
-                                    checked={isFullySelected}
-                                    onCheckedChange={(checked) => toggleAllModulePermissions(module.name, checked)}
-                                    className="data-[state=checked]:bg-slate-900"
-                                  />
-                                  <h4 className="font-semibold text-slate-900 text-lg">{module.name}</h4>
-                                  {isPartiallySelected && (
-                                    <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
-                                      Partiel
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-slate-600 text-sm">{module.description}</p>
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                              {module.permissions.map((permission) => {
-                                const isSelected = (selectedPermissions[module.name] || []).includes(permission.key);
-                                
-                                return (
-                                  <div
-                                    key={permission.key}
-                                    className={`relative p-4 border rounded-lg cursor-pointer transition-all hover:border-slate-300 ${
-                                      isSelected 
-                                        ? 'border-slate-900 bg-slate-50' 
-                                        : 'border-slate-200'
-                                    }`}
-                                    onClick={() => togglePermission(module.name, permission.key)}
-                                  >
-                                    <div className="flex items-start gap-3">
-                                      <Checkbox 
-                                        checked={isSelected}
-                                        className="mt-0.5"
-                                      />
-                                      <div className="flex-1">
-                                        <h5 className="font-medium text-slate-900 mb-1">
-                                          {permission.label}
-                                        </h5>
-                                        <p className="text-xs text-slate-600">
-                                          {permission.description}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Navigation buttons for step 2 */}
-                    <div className="flex justify-between pt-6">
-                      <div className="flex gap-3">
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          onClick={handleCancel}
-                          className="flex items-center gap-2"
-                        >
-                          <X className="w-4 h-4" />
-                          Annuler
-                        </Button>
-                        
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          onClick={() => setCurrentStep(1)}
-                          className="flex items-center gap-2"
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                          Précédent
-                        </Button>
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        className="bg-slate-900 hover:bg-slate-800 flex items-center gap-2"
-                      >
-                        <Check className="w-4 h-4" />
-                        Créer le rôle
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </form>
-        </Form>
+            </div>
+          )}
+        </form>
       </div>
     </Layout>
   );
