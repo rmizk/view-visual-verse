@@ -91,7 +91,7 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
           <p className="text-sm text-slate-600 mt-2">Choisissez les utilisateurs à assigner à ce nœud.</p>
         </SheetHeader>
         
-        <div className="flex-1 flex flex-col space-y-4 py-4">
+        <div className="flex-1 flex flex-col space-y-4 py-4 min-h-0">
           {/* Search */}
           <div className="space-y-2">
             <Label htmlFor="search">Rechercher</Label>
@@ -107,7 +107,7 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
             </div>
           </div>
           
-          {/* User List */}
+          {/* User List - Scrollable */}
           <ScrollArea className="flex-1 pr-4">
             <div className="space-y-2">
               {filteredUsers.map((user) => (
@@ -143,8 +143,8 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
           </ScrollArea>
         </div>
         
-        {/* Footer */}
-        <div className="border-t pt-4 space-y-3">
+        {/* Footer - Sticky to bottom */}
+        <div className="border-t pt-4 space-y-3 mt-auto">
           <div className="text-center">
             <span className="text-sm text-slate-600">
               {selectedUsers.length} utilisateur(s) sélectionné(s)
