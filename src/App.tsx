@@ -21,6 +21,7 @@ import Rapports from "./pages/Rapports";
 import Alertes from "./pages/Alertes";
 import Parametres from "./pages/Parametres";
 import RolesPermissions from "./pages/RolesPermissions";
+import CreateRole from "./pages/CreateRole";
 import Profil from "./pages/Profil";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/parametres" element={<Parametres />} />
               <Route path="/parametres/roles-permissions" element={<RolesPermissions />} />
+              <Route path="/parametres/roles-permissions/create" element={<CreateRole />} />
               <Route path="/settings" element={<Parametres />} />
               <Route path="/profil" element={<Profil />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

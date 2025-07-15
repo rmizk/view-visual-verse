@@ -5,107 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Plus, Edit, Trash2, Search, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-
-const roleSchema = z.object({
-  name: z.string().min(1, 'Le nom du rôle est requis'),
-  description: z.string().min(1, 'La description est requise'),
-  permissions: z.record(z.array(z.string())).default({})
-});
-
-const RoleCreationForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const form = useForm<z.infer<typeof roleSchema>>({
-    resolver: zodResolver(roleSchema),
-    defaultValues: { name: '', description: '', permissions: {} }
-  });
-
-  const modules = [
-    { name: 'Dashboard', permissions: ['view', 'export'] },
-    { name: 'Employés', permissions: ['view', 'create', 'edit', 'delete'] },
-    { name: 'Planning', permissions: ['view', 'create', 'edit', 'delete'] },
-    { name: 'Pointages', permissions: ['view', 'validate', 'edit'] },
-    { name: 'Rapports', permissions: ['view', 'export', 'create'] }
-  ];
-
-  const onSubmit = (data: z.infer<typeof roleSchema>) => {
-    console.log('Nouveau rôle créé:', data);
-    onSuccess();
-  };
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {currentStep === 1 && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Informations générales</h3>
-            <FormField control={form.control} name="name" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nom du rôle</FormLabel>
-                <FormControl><Input {...field} /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={form.control} name="description" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl><Textarea {...field} /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-          </div>
-        )}
-
-        {currentStep === 2 && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Sélection des permissions</h3>
-            {modules.map((module) => (
-              <div key={module.name} className="space-y-2">
-                <h4 className="font-medium">{module.name}</h4>
-                <div className="flex gap-4 flex-wrap">
-                  {module.permissions.map((permission) => (
-                    <div key={permission} className="flex items-center space-x-2">
-                      <Checkbox id={`${module.name}-${permission}`} />
-                      <Label htmlFor={`${module.name}-${permission}`}>{permission}</Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="flex justify-between">
-          {currentStep > 1 && (
-            <Button type="button" variant="outline" onClick={() => setCurrentStep(1)}>
-              <ChevronLeft className="w-4 h-4 mr-2" />Précédent
-            </Button>
-          )}
-          {currentStep < 2 ? (
-            <Button type="button" onClick={() => setCurrentStep(2)} className="ml-auto">
-              Suivant<ChevronRight className="w-4 h-4 ml-2" />
-            </Button>
-          ) : (
-            <Button type="submit" className="ml-auto">Créer le rôle</Button>
-          )}
-        </div>
-      </form>
-    </Form>
-  );
-};
 
 const RolesPermissions: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const breadcrumbItems = [
     { label: "Paramètres" },
@@ -141,7 +50,7 @@ const RolesPermissions: React.FC = () => {
   ];
 
   const handleCreateRole = () => {
-    console.log('Créer un nouveau rôle');
+    navigate('/parametres/roles-permissions/create');
   };
 
   const handleEditRole = (roleId: string) => {
@@ -158,21 +67,13 @@ const RolesPermissions: React.FC = () => {
         {/* Page Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-slate-900">Rôles & Permissions</h1>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-slate-900 hover:bg-slate-800">
-                <Plus className="w-4 h-4 mr-2" />
-                Créer un rôle
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Créer un nouveau rôle</DialogTitle>
-                <DialogDescription>Définissez les informations et permissions pour ce rôle.</DialogDescription>
-              </DialogHeader>
-              <RoleCreationForm onSuccess={() => setIsDialogOpen(false)} />
-            </DialogContent>
-          </Dialog>
+          <Button 
+            onClick={handleCreateRole}
+            className="bg-slate-900 hover:bg-slate-800"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Créer un rôle
+          </Button>
         </div>
 
         {/* Tabs */}
