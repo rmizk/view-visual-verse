@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -31,10 +31,15 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
   alreadyAssignedUsers,
   currentNodeUsers
 }) => {
-  const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    currentNodeUsers.map(user => user.id)
-  );
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Initialize selected users when drawer opens or currentNodeUsers changes
+  useEffect(() => {
+    if (open) {
+      setSelectedUsers(currentNodeUsers.map(user => user.id));
+    }
+  }, [open, currentNodeUsers]);
 
   // Mock user data - replace with real data
   const allUsers: User[] = [
@@ -75,6 +80,7 @@ export const UserAssignmentDrawer: React.FC<UserAssignmentDrawerProps> = ({
   };
 
   const handleClose = () => {
+    // Reset to current node users when closing without confirming
     setSelectedUsers(currentNodeUsers.map(user => user.id));
     setSearchQuery('');
     onOpenChange(false);
