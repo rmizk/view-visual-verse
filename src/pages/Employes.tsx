@@ -11,72 +11,68 @@ import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
 interface Employee {
   id: string;
-  firstName: string;
-  lastName: string;
+  nom: string;
+  prenom: string;
   email: string;
-  phone: string;
-  department: string;
-  position: string;
-  status: 'active' | 'inactive' | 'pending';
-  avatar: string;
-  hireDate: string;
-  salary?: number;
+  telephone: string;
+  departement: string;
+  poste: string;
+  statut: 'present' | 'absent' | 'conge';
+  dateEmbauche: string;
+  role: 'admin' | 'manager' | 'employe';
 }
 
 const mockEmployees: Employee[] = [
   {
     id: '1',
-    firstName: 'Jean',
-    lastName: 'Dupont',
+    prenom: 'Jean',
+    nom: 'Dupont',
     email: 'jean.dupont@company.com',
-    phone: '+33 1 23 45 67 89',
-    department: 'Développement',
-    position: 'Développeur Senior',
-    status: 'active',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-    hireDate: '2023-01-15',
-    salary: 65000
+    telephone: '+33 1 23 45 67 89',
+    departement: 'Développement',
+    poste: 'Développeur Senior',
+    statut: 'present',
+    dateEmbauche: '2023-01-15',
+    role: 'employe'
   },
   {
     id: '2',
-    firstName: 'Marie',
-    lastName: 'Martin',
+    prenom: 'Marie',
+    nom: 'Martin',
     email: 'marie.martin@company.com',
-    phone: '+33 1 23 45 67 90',
-    department: 'Marketing',
-    position: 'Chef de projet',
-    status: 'active',
-    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
-    hireDate: '2023-03-01',
-    salary: 55000
+    telephone: '+33 1 23 45 67 90',
+    departement: 'Marketing',
+    poste: 'Chef de projet',
+    statut: 'present',
+    dateEmbauche: '2023-03-01',
+    role: 'manager'
   },
   {
     id: '3',
-    firstName: 'Pierre',
-    lastName: 'Dubois',
+    prenom: 'Pierre',
+    nom: 'Dubois',
     email: 'pierre.dubois@company.com',
-    phone: '+33 1 23 45 67 91',
-    department: 'RH',
-    position: 'Responsable RH',
-    status: 'active',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-    hireDate: '2022-11-10',
-    salary: 60000
+    telephone: '+33 1 23 45 67 91',
+    departement: 'RH',
+    poste: 'Responsable RH',
+    statut: 'present',
+    dateEmbauche: '2022-11-10',
+    role: 'admin'
   }
 ];
 
 export default function Employes() {
   const [employees] = useState<Employee[]>(mockEmployees);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('tous');
+  const [departmentFilter, setDepartmentFilter] = useState('tous');
+  const [currentPage, setCurrentPage] = useState(1);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [employeeDetailsTab, setEmployeeDetailsTab] = useState('personnel');
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
 
-  const filteredEmployees = employees.filter(employee =>
-    `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const itemsPerPage = 10;
 
   const ctaButton = (
     <HeaderCtaButton onClick={() => setShowCreateForm(true)}>
@@ -103,16 +99,20 @@ export default function Employes() {
   if (selectedEmployee) {
     return (
       <Layout
-        pageTitle={`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}
+        pageTitle={`${selectedEmployee.prenom} ${selectedEmployee.nom}`}
         breadcrumbItems={[
           { label: "Entreprise" },
           { label: "Employés", href: "/entreprise/employes" },
-          { label: `${selectedEmployee.firstName} ${selectedEmployee.lastName}` }
+          { label: `${selectedEmployee.prenom} ${selectedEmployee.nom}` }
         ]}
       >
         <EmployeeDetails 
           employee={selectedEmployee} 
-          onBack={() => setSelectedEmployee(null)} 
+          employeeDetailsTab={employeeDetailsTab}
+          setEmployeeDetailsTab={setEmployeeDetailsTab}
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+          currentUser={{ role: 'admin' }}
         />
       </Layout>
     );
@@ -128,29 +128,18 @@ export default function Employes() {
       ctaButton={ctaButton}
     >
       <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Rechercher un employé..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Button variant="outline" size="sm">
-            <Filter className="w-4 h-4 mr-2" />
-            Filtrer
-          </Button>
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Exporter
-          </Button>
-        </div>
-
         <EmployeeList 
-          employees={filteredEmployees}
-          onEmployeeSelect={setSelectedEmployee}
+          employees={employees}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          departmentFilter={departmentFilter}
+          setDepartmentFilter={setDepartmentFilter}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          onViewEmployee={setSelectedEmployee}
+          itemsPerPage={itemsPerPage}
         />
       </div>
     </Layout>
