@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -19,7 +18,7 @@ interface NavigationItem {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>(['company']);
+  const [expandedItems, setExpandedItems] = useState<string[]>(['company', 'attendance']);
   const { logout, user } = useAuth();
 
   const toggleExpanded = (itemId: string) => {
@@ -61,7 +60,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       id: 'attendance',
       label: 'Présence et pointage',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4723_26829)"><path d="M8.00016 6.66668C7.64654 6.66668 7.3074 6.80715 7.05735 7.0572C6.8073 7.30725 6.66682 7.64639 6.66682 8.00001C6.66682 8.68001 6.60016 9.67334 6.49349 10.6667M9.33333 8.74676C9.33333 10.3334 9.33333 13.0001 8.66667 14.6668M11.5267 14.0133C11.6067 13.6133 11.8134 12.48 11.86 12M1.33333 8.00001C1.33333 6.60079 1.77358 5.23705 2.59172 4.10194C3.40986 2.96684 4.5644 2.11793 5.89182 1.67545C7.21923 1.23298 8.65221 1.21939 9.98778 1.63659C11.3234 2.05379 12.4938 2.88064 13.3333 4.00001M1.33333 10.6667H1.34M14.5332 10.6667C14.6665 9.33334 14.6205 7.09734 14.5332 6.66668M3.33333 13C3.66667 12 4 10 4 8.00001C3.99933 7.54592 4.07598 7.09503 4.22667 6.66668M5.7666 14.6667C5.9066 14.2267 6.0666 13.7867 6.1466 13.3333M6 4.5333C6.60827 4.18212 7.29828 3.99729 8.00064 3.99741C8.70301 3.99752 9.39296 4.18257 10.0011 4.53395C10.6093 4.88532 11.1142 5.39064 11.4651 5.99907C11.816 6.60751 12.0005 7.29761 12 7.99997V9.3333" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4723_26829"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
-      children: []
+      children: [
+        { label: 'Présence', href: '/presence' },
+        { label: 'Pointeuse', href: '/pointeuse' }
+      ]
     },
     {
       id: 'anomaly',
@@ -86,12 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
     {
       id: 'settings',
       label: 'Paramètres',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14667 1.33334H7.85333C7.49971 1.33334 7.16057 1.47381 6.91053 1.72386C6.66048 1.97391 6.52 2.31305 6.52 2.66667V2.78667C6.51976 3.02049 6.45804 3.25013 6.34103 3.45256C6.22401 3.65499 6.05583 3.82309 5.85333 3.94L5.56667 4.10667C5.36398 4.22369 5.13405 4.2853 4.9 4.2853C4.66595 4.2853 4.43603 4.22369 4.23333 4.10667L4.13333 4.05334C3.82738 3.87684 3.46389 3.82897 3.12267 3.92021C2.78145 4.01145 2.49037 4.23436 2.31333 4.54L2.16667 4.79334C1.99018 5.09929 1.9423 5.46278 2.03354 5.804C2.12478 6.14523 2.34769 6.4363 2.65333 6.61334L2.75333 6.68C2.95485 6.79634 3.12241 6.9634 3.23937 7.16456C3.35632 7.36572 3.4186 7.59398 3.42 7.82667V8.16667C3.42093 8.40162 3.35977 8.63264 3.2427 8.83634C3.12563 9.04005 2.95681 9.2092 2.75333 9.32667L2.65333 9.38667C2.34769 9.5637 2.12478 9.85478 2.03354 10.196C1.9423 10.5372 1.99018 10.9007 2.16667 11.2067L2.31333 11.46C2.49037 11.7656 2.78145 11.9886 3.12267 12.0798C3.46389 12.171 3.82738 12.1232 4.13333 11.9467L4.23333 11.8933C4.43603 11.7763 4.66595 11.7147 4.9 11.7147C5.13405 11.7147 5.36398 11.7763 5.56667 11.8933L5.85333 12.06C6.05583 12.1769 6.22401 12.345 6.34103 12.5474C6.45804 12.7499 6.51976 12.9795 6.52 13.2133V13.3333C6.52 13.687 6.66048 14.0261 6.91053 14.2761C7.16057 14.5262 7.49971 14.6667 7.85333 14.6667H8.14667C8.50029 14.6667 8.83943 14.5262 9.08948 14.2761C9.33953 14.0261 9.48 13.687 9.48 13.3333V13.2133C9.48024 12.9795 9.54196 12.7499 9.65898 12.5474C9.77599 12.345 9.94418 12.1769 10.1467 12.06L10.4333 11.8933C10.636 11.7763 10.866 11.7147 11.1 11.7147C11.3341 11.7147 11.564 11.7763 11.7667 11.8933L11.8667 11.9467C12.1726 12.1232 12.5361 12.171 12.8773 12.0798C13.2186 11.9886 13.5096 11.7656 13.6867 11.46L13.8333 11.2C14.0098 10.894 14.0577 10.5306 13.9665 10.1893C13.8752 9.84811 13.6523 9.55704 13.3467 9.38L13.2467 9.32667C13.0432 9.2092 12.8744 9.04005 12.7573 8.83634C12.6402 8.63264 12.5791 8.40162 12.58 8.16667V7.83334C12.5791 7.59839 12.6402 7.36737 12.7573 7.16366C12.8744 6.95996 13.0432 6.79081 13.2467 6.67334L13.3467 6.61334C13.6523 6.4363 13.8752 6.14523 13.9665 5.804C14.0577 5.46278 14.0098 5.09929 13.8333 4.79334L13.6867 4.54C13.5096 4.23436 13.2186 4.01145 12.8773 3.92021C12.5361 3.82897 12.1726 3.87684 11.8667 4.05334L11.7667 4.10667C11.564 4.22369 11.3341 4.2853 11.1 4.2853C10.866 4.2853 10.636 4.22369 10.4333 4.10667L10.1467 3.94C9.94418 3.82309 9.77599 3.65499 9.65898 3.45256C9.54196 3.25013 9.48024 3.02049 9.48 2.78667V2.66667C9.48 2.31305 9.33953 1.97391 9.08948 1.72386C8.83943 1.47381 8.50029 1.33334 8.14667 1.33334Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      children: [
-        { label: 'Général', href: '/parametres' },
-        { label: 'Rôles & Permissions', href: '/parametres/roles-permissions' },
-        { label: 'Structure organisationnelle', href: '/parametres/organization-structure' }
-      ]
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14667 1.33334H7.85333C7.49971 1.33334 7.16057 1.47381 6.91053 1.72386C6.66048 1.97391 6.52 2.31305 6.52 2.66667V2.78667C6.51976 3.02049 6.45804 3.25013 6.34103 3.45256C6.22401 3.65499 6.05583 3.82309 5.85333 3.94L5.56667 4.10667C5.36398 4.22369 5.13405 4.2853 4.9 4.2853C4.66595 4.2853 4.43603 4.22369 4.23333 4.10667L4.13333 4.05334C3.82738 3.87684 3.46389 3.82897 3.12267 3.92021C2.78145 4.01145 2.49037 4.23436 2.31333 4.54L2.16667 4.79334C1.99018 5.09929 1.9423 5.46278 2.03354 5.804C2.12478 6.14523 2.34769 6.4363 2.65333 6.61334L2.75333 6.68C2.95485 6.79634 3.12241 6.9634 3.23937 7.16456C3.35632 7.36572 3.4186 7.59398 3.42 7.82667V8.16667C3.42093 8.40162 3.35977 8.63264 3.2427 8.83634C3.12563 9.04005 2.95681 9.2092 2.75333 9.32667L2.65333 9.38667C2.34769 9.5637 2.12478 9.85478 2.03354 10.196C1.9423 10.5372 1.99018 10.9007 2.16667 11.2067L2.31333 11.46C2.49037 11.7656 2.78145 11.9886 3.12267 12.0798C3.46389 12.171 3.82738 12.1232 4.13333 11.9467L4.23333 11.8933C4.43603 11.7763 4.66595 11.7147 4.9 11.7147C5.13405 11.7147 5.36398 11.7763 5.56667 11.8933L5.85333 12.06C6.05583 12.1769 6.22401 12.345 6.34103 12.5474C6.45804 12.7499 6.51976 12.9795 6.52 13.2133V13.3333C6.52 13.687 6.66048 14.0261 6.91053 14.2761C7.16057 14.5262 7.49971 14.6667 7.85333 14.6667H8.14667C8.50029 14.6667 8.83943 14.5262 9.08948 14.2761C9.33953 14.0261 9.48 13.687 9.48 13.3333V13.2133C9.48024 12.9795 9.54196 12.7499 9.65898 12.5474C9.77599 12.345 9.94418 12.1769 10.1467 12.06L10.4333 11.8933C10.636 11.7763 10.866 11.7147 11.1 11.7147C11.3341 11.7147 11.564 11.7763 11.7667 11.8933L11.8667 11.9467C12.1726 12.1232 12.5361 12.171 12.8773 12.0798C13.2186 11.9886 13.5096 11.7656 13.6867 11.46L13.8333 11.2C14.0098 10.894 14.0577 10.5306 13.9665 10.1893C13.8752 9.84811 13.6523 9.55704 13.3467 9.38L13.2467 9.32667C13.0432 9.2092 12.8744 9.04005 12.7573 8.83634C12.6402 8.63264 12.5791 8.40162 12.58 8.16667V7.83334C12.5791 7.59839 12.6402 7.36737 12.7573 7.16366C12.8744 6.95996 13.0432 6.79081 13.2467 6.67334L13.3467 6.61334C13.6523 6.4363 13.8752 6.14523 13.9665 5.804C14.0577 5.46278 14.0098 5.09929 13.8333 4.79334L13.6867 4.54C13.5096 4.23436 13.2186 4.01145 12.8773 3.92021C12.5361 3.82897 12.1726 3.87684 11.8667 4.05334L11.7667 4.10667C11.564 4.22369 11.3341 4.2853 11.1 4.2853C10.866 4.2853 10.636 4.22369 10.4333 4.10667L10.1467 3.94C9.94418 3.82309 9.77599 3.65499 9.65898 3.45256C9.54196 3.25013 9.48024 3.02049 9.48 2.78667V2.66667C9.48 2.31305 9.33953 1.97391 9.08948 1.72386C8.83943 1.47381 8.50029 1.33334 8.14667 1.33334Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     }
   ];
 
@@ -105,6 +102,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       if (item.id === 'company') {
         return location.pathname.startsWith('/entreprise');
       }
+      // Special handling for attendance routes
+      if (item.id === 'attendance') {
+        return location.pathname === '/presence' || location.pathname === '/pointeuse' || location.pathname === '/attendance';
+      }
       return item.children.some(child => isActiveRoute(child.href));
     }
     return false;
@@ -113,6 +114,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
   // Special function to check if departements should be highlighted for company routes
   const shouldHighlightDepartements = () => {
     return location.pathname === '/entreprise/departements' || location.pathname === '/entreprise/employes';
+  };
+
+  // Special function to check if attendance items should be highlighted
+  const shouldHighlightAttendance = () => {
+    return location.pathname === '/presence' || location.pathname === '/pointeuse';
   };
 
   return (
@@ -215,6 +221,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                           to={child.href}
                           className={`overflow-hidden text-ellipsis text-sm font-normal leading-[20.02px] min-w-32 gap-2 self-stretch rounded px-2 py-1.5 hover:bg-slate-100 transition-colors block ${
                             (child.href === '/entreprise/departements' && shouldHighlightDepartements()) ? 'bg-slate-200 text-slate-900 font-medium' : 
+                            (shouldHighlightAttendance() && (child.href === '/presence' || child.href === '/pointeuse')) ? 'bg-slate-200 text-slate-900 font-medium' :
                             isActiveRoute(child.href) ? 'bg-slate-200 text-slate-900 font-medium' : 'text-slate-700'
                           }`}
                         >
@@ -244,8 +251,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                       }
                     }}
                     className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                      item.children.some(child => isActiveRoute(child.href)) ? 'bg-slate-100' : ''
-                    } ${
                       isCollapsed 
                         ? 'w-10 h-10 p-2 justify-center mx-auto' 
                         : 'min-w-32 px-2 py-1.5'
@@ -269,10 +274,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                   </Link>
                 ) : (
                   <Link
-                    to={item.id === 'alerts' ? '/alertes' : '/parametres'}
+                    to={`/${item.id}`}
                     className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                      isActiveRoute(item.id === 'alerts' ? '/alertes' : '/parametres') ? 'bg-slate-200 text-slate-900 font-medium' : ''
-                    } ${
                       isCollapsed 
                         ? 'w-10 h-10 p-2 justify-center mx-auto' 
                         : 'min-w-32 px-2 py-1.5'
@@ -289,23 +292,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                 {item.children && item.children.length > 0 && expandedItems.includes(item.id) && !isCollapsed && (
                   <div className="flex flex-col items-start self-stretch px-3.5 py-0">
                     <div className="flex flex-col items-start self-stretch border-l-slate-200 px-2.5 py-0.5 border-l border-solid">
-                      {item.children.map((child, index) => {
-                        // Hide Rôles & Permissions for non-admin users
-                        if (child.label === 'Rôles & Permissions' && user?.role !== 'admin') {
-                          return null;
-                        }
-                        return (
-                          <Link
-                            key={index}
-                            to={child.href}
-                            className={`overflow-hidden text-ellipsis text-sm font-normal leading-[20.02px] min-w-32 gap-2 self-stretch rounded px-2 py-1.5 hover:bg-slate-100 transition-colors block ${
-                              isActiveRoute(child.href) ? 'bg-slate-200 text-slate-900 font-medium' : 'text-slate-700'
-                            }`}
-                          >
-                            {child.label}
-                          </Link>
-                        );
-                      })}
+                      {item.children.map((child, index) => (
+                        <Link
+                          key={index}
+                          to={child.href}
+                          className={`overflow-hidden text-ellipsis text-sm font-normal leading-[20.02px] min-w-32 gap-2 self-stretch rounded px-2 py-1.5 hover:bg-slate-100 transition-colors block ${
+                            isActiveRoute(child.href) ? 'bg-slate-200 text-slate-900 font-medium' : 'text-slate-700'
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -327,15 +324,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
             >
               <div className="flex items-center">
                 <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
-                  alt="Ramzi Hammami"
+                  src="/lovable-uploads/68b10412-6551-47cc-babc-21445f54d8a0.png"
+                  alt={user?.name || 'User'}
                   className="w-8 h-8 rounded-lg object-cover"
                 />
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col items-start">
                   <div className="text-slate-950 text-sm font-medium leading-[20.02px]">
-                    Ramzi Hammami
+                    {user?.name || 'Admin'}
                   </div>
                   <div className="text-slate-500 text-xs font-normal leading-[17.18px]">
                     Compte administrateur

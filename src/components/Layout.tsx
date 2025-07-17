@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
-import { EmployeeSidebar } from './EmployeeSidebar';
-import { ResponsableSidebar } from './ResponsableSidebar';
 import { Header } from './Header';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -37,20 +35,9 @@ export const Layout: React.FC<LayoutProps> = ({
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  // Render appropriate sidebar based on user role
-  const renderSidebar = () => {
-    if (user?.role === 'employee') {
-      return <EmployeeSidebar isCollapsed={sidebarCollapsed} />;
-    }
-    if (user?.role === 'responsable') {
-      return <ResponsableSidebar isCollapsed={sidebarCollapsed} />;
-    }
-    return <Sidebar isCollapsed={sidebarCollapsed} />;
-  };
-
   return (
     <div className="flex h-screen w-full bg-white rounded-lg max-md:flex-col">
-      {renderSidebar()}
+      <Sidebar isCollapsed={sidebarCollapsed} />
       
       <main className="flex flex-col flex-1 min-w-0 max-md:w-full">
         <Header onToggleSidebar={toggleSidebar} pageTitle={pageTitle} breadcrumbItems={breadcrumbItems} />
