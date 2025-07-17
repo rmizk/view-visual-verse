@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { EmployeeSelectionDrawer } from './EmployeeSelectionDrawer';
 
 interface PlanningCreationFormProps {
-  onClose: () => void;
+  onBack: () => void;
 }
 
 interface Shift {
@@ -34,7 +34,7 @@ interface TimeSlot {
   endTime: string;
 }
 
-export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onClose }) => {
+export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onBack }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
@@ -87,7 +87,7 @@ export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onCl
       title: "Planning créé",
       description: "Le planning a été créé avec succès.",
     });
-    onClose();
+    onBack();
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -436,7 +436,7 @@ export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onCl
             <div className="text-sm text-slate-500">{getStepDescription()}</div>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={onClose}>
+        <Button variant="ghost" size="sm" onClick={onBack}>
           <X className="w-4 h-4" />
         </Button>
       </CardHeader>
@@ -586,7 +586,7 @@ export const PlanningCreationForm: React.FC<PlanningCreationFormProps> = ({ onCl
         <div className="flex justify-between pt-4">
           <Button
             variant="outline"
-            onClick={step === 1 ? onClose : handlePrevious}
+            onClick={step === 1 ? onBack : handlePrevious}
           >
             {step === 1 ? 'Annuler' : 'Précédent'}
           </Button>

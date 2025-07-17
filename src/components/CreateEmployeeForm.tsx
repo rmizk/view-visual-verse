@@ -2,10 +2,10 @@
 import React from 'react';
 
 interface CreateEmployeeFormProps {
-  onClose: () => void;
+  onBack: () => void;
 }
 
-export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = ({ onClose }) => {
+export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = ({ onBack }) => {
   return (
     <div className="flex flex-col items-start gap-4 self-stretch">
       <div className="w-full bg-white border border-slate-200 rounded-lg p-6">
@@ -77,7 +77,7 @@ export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = ({ onClose 
         </div>
         <div className="flex gap-3 mt-6">
           <button 
-            onClick={onClose}
+            onClick={onBack}
             className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50"
           >
             Annuler
@@ -85,7 +85,7 @@ export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = ({ onClose 
           <button 
             onClick={() => {
               alert('Employé créé avec succès !');
-              onClose();
+              onBack();
             }}
             className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800"
           >

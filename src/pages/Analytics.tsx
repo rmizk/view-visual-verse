@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { TabNavigation } from '@/components/TabNavigation';
@@ -7,7 +8,10 @@ import { OverviewChart } from '@/components/OverviewChart';
 
 const Analytics: React.FC = () => {
   const [activeTab, setActiveTab] = useState('performance');
-  const [dateRange, setDateRange] = useState('Oct 17, 2024 - Nov 6, 2024');
+  const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
+    from: new Date('2024-10-17'),
+    to: new Date('2024-11-06')
+  });
 
   const tabs = [
     { id: 'performance', label: 'Performance' },
@@ -71,8 +75,8 @@ const Analytics: React.FC = () => {
         {/* Tab Navigation */}
         <TabNavigation 
           tabs={tabs}
+          activeTab={activeTab}
           onTabChange={setActiveTab}
-          defaultActiveTab="performance"
         />
 
         {/* Stats Cards */}
