@@ -42,10 +42,10 @@ const Index: React.FC = () => {
 
   return (
     <div className="flex h-screen w-full bg-white rounded-lg max-md:flex-col">
-      <Sidebar isCollapsed={sidebarCollapsed} />
+      <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       
       <main className="flex flex-col flex-1 min-w-0 max-md:w-full">
-        <Header onToggleSidebar={toggleSidebar} />
+        <Header />
         
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">
