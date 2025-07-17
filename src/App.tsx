@@ -14,6 +14,7 @@ import Planning from "./pages/Planning";
 import PlanningDetail from "./pages/PlanningDetail";
 import Attendance from "./pages/Attendance";
 import Presence from "./pages/Presence";
+import Pointeuse from "./pages/Pointeuse";
 import Pointages from "./pages/Pointages";
 import Pointeuses from "./pages/Pointeuses";
 import Anomalie from "./pages/Anomalie";
@@ -46,6 +47,8 @@ const App = () => (
               <Route path="/planning" element={<Planning />} />
               <Route path="/planning/:id" element={<PlanningDetail />} />
               <Route path="/attendance" element={<Attendance />} />
+              <Route path="/presence" element={<Presence />} />
+              <Route path="/pointeuse" element={<Pointeuse />} />
               <Route path="/attendance/presence" element={<Presence />} />
               <Route path="/attendance/pointages" element={<Pointages />} />
               <Route path="/attendance/pointeuses" element={<Pointeuses />} />
