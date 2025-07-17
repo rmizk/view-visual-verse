@@ -83,7 +83,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
     {
       id: 'alerts',
       label: 'Alertes',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4709_8680)"><path d="M8 5.33334V8M8 10.6667H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33334 8 1.33334C11.6819 1.33334 14.6667 4.3181 14.6667 8Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4709_8680"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>'
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4709_8680)"><path d="M8 5.33334V8M8 10.6667H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33334 8 1.33334C11.6819 1.33334 14.6667 4.3181 14.6667 8Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4709_8680"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
+      children: []
     },
     {
       id: 'settings',
