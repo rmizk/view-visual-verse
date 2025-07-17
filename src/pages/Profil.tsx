@@ -50,7 +50,7 @@ const Profil: React.FC = () => {
         <div className="w-full bg-white border border-slate-200 rounded-lg p-6">
           {activeTab === 'personnel' && <div className="space-y-6">
               <div className="flex items-center gap-6 mb-6">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Photo de profil" className="w-20 h-20 rounded-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Photo de profil" className="w-20 h-20 rounded-md object-cover" />
                 <div>
                   <h3 className="text-lg font-semibold text-slate-950">Ramzi Hammami</h3>
                   <p className="text-slate-600">Administrateur</p>

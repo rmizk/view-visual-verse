@@ -206,7 +206,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
             >
               <div className="flex items-center">
                 <img
-                  src="/lovable-uploads/68b10412-6551-47cc-babc-21445f54d8a0.png"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
                   alt={user?.name || 'User'}
                   className="w-8 h-8 rounded-lg object-cover"
                 />
