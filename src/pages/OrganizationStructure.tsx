@@ -9,22 +9,22 @@ import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
 type ViewType = 'empty' | 'builder' | 'view';
 
-interface OrgNode {
+interface OrganizationNode {
   id: string;
   name: string;
-  title: string;
-  children: OrgNode[];
+  type: 'department' | 'team' | 'position';
+  children: OrganizationNode[];
 }
 
 export default function OrganizationStructure() {
   const [currentView, setCurrentView] = useState<ViewType>('empty');
-  const [organizationStructure, setOrganizationStructure] = useState<OrgNode[]>([]);
+  const [organizationStructure, setOrganizationStructure] = useState<OrganizationNode[]>([]);
 
   const handleCreateStructure = () => {
     setCurrentView('builder');
   };
 
-  const handleStructureSave = (structure: OrgNode[]) => {
+  const handleStructureSave = (structure: OrganizationNode[]) => {
     setOrganizationStructure(structure);
     setCurrentView('view');
   };
@@ -34,7 +34,7 @@ export default function OrganizationStructure() {
       case 'empty':
         return <EmptyState />;
       case 'builder':
-        return <StructureBuilder onSave={handleStructureSave} />;
+        return <StructureBuilder onSave={handleStructureSave} onBack={() => setCurrentView('empty')} />;
       case 'view':
         return (
           <div className="space-y-6">

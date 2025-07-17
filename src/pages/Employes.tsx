@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Download, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -94,7 +95,7 @@ export default function Employes() {
           { label: "Nouveau" }
         ]}
       >
-        <CreateEmployeeForm onCancel={() => setShowCreateForm(false)} />
+        <CreateEmployeeForm onBack={() => setShowCreateForm(false)} />
       </Layout>
     );
   }

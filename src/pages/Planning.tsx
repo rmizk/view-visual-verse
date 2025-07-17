@@ -19,7 +19,7 @@ export default function Planning() {
 
   const renderContent = () => {
     if (showCreateForm) {
-      return <PlanningCreationForm onCancel={() => setShowCreateForm(false)} />;
+      return <PlanningCreationForm onBack={() => setShowCreateForm(false)} />;
     }
 
     switch (activeTab) {

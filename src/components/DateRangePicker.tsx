@@ -1,18 +1,33 @@
+
 import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
 
 interface DateRangePickerProps {
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: { from: Date; to: Date };
+  onChange?: (value: { from: Date; to: Date }) => void;
   placeholder?: string;
 }
 
 export const DateRangePicker: React.FC<DateRangePickerProps> = ({ 
-  value = "Oct 17, 2024 - Nov 6, 2024",
+  value,
   onChange,
   placeholder = "Select date range"
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const formatDateRange = (dateRange?: { from: Date; to: Date }) => {
+    if (!dateRange) return placeholder;
+    
+    const formatDate = (date: Date) => {
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      }).format(date);
+    };
+
+    return `${formatDate(dateRange.from)} - ${formatDate(dateRange.to)}`;
+  };
 
   return (
     <div className="flex w-[309px] flex-col items-start gap-2 p-0 max-sm:w-full">
@@ -23,7 +38,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
         aria-expanded={isOpen}
       >
         <span className="flex-[1_0_0] text-slate-950 text-sm font-normal leading-[20.02px] text-left">
-          {value}
+          {formatDateRange(value)}
         </span>
         <div className="flex justify-end items-center pl-4">
           <Calendar className="w-4 h-4 text-slate-950" />

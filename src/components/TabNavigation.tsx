@@ -9,19 +9,26 @@ interface Tab {
 
 interface TabNavigationProps {
   tabs: Tab[];
+  activeTab?: string;
   onTabChange?: (tabId: string) => void;
   defaultActiveTab?: string;
 }
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({ 
   tabs, 
+  activeTab: externalActiveTab,
   onTabChange, 
   defaultActiveTab 
 }) => {
-  const [activeTab, setActiveTab] = useState(defaultActiveTab || tabs[0]?.id);
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultActiveTab || tabs[0]?.id);
+  
+  // Use external activeTab if provided, otherwise use internal state
+  const activeTab = externalActiveTab !== undefined ? externalActiveTab : internalActiveTab;
 
   const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
+    if (externalActiveTab === undefined) {
+      setInternalActiveTab(tabId);
+    }
     onTabChange?.(tabId);
   };
 
