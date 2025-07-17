@@ -46,13 +46,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       id: 'departements',
       label: 'Départements',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4723_25557)"><path d="M4 14.6667V2.66668C4 2.31305 4.14048 1.97392 4.39052 1.72387C4.64057 1.47382 4.97971 1.33334 5.33333 1.33334H10.6667C11.0203 1.33334 11.3594 1.47382 11.6095 1.72387C11.8595 1.97392 12 2.31305 12 2.66668V14.6667M4 14.6667H12M4 14.6667H2.66667C2.31305 14.6667 1.97391 14.5262 1.72386 14.2762C1.47381 14.0261 1.33333 13.687 1.33333 13.3333V9.33334C1.33333 8.97972 1.47381 8.64058 1.72386 8.39053C1.97391 8.14049 2.31305 8.00001 2.66667 8.00001H4M12 14.6667H13.3333C13.687 14.6667 14.0261 14.5262 14.2761 14.2762C14.5262 14.0261 14.6667 13.687 14.6667 13.3333V7.33334C14.6667 6.97972 14.5262 6.64058 14.2761 6.39053C14.0261 6.14049 13.687 6.00001 13.3333 6.00001H12M6.66667 4.00001H9.33333M6.66667 6.66668H9.33333M6.66667 9.33334H9.33333M6.66667 12H9.33333" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4723_25557"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
-      href: '/entreprise/departements'
+      href: '/departements'
     },
     {
       id: 'employes',
       label: 'Employés',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.3333 14V12.6667C13.3333 11.9594 13.0524 11.2811 12.5523 10.781C12.0522 10.281 11.3739 10 10.6667 10H5.33333C4.62609 10 3.94781 10.281 3.44772 10.781C2.94762 11.2811 2.66667 11.9594 2.66667 12.6667V14M10.6667 4.66667C10.6667 6.13943 9.47276 7.33333 8 7.33333C6.52724 7.33333 5.33333 6.13943 5.33333 4.66667C5.33333 3.19391 6.52724 2 8 2C9.47276 2 10.6667 3.19391 10.6667 4.66667Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      href: '/entreprise/employes'
+      href: '/employes'
     },
     {
       id: 'planning',
@@ -83,6 +83,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       label: 'Rapports',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.33333 1.33334V4.00001C9.33333 4.35363 9.47381 4.69277 9.72386 4.94282C9.97391 5.19287 10.313 5.33334 10.6667 5.33334H13.3333M10 1.33334H4C3.64638 1.33334 3.30724 1.47382 3.05719 1.72387C2.80714 1.97392 2.66667 2.31305 2.66667 2.66668V13.3333C2.66667 13.687 2.80714 14.0261 3.05719 14.2762C3.30724 14.5262 3.64638 14.6667 4 14.6667H12C12.3536 14.6667 12.6928 14.5262 12.9428 14.2762C13.1929 14.0261 13.3333 13.687 13.3333 13.3333V4.66668L10 1.33334Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
       href: '/reports'
+    },
+    {
+      id: 'parametres',
+      label: 'Paramètres',
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14667 1.33334H7.85333C7.49971 1.33334 7.16057 1.47381 6.91053 1.72386C6.66048 1.97391 6.52 2.31305 6.52 2.66667V2.78667C6.51976 3.02049 6.45804 3.25013 6.34103 3.45256C6.22401 3.65499 6.05583 3.82309 5.85333 3.94L5.56667 4.10667C5.36398 4.22369 5.13405 4.2853 4.9 4.2853C4.66595 4.2853 4.43603 4.22369 4.23333 4.10667L4.13333 4.05334C3.82738 3.87684 3.46389 3.82897 3.12267 3.92021C2.78145 4.01145 2.49037 4.23436 2.31333 4.54L2.16667 4.79334C1.99018 5.09929 1.9423 5.46278 2.03354 5.804C2.12478 6.14523 2.34769 6.4363 2.65333 6.61334L2.75333 6.68C2.95485 6.79634 3.12241 6.9634 3.23937 7.16456C3.35632 7.36572 3.4186 7.59398 3.42 7.82667V8.16667C3.42093 8.40162 3.35977 8.63264 3.2427 8.83634C3.12563 9.04005 2.95681 9.2092 2.75333 9.32667L2.65333 9.38667C2.34769 9.5637 2.12478 9.85478 2.03354 10.196C1.9423 10.5372 1.99018 10.9007 2.16667 11.2067L2.31333 11.46C2.49037 11.7656 2.78145 11.9886 3.12267 12.0798C3.46389 12.171 3.82738 12.1232 4.13333 11.9467L4.23333 11.8933C4.43603 11.7763 4.66595 11.7147 4.9 11.7147C5.13405 11.7147 5.36398 11.7763 5.56667 11.8933L5.85333 12.06C6.05583 12.1769 6.22401 12.345 6.34103 12.5474C6.45804 12.7499 6.51976 12.9795 6.52 13.2133V13.3333C6.52 13.687 6.66048 14.0261 6.91053 14.2761C7.16057 14.5262 7.49971 14.6667 7.85333 14.6667H8.14667C8.50029 14.6667 8.83943 14.5262 9.08948 14.2761C9.33953 14.0261 9.48 13.687 9.48 13.3333V13.2133C9.48024 12.9795 9.54196 12.7499 9.65898 12.5474C9.77599 12.345 9.94418 12.1769 10.1467 12.06L10.4333 11.8933C10.636 11.7763 10.866 11.7147 11.1 11.7147C11.3341 11.7147 11.564 11.7763 11.7667 11.8933L11.8667 11.9467C12.1726 12.1232 12.5361 12.171 12.8773 12.0798C13.2186 11.9886 13.5096 11.7656 13.6867 11.46L13.8333 11.2C14.0098 10.894 14.0577 10.5306 13.9665 10.1893C13.8752 9.84811 13.6523 9.55704 13.3467 9.38L13.2467 9.32667C13.0432 9.2092 12.8744 9.04005 12.7573 8.83634C12.6402 8.63264 12.5791 8.40162 12.58 8.16667V7.83334C12.5791 7.59839 12.6402 7.36737 12.7573 7.16366C12.8744 6.95996 13.0432 6.79081 13.2467 6.67334L13.3467 6.61334C13.6523 6.4363 13.8752 6.14523 13.9665 5.804C14.0577 5.46278 14.0098 5.09929 13.8333 4.79334L13.6867 4.54C13.5096 4.23436 13.2186 4.01145 12.8773 3.92021C12.5361 3.82897 12.1726 3.87684 11.8667 4.05334L11.7667 4.10667C11.564 4.22369 11.3341 4.2853 11.1 4.2853C10.866 4.2853 10.636 4.22369 10.4333 4.10667L10.1467 3.94C9.94418 3.82309 9.77599 3.65499 9.65898 3.45256C9.54196 3.25013 9.48024 3.02049 9.48 2.78667V2.66667C9.48 2.31305 9.33953 1.97391 9.08948 1.72386C8.83943 1.47381 8.50029 1.33334 8.14667 1.33334Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      href: '/parametres',
+      children: [
+        { label: 'Général', href: '/parametres/general' },
+        { label: 'Rôles & Permissions', href: '/parametres/roles-permissions' },
+        { label: 'Structure organisationnelle', href: '/parametres/structure-organisationnelle' }
+      ]
     }
   ];
 
@@ -92,17 +103,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       label: 'Alertes',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4709_8680)"><path d="M8 5.33334V8M8 10.6667H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33334 8 1.33334C11.6819 1.33334 14.6667 4.3181 14.6667 8Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4709_8680"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
       href: '/alerts'
-    },
-    {
-      id: 'settings',
-      label: 'Paramètres',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14667 1.33334H7.85333C7.49971 1.33334 7.16057 1.47381 6.91053 1.72386C6.66048 1.97391 6.52 2.31305 6.52 2.66667V2.78667C6.51976 3.02049 6.45804 3.25013 6.34103 3.45256C6.22401 3.65499 6.05583 3.82309 5.85333 3.94L5.56667 4.10667C5.36398 4.22369 5.13405 4.2853 4.9 4.2853C4.66595 4.2853 4.43603 4.22369 4.23333 4.10667L4.13333 4.05334C3.82738 3.87684 3.46389 3.82897 3.12267 3.92021C2.78145 4.01145 2.49037 4.23436 2.31333 4.54L2.16667 4.79334C1.99018 5.09929 1.9423 5.46278 2.03354 5.804C2.12478 6.14523 2.34769 6.4363 2.65333 6.61334L2.75333 6.68C2.95485 6.79634 3.12241 6.9634 3.23937 7.16456C3.35632 7.36572 3.4186 7.59398 3.42 7.82667V8.16667C3.42093 8.40162 3.35977 8.63264 3.2427 8.83634C3.12563 9.04005 2.95681 9.2092 2.75333 9.32667L2.65333 9.38667C2.34769 9.5637 2.12478 9.85478 2.03354 10.196C1.9423 10.5372 1.99018 10.9007 2.16667 11.2067L2.31333 11.46C2.49037 11.7656 2.78145 11.9886 3.12267 12.0798C3.46389 12.171 3.82738 12.1232 4.13333 11.9467L4.23333 11.8933C4.43603 11.7763 4.66595 11.7147 4.9 11.7147C5.13405 11.7147 5.36398 11.7763 5.56667 11.8933L5.85333 12.06C6.05583 12.1769 6.22401 12.345 6.34103 12.5474C6.45804 12.7499 6.51976 12.9795 6.52 13.2133V13.3333C6.52 13.687 6.66048 14.0261 6.91053 14.2761C7.16057 14.5262 7.49971 14.6667 7.85333 14.6667H8.14667C8.50029 14.6667 8.83943 14.5262 9.08948 14.2761C9.33953 14.0261 9.48 13.687 9.48 13.3333V13.2133C9.48024 12.9795 9.54196 12.7499 9.65898 12.5474C9.77599 12.345 9.94418 12.1769 10.1467 12.06L10.4333 11.8933C10.636 11.7763 10.866 11.7147 11.1 11.7147C11.3341 11.7147 11.564 11.7763 11.7667 11.8933L11.8667 11.9467C12.1726 12.1232 12.5361 12.171 12.8773 12.0798C13.2186 11.9886 13.5096 11.7656 13.6867 11.46L13.8333 11.2C14.0098 10.894 14.0577 10.5306 13.9665 10.1893C13.8752 9.84811 13.6523 9.55704 13.3467 9.38L13.2467 9.32667C13.0432 9.2092 12.8744 9.04005 12.7573 8.83634C12.6402 8.63264 12.5791 8.40162 12.58 8.16667V7.83334C12.5791 7.59839 12.6402 7.36737 12.7573 7.16366C12.8744 6.95996 13.0432 6.79081 13.2467 6.67334L13.3467 6.61334C13.6523 6.4363 13.8752 6.14523 13.9665 5.804C14.0577 5.46278 14.0098 5.09929 13.8333 4.79334L13.6867 4.54C13.5096 4.23436 13.2186 4.01145 12.8773 3.92021C12.5361 3.82897 12.1726 3.87684 11.8667 4.05334L11.7667 4.10667C11.564 4.22369 11.3341 4.2853 11.1 4.2853C10.866 4.2853 10.636 4.22369 10.4333 4.10667L10.1467 3.94C9.94418 3.82309 9.77599 3.65499 9.65898 3.45256C9.54196 3.25013 9.48024 3.02049 9.48 2.78667V2.66667C9.48 2.31305 9.33953 1.97391 9.08948 1.72386C8.83943 1.47381 8.50029 1.33334 8.14667 1.33334Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      href: '/settings'
     }
   ];
 
   const isActiveRoute = (href: string) => {
     return location.pathname === href;
+  };
+
+  const isParentActive = (item: NavigationItem) => {
+    if (item.href && isActiveRoute(item.href)) return true;
+    if (item.children && item.children.some(child => isActiveRoute(child.href))) return true;
+    return false;
   };
 
   return (
@@ -144,23 +155,68 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
           <div className={`flex flex-col items-start self-stretch ${isCollapsed ? 'gap-1' : ''}`}>
             {navigationItems.map((item) => (
               <div key={item.id} className="flex flex-col items-start self-stretch">
-                <Link
-                  to={item.href!}
-                  className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                    isActiveRoute(item.href!) ? 'bg-slate-200 text-slate-900 font-medium' : ''
-                  } ${
-                    isCollapsed 
-                      ? 'w-10 h-10 p-2 justify-center mx-auto' 
-                      : 'min-w-32 px-2 py-1.5'
-                  }`}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: item.icon }} />
-                  {!isCollapsed && (
-                    <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
-                      {item.label}
-                    </div>
-                  )}
-                </Link>
+                {item.children ? (
+                  <>
+                    <button
+                      onClick={() => toggleExpanded(item.id)}
+                      className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
+                        isParentActive(item) ? 'bg-slate-200 text-slate-900 font-medium' : ''
+                      } ${
+                        isCollapsed 
+                          ? 'w-10 h-10 p-2 justify-center mx-auto' 
+                          : 'min-w-32 px-2 py-1.5'
+                      }`}
+                    >
+                      <div dangerouslySetInnerHTML={{ __html: item.icon }} />
+                      {!isCollapsed && (
+                        <>
+                          <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
+                            {item.label}
+                          </div>
+                          {expandedItems.includes(item.id) ? 
+                            <ChevronDown className="w-4 h-4" /> : 
+                            <ChevronRight className="w-4 h-4" />
+                          }
+                        </>
+                      )}
+                    </button>
+                    {!isCollapsed && expandedItems.includes(item.id) && item.children && (
+                      <div className="flex flex-col ml-6 mt-1 space-y-1 w-full">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            to={child.href}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
+                              isActiveRoute(child.href) 
+                                ? 'bg-slate-200 text-slate-900 font-medium' 
+                                : 'hover:bg-slate-100 text-slate-600'
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to={item.href!}
+                    className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
+                      isActiveRoute(item.href!) ? 'bg-slate-200 text-slate-900 font-medium' : ''
+                    } ${
+                      isCollapsed 
+                        ? 'w-10 h-10 p-2 justify-center mx-auto' 
+                        : 'min-w-32 px-2 py-1.5'
+                    }`}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: item.icon }} />
+                    {!isCollapsed && (
+                      <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
+                        {item.label}
+                      </div>
+                    )}
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -208,7 +264,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
                   alt={user?.name || 'User'}
-                  className="w-8 h-8 rounded-lg object-cover"
+                  className="w-8 h-8 rounded-md object-cover"
                 />
               </div>
               {!isCollapsed && (
