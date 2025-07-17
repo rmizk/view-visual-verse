@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, PanelLeft } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SidebarProps {
@@ -18,7 +19,8 @@ interface NavigationItem {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(['parametres']);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
   const { logout, user } = useAuth();
 
   const toggleExpanded = (itemId: string) => {
@@ -93,14 +95,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
         { label: 'Rôles & Permissions', href: '/parametres/roles-permissions' },
         { label: 'Structure organisationnelle', href: '/parametres/organization-structure' }
       ]
-    }
-  ];
-
-  const bottomItems = [
+    },
     {
       id: 'notifications',
       label: 'Notifications',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.73344 1.98437C7.20313 1.72656 7.57813 1.59375 8 1.59375C8.42188 1.59375 8.79688 1.72656 9.26656 1.98437C9.73625 2.24219 10.0938 2.59375 10.3516 3.04687C10.6094 3.5 10.7422 4.00781 10.7422 4.5625C10.7422 5.64844 11.0547 6.65625 11.6797 7.5859L12.8516 9.26562C12.9297 9.375 12.9688 9.49219 12.9688 9.625C12.9688 9.82031 12.9062 9.97656 12.7812 10.0938C12.6562 10.2188 12.5 10.2812 12.3047 10.2812H11.1953C10.9609 11.2969 10.4375 12.1172 9.625 12.7422C8.8125 13.3672 7.875 13.6875 6.8125 13.6875C5.75 13.6875 4.8125 13.3672 4 12.7422C3.1875 12.1172 2.66406 11.2969 2.42969 10.2812H1.32031C1.125 10.2812 0.96875 10.2188 0.84375 10.0938C0.71875 9.97656 0.65625 9.82031 0.65625 9.625C0.65625 9.49219 0.695312 9.375 0.773438 9.26562L1.94531 7.5859C2.57031 6.65625 2.88281 5.64844 2.88281 4.5625C2.88281 4.00781 3.01562 3.5 3.27344 3.04687C3.53125 2.59375 3.88281 2.24219 4.32656 1.98437C4.77031 1.72656 5.15625 1.59375 5.54688 1.59375C5.9375 1.59375 6.30469 1.67969 6.64844 1.85156C7.00781 2.03125 7.35938 2.28906 7.6875 2.625" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5.33334C12 4.27248 11.5786 3.25505 10.8284 2.50491C10.0783 1.75476 9.06087 1.33334 8 1.33334C6.93913 1.33334 5.9217 1.75476 5.17157 2.50491C4.42143 3.25505 4 4.27248 4 5.33334C4 10 2 11.3333 2 11.3333H14C14 11.3333 12 10 12 5.33334ZM9.15333 13.3333C9.0486 13.5538 8.88495 13.7408 8.68116 13.8739C8.47737 14.007 8.24154 14.0809 8 14.0809C7.75846 14.0809 7.52263 14.007 7.31884 13.8739C7.11505 13.7408 6.9514 13.5538 6.84667 13.3333" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
       href: '/notifications'
     }
   ];
@@ -116,50 +115,113 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
   };
 
   return (
-    <aside className={`flex flex-col justify-between self-stretch bg-slate-50 border-r border-slate-200 transition-all duration-300 max-md:hidden ${isCollapsed ? 'w-14' : 'w-60'}`}>
-      {/* Company Header */}
-      <header className="flex flex-col items-start self-stretch p-2">
-        <div className={`flex items-center gap-2 self-stretch p-2 rounded-md ${isCollapsed ? 'justify-center' : ''}`}>
-          <div className="flex items-center bg-slate-900 p-2 rounded-lg">
-            <div dangerouslySetInnerHTML={{
-              __html: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.47128 1.92498C2.55317 1.74943 2.68314 1.60067 2.84611 1.49595C3.00908 1.39123 3.1984 1.33484 3.39211 1.33331H13.6379C14.4005 1.33331 14.9005 2.16664 14.5547 2.87497L13.0047 6.09583C12.8379 6.43747 12.538 6.72911 12.1671 6.74991H10.3629L8.38372 13.8958C8.32632 14.1147 8.19852 14.3086 8.02012 14.4479C7.84172 14.5872 7.62259 14.664 7.39626 14.6666H4.59628C3.92128 14.6666 3.42962 14 3.60462 13.325C4.1052 11.3934 4.64978 9.47345 5.23795 7.56658C5.67126 6.22077 7.05466 5.91665 8.37539 5.91665H9.28372C9.04212 5.61663 8.62546 5.49996 8.04212 5.49996H2.36294C1.60045 5.49996 1.10045 4.76665 1.44628 4.05831L2.47128 1.92498ZM10.3629 5.91665H11.8837C11.9677 5.91637 12.0496 5.89079 12.1187 5.84325C12.1879 5.79561 12.2411 5.72824 12.2713 5.64997L13.413 2.73331C13.4373 2.67028 13.4459 2.60229 13.4381 2.53518C13.4303 2.46808 13.4063 2.40389 13.3681 2.34812C13.3301 2.29235 13.2789 2.24669 13.2192 2.21508C13.1595 2.18347 13.093 2.16685 13.0255 2.16664H3.67128C3.58902 2.16706 3.50872 2.19181 3.4405 2.23778C3.37228 2.28375 3.3192 2.34889 3.28794 2.42498L2.60045 4.09164C2.57451 4.15477 2.56448 4.2233 2.57123 4.29121C2.57798 4.35912 2.60132 4.42433 2.63917 4.4811C2.67702 4.53789 2.72825 4.58451 2.78833 4.61685C2.84842 4.64921 2.91554 4.6663 2.98378 4.66664H8.04212C9.33379 4.66664 10.0754 5.32078 10.3629 5.91665ZM9.25039 6.74991H8.20872C7.34632 6.74991 6.50046 6.99998 6.21298 7.89998C5.71296 9.46245 5.09628 11.8874 4.72961 13.3C4.66295 13.5625 4.86294 13.8332 5.13794 13.8332H7.07126C7.26299 13.8332 7.42546 13.6916 7.47539 13.5124L9.25039 6.74991Z" fill="white"/></svg>'
-            }} />
-          </div>
-          {!isCollapsed && (
-            <>
-              <div className="flex flex-col items-start gap-0.5 flex-[1_0_0]">
-                <div className="self-stretch overflow-hidden text-slate-700 text-ellipsis text-sm font-bold leading-[14px]">
-                  TimeTrack
-                </div>
-                <div className="self-stretch overflow-hidden text-slate-700 text-ellipsis text-xs font-normal leading-[15.96px]">
-                  ZetaBox
-                </div>
-              </div>
-              <div dangerouslySetInnerHTML={{
-                __html: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.66667 10L8 13.3334L11.3333 10M4.66667 6.00002L8 2.66669L11.3333 6.00002" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-              }} />
-            </>
-          )}
-        </div>
-      </header>
-
-      {/* Navigation */}
-      <nav className="flex flex-col items-start gap-2 flex-1 self-stretch">
-        <div className="flex flex-col items-start flex-1 self-stretch p-2">
-          {!isCollapsed && (
-            <div className="text-[rgba(51,65,85,0.7)] text-xs font-normal leading-[20.04px] min-w-32 gap-2 self-stretch px-2 py-1.5">
-              Plateforme
+    <TooltipProvider>
+      <aside className={`flex flex-col justify-between self-stretch bg-slate-50 border-r border-slate-200 transition-all duration-300 max-md:hidden ${isCollapsed ? 'w-14' : 'w-60'}`}>
+        {/* Company Header */}
+        <header className="flex flex-col items-start self-stretch p-2">
+          <div className={`flex items-center gap-2 self-stretch p-2 rounded-md ${isCollapsed ? 'justify-center' : ''}`}>
+            <div 
+              className="flex items-center bg-slate-900 p-2 rounded-lg relative"
+              onMouseEnter={() => setIsLogoHovered(true)}
+              onMouseLeave={() => setIsLogoHovered(false)}
+            >
+              {isCollapsed && isLogoHovered ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <PanelLeft className="w-4 h-4 text-white cursor-pointer" data-lov-name="PanelLeft" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>Open sidebar</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <div dangerouslySetInnerHTML={{
+                  __html: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.47128 1.92498C2.55317 1.74943 2.68314 1.60067 2.84611 1.49595C3.00908 1.39123 3.1984 1.33484 3.39211 1.33331H13.6379C14.4005 1.33331 14.9005 2.16664 14.5547 2.87497L13.0047 6.09583C12.8379 6.43747 12.538 6.72911 12.1671 6.74991H10.3629L8.38372 13.8958C8.32632 14.1147 8.19852 14.3086 8.02012 14.4479C7.84172 14.5872 7.62259 14.664 7.39626 14.6666H4.59628C3.92128 14.6666 3.42962 14 3.60462 13.325C4.1052 11.3934 4.64978 9.47345 5.23795 7.56658C5.67126 6.22077 7.05466 5.91665 8.37539 5.91665H9.28372C9.04212 5.61663 8.62546 5.49996 8.04212 5.49996H2.36294C1.60045 5.49996 1.10045 4.76665 1.44628 4.05831L2.47128 1.92498ZM10.3629 5.91665H11.8837C11.9677 5.91637 12.0496 5.89079 12.1187 5.84325C12.1879 5.79561 12.2411 5.72824 12.2713 5.64997L13.413 2.73331C13.4373 2.67028 13.4459 2.60229 13.4381 2.53518C13.4303 2.46808 13.4063 2.40389 13.3681 2.34812C13.3301 2.29235 13.2789 2.24669 13.2192 2.21508C13.1595 2.18347 13.093 2.16685 13.0255 2.16664H3.67128C3.58902 2.16706 3.50872 2.19181 3.4405 2.23778C3.37228 2.28375 3.3192 2.34889 3.28794 2.42498L2.60045 4.09164C2.57451 4.15477 2.56448 4.2233 2.57123 4.29121C2.57798 4.35912 2.60132 4.42433 2.63917 4.4811C2.67702 4.53789 2.72825 4.58451 2.78833 4.61685C2.84842 4.64921 2.91554 4.6663 2.98378 4.66664H8.04212C9.33379 4.66664 10.0754 5.32078 10.3629 5.91665ZM9.25039 6.74991H8.20872C7.34632 6.74991 6.50046 6.99998 6.21298 7.89998C5.71296 9.46245 5.09628 11.8874 4.72961 13.3C4.66295 13.5625 4.86294 13.8332 5.13794 13.8332H7.07126C7.26299 13.8332 7.42546 13.6916 7.47539 13.5124L9.25039 6.74991Z" fill="white"/></svg>'
+                }} />
+              )}
             </div>
-          )}
-          <div className={`flex flex-col items-start self-stretch ${isCollapsed ? 'gap-1' : ''}`}>
-            {navigationItems.map((item) => (
-              <div key={item.id} className="flex flex-col items-start self-stretch">
-                {item.children ? (
-                  <>
-                    <button
-                      onClick={() => toggleExpanded(item.id)}
+            {!isCollapsed && (
+              <>
+                <div className="flex flex-col items-start gap-0.5 flex-[1_0_0]">
+                  <div className="self-stretch overflow-hidden text-slate-700 text-ellipsis text-sm font-bold leading-[14px]">
+                    TimeTrack
+                  </div>
+                  <div className="self-stretch overflow-hidden text-slate-700 text-ellipsis text-xs font-normal leading-[15.96px]">
+                    ZetaBox
+                  </div>
+                </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <PanelLeft className="w-4 h-4 text-slate-700 cursor-pointer" data-lov-name="PanelLeft" />
+                  </TooltipTrigger>
+                  <TooltipContent side="left">
+                    <p>Close sidebar</p>
+                  </TooltipContent>
+                </Tooltip>
+              </>
+            )}
+          </div>
+        </header>
+
+        {/* Navigation */}
+        <nav className="flex flex-col items-start gap-2 flex-1 self-stretch">
+          <div className="flex flex-col items-start flex-1 self-stretch p-2">
+            {!isCollapsed && (
+              <div className="text-[rgba(51,65,85,0.7)] text-xs font-normal leading-[20.04px] min-w-32 gap-2 self-stretch px-2 py-1.5">
+                Plateforme
+              </div>
+            )}
+            <div className={`flex flex-col items-start self-stretch ${isCollapsed ? 'gap-1' : ''}`}>
+              {navigationItems.map((item) => (
+                <div key={item.id} className="flex flex-col items-start self-stretch">
+                  {item.children ? (
+                    <>
+                      <button
+                        onClick={() => toggleExpanded(item.id)}
+                        className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
+                          isParentActive(item) ? 'bg-slate-200 text-slate-900 font-medium' : ''
+                        } ${
+                          isCollapsed 
+                            ? 'w-10 h-10 p-2 justify-center mx-auto' 
+                            : 'min-w-32 px-2 py-1.5'
+                        }`}
+                      >
+                        <div dangerouslySetInnerHTML={{ __html: item.icon }} />
+                        {!isCollapsed && (
+                          <>
+                            <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
+                              {item.label}
+                            </div>
+                            {expandedItems.includes(item.id) ? 
+                              <ChevronDown className="w-4 h-4" /> : 
+                              <ChevronRight className="w-4 h-4" />
+                            }
+                          </>
+                        )}
+                      </button>
+                      {!isCollapsed && expandedItems.includes(item.id) && item.children && (
+                        <div className="flex flex-col ml-6 mt-1 space-y-1 w-full">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              to={child.href}
+                              className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
+                                isActiveRoute(child.href) 
+                                  ? 'bg-slate-200 text-slate-900 font-medium' 
+                                  : 'hover:bg-slate-100 text-slate-600'
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      to={item.href!}
                       className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                        isParentActive(item) ? 'bg-slate-200 text-slate-900 font-medium' : ''
+                        isActiveRoute(item.href!) ? 'bg-slate-200 text-slate-900 font-medium' : ''
                       } ${
                         isCollapsed 
                           ? 'w-10 h-10 p-2 justify-center mx-auto' 
@@ -168,126 +230,58 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                     >
                       <div dangerouslySetInnerHTML={{ __html: item.icon }} />
                       {!isCollapsed && (
-                        <>
-                          <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
-                            {item.label}
-                          </div>
-                          {expandedItems.includes(item.id) ? 
-                            <ChevronDown className="w-4 h-4" /> : 
-                            <ChevronRight className="w-4 h-4" />
-                          }
-                        </>
+                        <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
+                          {item.label}
+                        </div>
                       )}
-                    </button>
-                    {!isCollapsed && expandedItems.includes(item.id) && item.children && (
-                      <div className="flex flex-col ml-6 mt-1 space-y-1 w-full">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            to={child.href}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
-                              isActiveRoute(child.href) 
-                                ? 'bg-slate-200 text-slate-900 font-medium' 
-                                : 'hover:bg-slate-100 text-slate-600'
-                            }`}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <Link
-                    to={item.href!}
-                    className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                      isActiveRoute(item.href!) ? 'bg-slate-200 text-slate-900 font-medium' : ''
-                    } ${
-                      isCollapsed 
-                        ? 'w-10 h-10 p-2 justify-center mx-auto' 
-                        : 'min-w-32 px-2 py-1.5'
-                    }`}
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: item.icon }} />
-                    {!isCollapsed && (
-                      <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
-                        {item.label}
-                      </div>
-                    )}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom Navigation */}
-        <div className="flex flex-col items-start self-stretch p-2">
-          <div className={`flex flex-col items-start self-stretch ${isCollapsed ? 'gap-1' : ''}`}>
-            {bottomItems.map((item) => (
-              <div key={item.id} className="flex flex-col items-start self-stretch">
-                <Link
-                  to={item.href!}
-                  className={`flex items-center gap-2 self-stretch rounded hover:bg-slate-100 transition-colors w-full text-left ${
-                    isActiveRoute(item.href!) ? 'bg-slate-200 text-slate-900 font-medium' : ''
-                  } ${
-                    isCollapsed 
-                      ? 'w-10 h-10 p-2 justify-center mx-auto' 
-                      : 'min-w-32 px-2 py-1.5'
-                  }`}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: item.icon }} />
-                  {!isCollapsed && (
-                    <div className="flex-[1_0_0] overflow-hidden text-slate-700 text-ellipsis text-sm font-normal leading-[20.02px]">
-                      {item.label}
-                    </div>
+                    </Link>
                   )}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </nav>
-
-      {/* User Profile */}
-      <footer className="flex flex-col items-start gap-2.5 self-stretch p-2">
-        <ContextMenu>
-          <ContextMenuTrigger asChild>
-            <Link
-              to="/profil"
-              className={`flex items-center gap-2 self-stretch rounded-md hover:bg-slate-100 transition-colors ${
-                isCollapsed ? 'w-10 h-10 p-2 justify-center mx-auto' : 'p-2'
-              }`}
-            >
-              <div className="flex items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
-                  alt={user?.name || 'User'}
-                  className="w-8 h-8 rounded-md object-cover"
-                />
-              </div>
-              {!isCollapsed && (
-                <div className="flex flex-col items-start">
-                  <div className="text-slate-950 text-sm font-medium leading-[20.02px]">
-                    {user?.name || 'Admin'}
-                  </div>
-                  <div className="text-slate-500 text-xs font-normal leading-[17.18px]">
-                    Compte administrateur
-                  </div>
                 </div>
-              )}
-            </Link>
-          </ContextMenuTrigger>
-          <ContextMenuContent className="w-48">
-            <ContextMenuItem onClick={() => window.location.href = '/profil'}>
-              Profile Settings
-            </ContextMenuItem>
-            <ContextMenuItem onClick={handleLogout} className="text-red-600">
-              Logout
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-      </footer>
-    </aside>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        {/* User Profile */}
+        <footer className="flex flex-col items-start gap-2.5 self-stretch p-2">
+          <ContextMenu>
+            <ContextMenuTrigger asChild>
+              <Link
+                to="/profil"
+                className={`flex items-center gap-2 self-stretch rounded-md hover:bg-slate-100 transition-colors ${
+                  isCollapsed ? 'w-10 h-10 p-2 justify-center mx-auto' : 'p-2'
+                }`}
+              >
+                <div className="flex items-center">
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
+                    alt={user?.name || 'User'}
+                    className="w-8 h-8 rounded-md object-cover"
+                  />
+                </div>
+                {!isCollapsed && (
+                  <div className="flex flex-col items-start">
+                    <div className="text-slate-950 text-sm font-medium leading-[20.02px]">
+                      {user?.name || 'Admin'}
+                    </div>
+                    <div className="text-slate-500 text-xs font-normal leading-[17.18px]">
+                      Compte administrateur
+                    </div>
+                  </div>
+                )}
+              </Link>
+            </ContextMenuTrigger>
+            <ContextMenuContent className="w-48">
+              <ContextMenuItem onClick={() => window.location.href = '/profil'}>
+                Profile Settings
+              </ContextMenuItem>
+              <ContextMenuItem onClick={handleLogout} className="text-red-600">
+                Logout
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+        </footer>
+      </aside>
+    </TooltipProvider>
   );
 };
