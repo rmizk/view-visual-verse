@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PanelLeft, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;
@@ -8,13 +8,11 @@ interface BreadcrumbItem {
 }
 
 interface HeaderProps {
-  onToggleSidebar?: () => void;
   pageTitle?: string;
   breadcrumbItems?: BreadcrumbItem[];
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
-  onToggleSidebar, 
   pageTitle = "Dashboard",
   breadcrumbItems = [
     { label: "Dashboard" },
@@ -25,18 +23,6 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="flex justify-between items-center self-stretch bg-slate-50 px-4 py-3 max-sm:px-4 max-sm:py-2">
       <div className="flex items-center gap-4">
         <nav className="flex items-center content-center gap-[4px_8px] flex-wrap" aria-label="Breadcrumb">
-          <div className="flex items-center gap-2 pr-2">
-            <button
-              onClick={onToggleSidebar}
-              className="flex justify-center items-center p-1.5 rounded-md hover:bg-slate-100 transition-colors"
-              aria-label="Toggle sidebar"
-            >
-              <PanelLeft className="w-4 h-4 text-slate-700" />
-            </button>
-            <div className="flex w-0 h-4 flex-col items-start p-0">
-              <div className="w-px h-4 bg-slate-200" />
-            </div>
-          </div>
           {breadcrumbItems.map((item, index) => (
             <React.Fragment key={index}>
               <span className={`text-sm font-normal leading-[20.02px] p-0 ${

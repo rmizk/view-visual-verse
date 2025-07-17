@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface SidebarProps {
   isCollapsed?: boolean;
+  onToggle?: () => void;
 }
 
 interface NavigationItem {
@@ -17,7 +18,7 @@ interface NavigationItem {
   children?: { label: string; href: string }[];
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>(['parametres']);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
@@ -34,6 +35,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleCollapse = () => {
+    if (onToggle) {
+      onToggle();
+    }
+  };
+
+  const handleExpand = () => {
+    if (onToggle) {
+      onToggle();
+    }
   };
 
   const navigationItems: NavigationItem[] = [
@@ -121,14 +134,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
         <header className="flex flex-col items-start self-stretch p-2">
           <div className={`flex items-center gap-2 self-stretch p-2 rounded-md ${isCollapsed ? 'justify-center' : ''}`}>
             <div 
-              className="flex items-center bg-slate-900 p-2 rounded-lg relative"
+              className="flex items-center bg-slate-900 p-2 rounded-lg relative cursor-pointer"
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
+              onClick={isCollapsed ? handleExpand : undefined}
             >
               {isCollapsed && isLogoHovered ? (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <PanelLeft className="w-4 h-4 text-white cursor-pointer" data-lov-name="PanelLeft" />
+                    <PanelLeft className="w-4 h-4 text-white" data-lov-name="PanelLeft" />
                   </TooltipTrigger>
                   <TooltipContent side="right">
                     <p>Open sidebar</p>
@@ -152,7 +166,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
                 </div>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <PanelLeft className="w-4 h-4 text-slate-700 cursor-pointer" data-lov-name="PanelLeft" />
+                    <PanelLeft 
+                      className="w-4 h-4 text-slate-700 cursor-pointer" 
+                      data-lov-name="PanelLeft"
+                      onClick={handleCollapse}
+                    />
                   </TooltipTrigger>
                   <TooltipContent side="left">
                     <p>Close sidebar</p>
