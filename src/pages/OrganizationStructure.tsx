@@ -32,7 +32,7 @@ const OrganizationStructure = () => {
   const renderContent = () => {
     switch (currentView) {
       case 'empty':
-        return <EmptyState onCreateStructure={handleCreateStructure} />;
+        return <EmptyState />;
       case 'builder':
         return (
           <StructureBuilder
@@ -51,21 +51,41 @@ const OrganizationStructure = () => {
           </div>
         );
       default:
-        return <EmptyState onCreateStructure={handleCreateStructure} />;
+        return <EmptyState />;
     }
   };
 
-  const ctaButton = currentView === 'view' ? (
-    <button
-      onClick={() => setCurrentView('builder')}
-      className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-    >
-      <Plus className="w-4 h-4 text-slate-50" />
-      <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-        Modifier
-      </span>
-    </button>
-  ) : null;
+  const getCtaButton = () => {
+    if (currentView === 'empty') {
+      return (
+        <button
+          onClick={handleCreateStructure}
+          className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+        >
+          <Plus className="w-4 h-4 text-slate-50" />
+          <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
+            Créer la structure
+          </span>
+        </button>
+      );
+    }
+    
+    if (currentView === 'view') {
+      return (
+        <button
+          onClick={() => setCurrentView('builder')}
+          className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+        >
+          <Plus className="w-4 h-4 text-slate-50" />
+          <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
+            Modifier
+          </span>
+        </button>
+      );
+    }
+    
+    return null;
+  };
 
   return (
     <Layout
@@ -74,7 +94,7 @@ const OrganizationStructure = () => {
         { label: "Paramètres", href: "/parametres" },
         { label: "Structure organisationnelle" }
       ]}
-      ctaButton={ctaButton}
+      ctaButton={getCtaButton()}
     >
       <div className="container mx-auto px-6 py-8 max-w-6xl">
         {renderContent()}

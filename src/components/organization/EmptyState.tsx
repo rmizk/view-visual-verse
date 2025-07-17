@@ -1,13 +1,8 @@
 
 import React from 'react';
-import { Building, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Building } from 'lucide-react';
 
-interface EmptyStateProps {
-  onCreateStructure: () => void;
-}
-
-export const EmptyState: React.FC<EmptyStateProps> = ({ onCreateStructure }) => {
+export const EmptyState: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-8">
       <div className="text-center">
@@ -18,10 +13,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onCreateStructure }) => 
         <p className="text-gray-600 mb-6 max-w-md">
           Aucune structure organisationnelle n'a encore été configurée. Cliquez sur le bouton créer pour commencer.
         </p>
-        <Button onClick={onCreateStructure} size="lg">
-          <Plus className="w-4 h-4 mr-2" />
-          Créer la structure
-        </Button>
       </div>
     </div>
   );
