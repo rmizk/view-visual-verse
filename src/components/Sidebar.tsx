@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -46,13 +45,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       id: 'departements',
       label: 'Départements',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4723_25557)"><path d="M4 14.6667V2.66668C4 2.31305 4.14048 1.97392 4.39052 1.72387C4.64057 1.47382 4.97971 1.33334 5.33333 1.33334H10.6667C11.0203 1.33334 11.3594 1.47382 11.6095 1.72387C11.8595 1.97392 12 2.31305 12 2.66668V14.6667M4 14.6667H12M4 14.6667H2.66667C2.31305 14.6667 1.97391 14.5262 1.72386 14.2762C1.47381 14.0261 1.33333 13.687 1.33333 13.3333V9.33334C1.33333 8.97972 1.47381 8.64058 1.72386 8.39053C1.97391 8.14049 2.31305 8.00001 2.66667 8.00001H4M12 14.6667H13.3333C13.687 14.6667 14.0261 14.5262 14.2761 14.2762C14.5262 14.0261 14.6667 13.687 14.6667 13.3333V7.33334C14.6667 6.97972 14.5262 6.64058 14.2761 6.39053C14.0261 6.14049 13.687 6.00001 13.3333 6.00001H12M6.66667 4.00001H9.33333M6.66667 6.66668H9.33333M6.66667 9.33334H9.33333M6.66667 12H9.33333" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4723_25557"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
-      href: '/departements'
+      href: '/entreprise/departements'
     },
     {
       id: 'employes',
       label: 'Employés',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.3333 14V12.6667C13.3333 11.9594 13.0524 11.2811 12.5523 10.781C12.0522 10.281 11.3739 10 10.6667 10H5.33333C4.62609 10 3.94781 10.281 3.44772 10.781C2.94762 11.2811 2.66667 11.9594 2.66667 12.6667V14M10.6667 4.66667C10.6667 6.13943 9.47276 7.33333 8 7.33333C6.52724 7.33333 5.33333 6.13943 5.33333 4.66667C5.33333 3.19391 6.52724 2 8 2C9.47276 2 10.6667 3.19391 10.6667 4.66667Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      href: '/employes'
+      href: '/entreprise/employes'
     },
     {
       id: 'planning',
@@ -92,17 +91,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false }) => {
       children: [
         { label: 'Général', href: '/parametres/general' },
         { label: 'Rôles & Permissions', href: '/parametres/roles-permissions' },
-        { label: 'Structure organisationnelle', href: '/parametres/structure-organisationnelle' }
+        { label: 'Structure organisationnelle', href: '/parametres/organization-structure' }
       ]
     }
   ];
 
   const bottomItems = [
     {
-      id: 'alerts',
-      label: 'Alertes',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4709_8680)"><path d="M8 5.33334V8M8 10.6667H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33334 8 1.33334C11.6819 1.33334 14.6667 4.3181 14.6667 8Z" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4709_8680"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>',
-      href: '/alerts'
+      id: 'notifications',
+      label: 'Notifications',
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.73344 1.98437C7.20313 1.72656 7.57813 1.59375 8 1.59375C8.42188 1.59375 8.79688 1.72656 9.26656 1.98437C9.73625 2.24219 10.0938 2.59375 10.3516 3.04687C10.6094 3.5 10.7422 4.00781 10.7422 4.5625C10.7422 5.64844 11.0547 6.65625 11.6797 7.5859L12.8516 9.26562C12.9297 9.375 12.9688 9.49219 12.9688 9.625C12.9688 9.82031 12.9062 9.97656 12.7812 10.0938C12.6562 10.2188 12.5 10.2812 12.3047 10.2812H11.1953C10.9609 11.2969 10.4375 12.1172 9.625 12.7422C8.8125 13.3672 7.875 13.6875 6.8125 13.6875C5.75 13.6875 4.8125 13.3672 4 12.7422C3.1875 12.1172 2.66406 11.2969 2.42969 10.2812H1.32031C1.125 10.2812 0.96875 10.2188 0.84375 10.0938C0.71875 9.97656 0.65625 9.82031 0.65625 9.625C0.65625 9.49219 0.695312 9.375 0.773438 9.26562L1.94531 7.5859C2.57031 6.65625 2.88281 5.64844 2.88281 4.5625C2.88281 4.00781 3.01562 3.5 3.27344 3.04687C3.53125 2.59375 3.88281 2.24219 4.32656 1.98437C4.77031 1.72656 5.15625 1.59375 5.54688 1.59375C5.9375 1.59375 6.30469 1.67969 6.64844 1.85156C7.00781 2.03125 7.35938 2.28906 7.6875 2.625" stroke="#334155" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      href: '/notifications'
     }
   ];
 

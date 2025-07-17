@@ -60,6 +60,7 @@ const App = () => (
               <Route path="/alerts" element={<Alertes />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/parametres" element={<Parametres />} />
+              <Route path="/parametres/general" element={<Parametres />} />
               <Route path="/parametres/roles-permissions" element={<RolesPermissions />} />
               <Route path="/parametres/roles-permissions/create" element={<CreateRole />} />
               <Route path="/parametres/organization-structure" element={<OrganizationStructure />} />
