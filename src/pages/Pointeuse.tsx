@@ -1,289 +1,130 @@
 
-import React, { useState } from 'react';
+import React from 'react';
+import { Plus } from 'lucide-react';
 import { Layout } from '@/components/Layout';
-import { Plus, Search, Edit, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { 
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import AddPointeuseForm from '@/components/AddPointeuseForm';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
-interface Pointeuse {
-  id: string;
-  nom: string;
-  localisation: string;
-  type: 'rfid' | 'biometrique' | 'code_pin';
-  statut: 'active' | 'inactive' | 'maintenance';
-  dernierSync: string;
-}
-
-const Pointeuse: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pointeuseSearch, setPointeuseSearch] = useState('');
-  const [isAddPointeuseFormOpen, setIsAddPointeuseFormOpen] = useState(false);
-  const [pointeuseStatusFilter, setPointeuseStatusFilter] = useState('tous');
-  const [pointeuseTypeFilter, setPointeuseTypeFilter] = useState('tous');
-  const itemsPerPage = 5;
-
-  const handleAddPointeuse = () => {
-    setIsAddPointeuseFormOpen(true);
-  };
-
-  const handleAddPointeuseSubmit = (data: any) => {
-    console.log('New pointeuse data:', data);
-    // Here you would typically send the data to your backend
-    alert('Pointeuse ajoutée avec succès!');
-    setIsAddPointeuseFormOpen(false); // Close the form after submission
-  };
-
-  const handleEditPointeuse = (pointeuseId: string) => {
-    alert(`Modifier la pointeuse ${pointeuseId}...`);
-  };
-
-  const pointeuses: Pointeuse[] = [
-    { id: '1', nom: 'Pointeuse Entrée Principale', localisation: 'Hall d\'entrée', type: 'rfid', statut: 'active', dernierSync: '02/06/2025 09:30' },
-    { id: '2', nom: 'Pointeuse Bureau RH', localisation: 'Étage 2 - RH', type: 'biometrique', statut: 'active', dernierSync: '02/06/2025 09:25' },
-    { id: '3', nom: 'Pointeuse Cafétéria', localisation: 'Rez-de-chaussée', type: 'code_pin', statut: 'maintenance', dernierSync: '01/06/2025 16:45' },
-    { id: '4', nom: 'Pointeuse Parking', localisation: 'Parking extérieur', type: 'rfid', statut: 'inactive', dernierSync: '30/05/2025 18:00' },
-  ];
-
-  const getPointeuseStatusColor = (statut: Pointeuse['statut']) => {
-    switch (statut) {
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'inactive':
-        return 'bg-red-100 text-red-800';
-      case 'maintenance':
-        return 'bg-orange-100 text-orange-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPointeuseStatusLabel = (statut: Pointeuse['statut']) => {
-    switch (statut) {
-      case 'active':
-        return 'Active';
-      case 'inactive':
-        return 'Inactive';
-      case 'maintenance':
-        return 'Maintenance';
-      default:
-        return 'Inconnu';
-    }
-  };
-
-  const getTypeLabel = (type: Pointeuse['type']) => {
-    switch (type) {
-      case 'rfid':
-        return 'RFID';
-      case 'biometrique':
-        return 'Biométrique';
-      case 'code_pin':
-        return 'Code PIN';
-      default:
-        return 'Inconnu';
-    }
-  };
-
-  const breadcrumbItems = [
-    { label: "Pointeuse" }
-  ];
-
-  // Filter pointeuses based on search and filters
-  const filteredPointeuses = pointeuses.filter(pointeuse => {
-    const matchesSearch = pointeuse.nom.toLowerCase().includes(pointeuseSearch.toLowerCase()) ||
-           pointeuse.localisation.toLowerCase().includes(pointeuseSearch.toLowerCase());
-    const matchesStatus = pointeuseStatusFilter === 'tous' || pointeuse.statut === pointeuseStatusFilter;
-    const matchesType = pointeuseTypeFilter === 'tous' || pointeuse.type === pointeuseTypeFilter;
-    return matchesSearch && matchesStatus && matchesType;
-  });
-
-  // Pagination for pointeuses
-  const pointeusesTotalPages = Math.ceil(filteredPointeuses.length / itemsPerPage);
-  const pointeusesStartIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedPointeuses = filteredPointeuses.slice(pointeusesStartIndex, pointeusesStartIndex + itemsPerPage);
-
-  const ctaButton = !isAddPointeuseFormOpen ? (
-    <Button 
-      onClick={handleAddPointeuse}
-      className="bg-slate-900 hover:bg-slate-800"
-    >
+export default function Pointeuse() {
+  const ctaButton = (
+    <HeaderCtaButton onClick={() => console.log('Add new time clock')}>
       <Plus className="w-4 h-4" />
-      Ajouter pointeuse
-    </Button>
-  ) : null;
+      <span>Ajouter pointeuse</span>
+    </HeaderCtaButton>
+  );
 
   return (
-    <Layout pageTitle="Pointeuse" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
-      {/* Search and Filters for pointeuse */}
-      {!isAddPointeuseFormOpen && (
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <Input
-              type="text"
-              placeholder="Rechercher une pointeuse..."
-              value={pointeuseSearch}
-              onChange={(e) => setPointeuseSearch(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex gap-2">
-            <Select value={pointeuseStatusFilter} onValueChange={setPointeuseStatusFilter}>
-              <SelectTrigger className="w-40">
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Statut" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="tous">Tous statuts</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-                <SelectItem value="maintenance">Maintenance</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={pointeuseTypeFilter} onValueChange={setPointeuseTypeFilter}>
-              <SelectTrigger className="w-40">
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="tous">Tous types</SelectItem>
-                <SelectItem value="rfid">RFID</SelectItem>
-                <SelectItem value="biometrique">Biométrique</SelectItem>
-                <SelectItem value="code_pin">Code PIN</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      )}
+    <Layout
+      pageTitle="Pointeuse"
+      breadcrumbItems={[
+        { label: "Pointeuse" }
+      ]}
+      ctaButton={ctaButton}
+    >
+      <div className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Pointeuse 001
+                <Badge variant="default">Active</Badge>
+              </CardTitle>
+              <CardDescription>Entrée principale - Bâtiment A</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Dernière activité:</span>
+                  <span>Il y a 2 minutes</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Pointages aujourd'hui:</span>
+                  <span className="font-medium">24</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Statut:</span>
+                  <span className="text-green-600">En ligne</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Add Pointeuse Form - show inline */}
-      {isAddPointeuseFormOpen && (
-        <div className="w-full">
-          <AddPointeuseForm
-            isOpen={true}
-            onClose={() => setIsAddPointeuseFormOpen(false)}
-            onSubmit={handleAddPointeuseSubmit}
-            inline={true}
-          />
-        </div>
-      )}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Pointeuse 002
+                <Badge variant="secondary">Maintenance</Badge>
+              </CardTitle>
+              <CardDescription>Sortie parking - Bâtiment B</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Dernière activité:</span>
+                  <span>Il y a 1 heure</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Pointages aujourd'hui:</span>
+                  <span className="font-medium">18</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Statut:</span>
+                  <span className="text-orange-600">Maintenance</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Pointeuse Tab Content - only show if form is not open */}
-      {!isAddPointeuseFormOpen && (
-        <div className="w-full bg-white border border-slate-200 rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Nom
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Localisation
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Type
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Statut
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Dernière sync
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-slate-200">
-                {paginatedPointeuses.map((pointeuse) => (
-                  <tr key={pointeuse.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-slate-900">{pointeuse.nom}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{pointeuse.localisation}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{getTypeLabel(pointeuse.type)}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPointeuseStatusColor(pointeuse.statut)}`}>
-                        {getPointeuseStatusLabel(pointeuse.statut)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{pointeuse.dernierSync}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPointeuse(pointeuse.id)}
-                        className="text-slate-600 hover:text-slate-900"
-                      >
-                        <Edit className="w-4 h-4" />
-                        Modifier
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          {/* Pagination for Pointeuses */}
-          {pointeusesTotalPages > 1 && (
-            <div className="w-full flex justify-center p-4">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious 
-                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                    />
-                  </PaginationItem>
-                  {Array.from({ length: pointeusesTotalPages }, (_, i) => i + 1).map((page) => (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        onClick={() => setCurrentPage(page)}
-                        isActive={currentPage === page}
-                        className="cursor-pointer"
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext 
-                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, pointeusesTotalPages))}
-                      className={currentPage === pointeusesTotalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Pointeuse 003
+                <Badge variant="destructive">Hors ligne</Badge>
+              </CardTitle>
+              <CardDescription>Cafétéria - Étage 2</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Dernière activité:</span>
+                  <span>Il y a 3 heures</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Pointages aujourd'hui:</span>
+                  <span className="font-medium">0</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Statut:</span>
+                  <span className="text-red-600">Hors ligne</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="bg-white rounded-lg border p-6">
+          <h3 className="text-lg font-semibold mb-4">Statistiques du jour</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">142</div>
+              <div className="text-sm text-gray-600">Total pointages</div>
             </div>
-          )}
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">71</div>
+              <div className="text-sm text-gray-600">Arrivées</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">71</div>
+              <div className="text-sm text-gray-600">Départs</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">2</div>
+              <div className="text-sm text-gray-600">Anomalies</div>
+            </div>
+          </div>
         </div>
-      )}
-
-      {/* Add Pointeuse Form Modal */}
-      <AddPointeuseForm
-        isOpen={isAddPointeuseFormOpen}
-        onClose={() => setIsAddPointeuseFormOpen(false)}
-        onSubmit={handleAddPointeuseSubmit}
-      />
+      </div>
     </Layout>
   );
-};
-
-export default Pointeuse;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, PanelLeft } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
@@ -20,9 +20,20 @@ interface NavigationItem {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>(['parametres']);
-  const [isLogoHovered, setIsLogoHovered] = useState(false);
   const { logout, user } = useAuth();
+  
+  // Initialize expanded items from localStorage
+  const [expandedItems, setExpandedItems] = useState<string[]>(() => {
+    const saved = localStorage.getItem('sidebar-expanded-items');
+    return saved ? JSON.parse(saved) : ['parametres'];
+  });
+  
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+
+  // Save expanded items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('sidebar-expanded-items', JSON.stringify(expandedItems));
+  }, [expandedItems]);
 
   const toggleExpanded = (itemId: string) => {
     if (isCollapsed) return; // Don't allow expansion when collapsed

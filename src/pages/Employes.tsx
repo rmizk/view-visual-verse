@@ -1,233 +1,157 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from '@/components/Layout';
-import { TabNavigation } from '@/components/TabNavigation';
-import { UserPlus, ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Search, Filter, Download, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getUrlParams } from '@/utils/navigation';
+import { Input } from '@/components/ui/input';
 import { EmployeeList } from '@/components/EmployeeList';
 import { CreateEmployeeForm } from '@/components/CreateEmployeeForm';
 import { EmployeeDetails } from '@/components/EmployeeDetails';
+import { Layout } from '@/components/Layout';
+import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
 interface Employee {
   id: string;
-  nom: string;
-  prenom: string;
-  poste: string;
-  departement: string;
-  statut: 'present' | 'absent' | 'conge';
+  firstName: string;
+  lastName: string;
   email: string;
-  telephone: string;
-  dateEmbauche: string;
-  role: 'admin' | 'manager' | 'employe';
+  phone: string;
+  department: string;
+  position: string;
+  status: 'active' | 'inactive' | 'pending';
+  avatar: string;
+  hireDate: string;
+  salary?: number;
 }
 
-const Employes: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('tous');
+const mockEmployees: Employee[] = [
+  {
+    id: '1',
+    firstName: 'Jean',
+    lastName: 'Dupont',
+    email: 'jean.dupont@company.com',
+    phone: '+33 1 23 45 67 89',
+    department: 'Développement',
+    position: 'Développeur Senior',
+    status: 'active',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    hireDate: '2023-01-15',
+    salary: 65000
+  },
+  {
+    id: '2',
+    firstName: 'Marie',
+    lastName: 'Martin',
+    email: 'marie.martin@company.com',
+    phone: '+33 1 23 45 67 90',
+    department: 'Marketing',
+    position: 'Chef de projet',
+    status: 'active',
+    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+    hireDate: '2023-03-01',
+    salary: 55000
+  },
+  {
+    id: '3',
+    firstName: 'Pierre',
+    lastName: 'Dubois',
+    email: 'pierre.dubois@company.com',
+    phone: '+33 1 23 45 67 91',
+    department: 'RH',
+    position: 'Responsable RH',
+    status: 'active',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    hireDate: '2022-11-10',
+    salary: 60000
+  }
+];
+
+export default function Employes() {
+  const [employees] = useState<Employee[]>(mockEmployees);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [viewMode, setViewMode] = useState<'list' | 'details'>('list');
-  const [employeeDetailsTab, setEmployeeDetailsTab] = useState('personnel');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('tous');
-  const [departmentFilter, setDepartmentFilter] = useState('tous');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMonth, setSelectedMonth] = useState(new Date());
-  const itemsPerPage = 5;
 
-  // Get initial tab from URL params
-  useEffect(() => {
-    const urlParams = getUrlParams();
-    if (urlParams.employeeId && urlParams.tab) {
-      const employee = employees.find(emp => emp.id === urlParams.employeeId);
-      if (employee) {
-        setSelectedEmployee(employee);
-        setViewMode('details');
-        setEmployeeDetailsTab(urlParams.tab);
-      }
-    }
-  }, []);
-
-  const tabs = [
-    { id: 'tous', label: 'Tous les employés' },
-    { id: 'presents', label: 'Présents' },
-    { id: 'absents', label: 'Absents' }
-  ];
-
-  const handleCreateEmployee = () => {
-    setShowCreateForm(!showCreateForm);
-    setViewMode('list');
-    setSelectedEmployee(null);
-  };
-
-  const handleViewEmployee = (employee: Employee, activeTab = 'personnel') => {
-    setSelectedEmployee(employee);
-    setViewMode('details');
-    setShowCreateForm(false);
-    setEmployeeDetailsTab(activeTab);
-  };
-
-  const handleBackToList = () => {
-    setViewMode('list');
-    setSelectedEmployee(null);
-    setShowCreateForm(false);
-    // Clear URL params
-    window.history.replaceState({}, '', window.location.pathname);
-  };
-
-  const employees: Employee[] = [
-    { 
-      id: '1', 
-      nom: 'Dubois', 
-      prenom: 'Marie', 
-      poste: 'Directrice RH', 
-      departement: 'RH', 
-      statut: 'present', 
-      email: 'marie.dubois@timetrack.com',
-      telephone: '+33 1 23 45 67 89',
-      dateEmbauche: '15/01/2020',
-      role: 'admin'
-    },
-    { 
-      id: '2', 
-      nom: 'Martin', 
-      prenom: 'Pierre', 
-      poste: 'Lead Developer', 
-      departement: 'Développement', 
-      statut: 'present', 
-      email: 'pierre.martin@timetrack.com',
-      telephone: '+33 1 23 45 67 90',
-      dateEmbauche: '10/03/2019',
-      role: 'manager'
-    },
-    { 
-      id: '3', 
-      nom: 'Laurent', 
-      prenom: 'Sophie', 
-      poste: 'Chef Marketing', 
-      departement: 'Marketing', 
-      statut: 'conge', 
-      email: 'sophie.laurent@timetrack.com',
-      telephone: '+33 1 23 45 67 91',
-      dateEmbauche: '05/07/2021',
-      role: 'manager'
-    },
-    { 
-      id: '4', 
-      nom: 'Durand', 
-      prenom: 'Jean', 
-      poste: 'Directeur Commercial', 
-      departement: 'Ventes', 
-      statut: 'present', 
-      email: 'jean.durand@timetrack.com',
-      telephone: '+33 1 23 45 67 92',
-      dateEmbauche: '20/11/2018',
-      role: 'admin'
-    },
-    { 
-      id: '5', 
-      nom: 'Bernard', 
-      prenom: 'Lucie', 
-      poste: 'Comptable', 
-      departement: 'Comptabilité', 
-      statut: 'absent', 
-      email: 'lucie.bernard@timetrack.com',
-      telephone: '+33 1 23 45 67 93',
-      dateEmbauche: '12/09/2022',
-      role: 'employe'
-    },
-    { 
-      id: '6', 
-      nom: 'Moreau', 
-      prenom: 'Antoine', 
-      poste: 'Designer UX', 
-      departement: 'Développement', 
-      statut: 'present', 
-      email: 'antoine.moreau@timetrack.com',
-      telephone: '+33 1 23 45 67 94',
-      dateEmbauche: '08/04/2023',
-      role: 'employe'
-    },
-  ];
-
-  // Mock current user - in real app this would come from auth context
-  const currentUser = { role: 'admin' }; // Change to 'employe' to test permission visibility
-
-  const breadcrumbItems = [
-    { label: "Entreprise" },
-    { label: "Employés" }
-  ];
-
-  const ctaButton = viewMode === 'list' ? (
-    <button 
-      onClick={handleCreateEmployee}
-      className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-    >
-      <UserPlus className="w-4 h-4 text-slate-50" />
-      <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-        Nouvel employé
-      </span>
-    </button>
-  ) : (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={handleBackToList}
-      className="h-8 w-8"
-    >
-      <ArrowLeft className="w-4 h-4" />
-    </Button>
+  const filteredEmployees = employees.filter(employee =>
+    `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.position.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const ctaButton = (
+    <HeaderCtaButton onClick={() => setShowCreateForm(true)}>
+      <UserPlus className="w-4 h-4" />
+      <span>Nouvel employé</span>
+    </HeaderCtaButton>
+  );
+
+  if (showCreateForm) {
+    return (
+      <Layout
+        pageTitle="Nouvel employé"
+        breadcrumbItems={[
+          { label: "Entreprise" },
+          { label: "Employés", href: "/entreprise/employes" },
+          { label: "Nouveau" }
+        ]}
+      >
+        <CreateEmployeeForm onCancel={() => setShowCreateForm(false)} />
+      </Layout>
+    );
+  }
+
+  if (selectedEmployee) {
+    return (
+      <Layout
+        pageTitle={`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}
+        breadcrumbItems={[
+          { label: "Entreprise" },
+          { label: "Employés", href: "/entreprise/employes" },
+          { label: `${selectedEmployee.firstName} ${selectedEmployee.lastName}` }
+        ]}
+      >
+        <EmployeeDetails 
+          employee={selectedEmployee} 
+          onBack={() => setSelectedEmployee(null)} 
+        />
+      </Layout>
+    );
+  }
 
   return (
     <Layout
-      pageTitle="Entreprise"
-      breadcrumbItems={breadcrumbItems}
+      pageTitle="Employés"
+      breadcrumbItems={[
+        { label: "Entreprise" },
+        { label: "Employés" }
+      ]}
       ctaButton={ctaButton}
     >
-      {/* Tab Navigation - only show in list mode */}
-      {viewMode === 'list' && (
-        <TabNavigation 
-          tabs={tabs}
-          onTabChange={setActiveTab}
-          defaultActiveTab="tous"
-        />
-      )}
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Rechercher un employé..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Button variant="outline" size="sm">
+            <Filter className="w-4 h-4 mr-2" />
+            Filtrer
+          </Button>
+          <Button variant="outline" size="sm">
+            <Download className="w-4 h-4 mr-2" />
+            Exporter
+          </Button>
+        </div>
 
-      {/* Create Employee Form */}
-      {showCreateForm && viewMode === 'list' && (
-        <CreateEmployeeForm onClose={() => setShowCreateForm(false)} />
-      )}
-
-      {/* Employee Details */}
-      {viewMode === 'details' && selectedEmployee && (
-        <EmployeeDetails
-          employee={selectedEmployee}
-          employeeDetailsTab={employeeDetailsTab}
-          setEmployeeDetailsTab={setEmployeeDetailsTab}
-          selectedMonth={selectedMonth}
-          setSelectedMonth={setSelectedMonth}
-          currentUser={currentUser}
+        <EmployeeList 
+          employees={filteredEmployees}
+          onEmployeeSelect={setSelectedEmployee}
         />
-      )}
-
-      {/* Employee List */}
-      {viewMode === 'list' && !showCreateForm && (
-        <EmployeeList
-          employees={employees}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          departmentFilter={departmentFilter}
-          setDepartmentFilter={setDepartmentFilter}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          onViewEmployee={handleViewEmployee}
-          itemsPerPage={itemsPerPage}
-        />
-      )}
+      </div>
     </Layout>
   );
-};
-
-export default Employes;
+}

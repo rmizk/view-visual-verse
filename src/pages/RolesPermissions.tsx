@@ -1,161 +1,158 @@
 import React, { useState } from 'react';
+import { Plus, Users, Shield, Settings } from 'lucide-react';
 import { Layout } from '@/components/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Plus, Edit, Trash2, Search, ChevronRight, ChevronLeft } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useNavigate } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
-const RolesPermissions: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const navigate = useNavigate();
+interface Role {
+  id: string;
+  name: string;
+  description: string;
+  permissions: string[];
+  userCount: number;
+  color: string;
+}
 
-  const breadcrumbItems = [
-    { label: "Paramètres" },
-    { label: "Rôles & Permissions" }
-  ];
+const mockRoles: Role[] = [
+  {
+    id: '1',
+    name: 'Administrateur',
+    description: 'Accès complet à toutes les fonctionnalités',
+    permissions: ['read', 'write', 'delete', 'admin'],
+    userCount: 2,
+    color: 'bg-red-100 text-red-800'
+  },
+  {
+    id: '2',
+    name: 'Manager',
+    description: 'Gestion d\'équipe et de département',
+    permissions: ['read', 'write', 'manage_team'],
+    userCount: 8,
+    color: 'bg-blue-100 text-blue-800'
+  },
+  {
+    id: '3',
+    name: 'Employé',
+    description: 'Accès aux fonctionnalités de base',
+    permissions: ['read', 'self_manage'],
+    userCount: 35,
+    color: 'bg-green-100 text-green-800'
+  }
+];
 
-  // Mock data for roles
-  const rolesData = [
-    {
-      id: '1',
-      name: 'Administrateur',
-      userCount: 5,
-      permissions: 'Accès complet, Gestion utilisateurs, Configuration système'
-    },
-    {
-      id: '2',
-      name: 'Responsable',
-      userCount: 12,
-      permissions: 'Gestion équipe, Planning, Validation absences'
-    },
-    {
-      id: '3',
-      name: 'Employé',
-      userCount: 85,
-      permissions: 'Consultation planning, Pointage, Demandes congés'
-    },
-    {
-      id: '4',
-      name: 'RH',
-      userCount: 3,
-      permissions: 'Gestion employés, Rapports, Administration'
-    }
-  ];
-
-  const handleCreateRole = () => {
-    navigate('/parametres/roles-permissions/create');
-  };
-
-  const handleEditRole = (roleId: string) => {
-    console.log('Modifier le rôle:', roleId);
-  };
-
-  const handleDeleteRole = (roleId: string) => {
-    console.log('Supprimer le rôle:', roleId);
-  };
+export default function RolesPermissions() {
+  const [roles] = useState<Role[]>(mockRoles);
 
   const ctaButton = (
-    <Button 
-      onClick={handleCreateRole}
-      className="bg-slate-900 hover:bg-slate-800"
-    >
-      <Plus className="w-4 h-4 mr-2" />
-      Créer un rôle
-    </Button>
+    <HeaderCtaButton onClick={() => console.log('Create new role')}>
+      <Plus className="w-4 h-4" />
+      <span>Nouveau rôle</span>
+    </HeaderCtaButton>
   );
 
   return (
-    <Layout pageTitle="Rôles & Permissions" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
+    <Layout
+      pageTitle="Rôles & Permissions"
+      breadcrumbItems={[
+        { label: "Paramètres", href: "/parametres" },
+        { label: "Rôles & Permissions" }
+      ]}
+      ctaButton={ctaButton}
+    >
       <div className="space-y-6">
-        {/* Tabs */}
-        <Tabs defaultValue="roles" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="roles">Rôles</TabsTrigger>
-            <TabsTrigger value="permissions">Permissions</TabsTrigger>
-          </TabsList>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {roles.map((role) => (
+            <Card key={role.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="w-5 h-5" />
+                    {role.name}
+                  </CardTitle>
+                  <Badge className={role.color}>
+                    {role.userCount} utilisateur{role.userCount > 1 ? 's' : ''}
+                  </Badge>
+                </div>
+                <CardDescription>{role.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium mb-2">Permissions:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {role.permissions.map((permission) => (
+                        <Badge key={permission} variant="outline" className="text-xs">
+                          {permission}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Modifier
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Users className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-          <TabsContent value="roles" className="space-y-6">
-            {/* Filters & Search */}
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Rechercher un rôle ou un utilisateur"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                />
-              </div>
-              <select className="px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500">
-                <option value="">Filtrer par permissions</option>
-                <option value="admin">Administration</option>
-                <option value="planning">Planning</option>
-                <option value="rh">Ressources Humaines</option>
-                <option value="pointage">Pointage</option>
-              </select>
+        <Card>
+          <CardHeader>
+            <CardTitle>Matrice des permissions</CardTitle>
+            <CardDescription>
+              Vue d'ensemble des permissions par rôle
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-2">Permission</th>
+                    <th className="text-center p-2">Administrateur</th>
+                    <th className="text-center p-2">Manager</th>
+                    <th className="text-center p-2">Employé</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="p-2 font-medium">Lecture</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">✅</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-2 font-medium">Écriture</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">❌</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-2 font-medium">Suppression</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2">❌</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-2 font-medium">Administration</td>
+                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2">❌</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            {/* Roles Table */}
-            <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nom du rôle</TableHead>
-                    <TableHead>Nombre d'utilisateurs assignés</TableHead>
-                    <TableHead>Résumé des permissions</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rolesData.map((role) => (
-                    <TableRow key={role.id}>
-                      <TableCell className="font-medium">{role.name}</TableCell>
-                      <TableCell>{role.userCount}</TableCell>
-                      <TableCell className="max-w-xs truncate">{role.permissions}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex gap-2 justify-end">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditRole(role.id)}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDeleteRole(role.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="permissions" className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">Gestion des permissions</h3>
-              <p className="text-slate-600">
-                Cette section permettra de gérer les permissions individuelles et de les associer aux rôles.
-              </p>
-            </div>
-          </TabsContent>
-        </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
-};
-
-export default RolesPermissions;
+}

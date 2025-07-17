@@ -1,58 +1,62 @@
 
 import React, { useState } from 'react';
-import { Layout } from '@/components/Layout';
-import { TabNavigation } from '@/components/TabNavigation';
-import { PlanningOverview } from '@/components/planning/PlanningOverview';
-import { PlanningsList } from '@/components/planning/PlanningsList';
-import { PlanningCreationForm } from '@/components/planning/PlanningCreationForm';
-import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { planningTabs, planningBreadcrumbs } from '@/utils/planningConfig';
+import { Layout } from '@/components/Layout';
+import { PlanningOverview } from '@/components/planning/PlanningOverview';
+import { PlanningCreationForm } from '@/components/planning/PlanningCreationForm';
+import { TabNavigation } from '@/components/TabNavigation';
+import { PlanningsList } from '@/components/planning/PlanningsList';
+import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
-const Planning: React.FC = () => {
+export default function Planning() {
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
-  const [showCreationForm, setShowCreationForm] = useState(false);
 
-  const handleCreatePlanning = () => {
-    setShowCreationForm(true);
+  const tabs = [
+    { id: 'overview', label: 'Vue d\'ensemble' },
+    { id: 'plannings', label: 'Mes plannings' },
+  ];
+
+  const renderContent = () => {
+    if (showCreateForm) {
+      return <PlanningCreationForm onCancel={() => setShowCreateForm(false)} />;
+    }
+
+    switch (activeTab) {
+      case 'overview':
+        return <PlanningOverview />;
+      case 'plannings':
+        return <PlanningsList />;
+      default:
+        return <PlanningOverview />;
+    }
   };
 
-  const handleCloseForm = () => {
-    setShowCreationForm(false);
-  };
-
-  const ctaButton = (
-    <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
-      <Plus className="w-4 h-4 mr-2" />
-      Créer un planning
-    </Button>
-  );
+  const ctaButton = !showCreateForm ? (
+    <HeaderCtaButton onClick={() => setShowCreateForm(true)}>
+      <Plus className="w-4 h-4" />
+      <span>Nouveau planning</span>
+    </HeaderCtaButton>
+  ) : null;
 
   return (
-    <Layout pageTitle="Planning" breadcrumbItems={planningBreadcrumbs} ctaButton={ctaButton}>
+    <Layout
+      pageTitle="Planning"
+      breadcrumbItems={[
+        { label: "Planning" }
+      ]}
+      ctaButton={ctaButton}
+    >
       <div className="space-y-6">
-        {/* Tab Navigation */}
-        <TabNavigation 
-          tabs={planningTabs}
-          onTabChange={setActiveTab}
-          defaultActiveTab="overview"
-        />
-
-        {/* Planning Creation Form */}
-        {showCreationForm && (
-          <PlanningCreationForm onClose={handleCloseForm} />
+        {!showCreateForm && (
+          <TabNavigation
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
         )}
-
-        {/* Tab Content */}
-        {!showCreationForm && (
-          <>
-            {activeTab === 'overview' && <PlanningOverview />}
-            {activeTab === 'plannings' && <PlanningsList showCreateButton={true} />}
-          </>
-        )}
+        {renderContent()}
       </div>
     </Layout>
   );
-};
-
-export default Planning;
+}

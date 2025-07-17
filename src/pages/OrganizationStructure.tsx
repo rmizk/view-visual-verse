@@ -1,30 +1,30 @@
 
 import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { EmptyState } from '@/components/organization/EmptyState';
 import { StructureBuilder } from '@/components/organization/StructureBuilder';
-import { Plus } from 'lucide-react';
+import { OrganigramView } from '@/components/organization/OrganigramView';
+import { HeaderCtaButton } from '@/components/ui/header-cta-button';
 
-interface OrganizationNode {
+type ViewType = 'empty' | 'builder' | 'view';
+
+interface OrgNode {
   id: string;
   name: string;
-  type: 'department' | 'team' | 'position';
-  children: OrganizationNode[];
+  title: string;
+  children: OrgNode[];
 }
 
-const OrganizationStructure = () => {
-  const [currentView, setCurrentView] = useState<'empty' | 'builder' | 'view'>('empty');
-  const [organizationStructure, setOrganizationStructure] = useState<OrganizationNode[]>([]);
+export default function OrganizationStructure() {
+  const [currentView, setCurrentView] = useState<ViewType>('empty');
+  const [organizationStructure, setOrganizationStructure] = useState<OrgNode[]>([]);
 
   const handleCreateStructure = () => {
     setCurrentView('builder');
   };
 
-  const handleBackToEmpty = () => {
-    setCurrentView('empty');
-  };
-
-  const handleSaveStructure = (structure: OrganizationNode[]) => {
+  const handleStructureSave = (structure: OrgNode[]) => {
     setOrganizationStructure(structure);
     setCurrentView('view');
   };
@@ -34,19 +34,14 @@ const OrganizationStructure = () => {
       case 'empty':
         return <EmptyState />;
       case 'builder':
-        return (
-          <StructureBuilder
-            onBack={handleBackToEmpty}
-            onSave={handleSaveStructure}
-            initialStructure={organizationStructure}
-          />
-        );
+        return <StructureBuilder onSave={handleStructureSave} />;
       case 'view':
         return (
           <div className="space-y-6">
             <div className="p-8 border rounded-lg bg-gray-50">
               <p className="text-gray-600">Structure sauvegardée avec {organizationStructure.length} nœud(s) racine</p>
             </div>
+            <OrganigramView nodes={organizationStructure} />
           </div>
         );
       default:
@@ -59,27 +54,17 @@ const OrganizationStructure = () => {
   
   if (currentView === 'empty') {
     ctaButton = (
-      <button
-        onClick={handleCreateStructure}
-        className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-      >
-        <Plus className="w-4 h-4 text-slate-50" />
-        <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-          Créer la structure
-        </span>
-      </button>
+      <HeaderCtaButton onClick={handleCreateStructure}>
+        <Plus className="w-4 h-4" />
+        <span>Créer la structure</span>
+      </HeaderCtaButton>
     );
   } else if (currentView === 'view') {
     ctaButton = (
-      <button
-        onClick={() => setCurrentView('builder')}
-        className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-      >
-        <Plus className="w-4 h-4 text-slate-50" />
-        <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-          Modifier
-        </span>
-      </button>
+      <HeaderCtaButton onClick={() => setCurrentView('builder')}>
+        <Plus className="w-4 h-4" />
+        <span>Modifier</span>
+      </HeaderCtaButton>
     );
   }
 
@@ -97,6 +82,4 @@ const OrganizationStructure = () => {
       </div>
     </Layout>
   );
-};
-
-export default OrganizationStructure;
+}
