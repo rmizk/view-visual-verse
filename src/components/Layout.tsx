@@ -11,12 +11,14 @@ interface LayoutProps {
     label: string;
     href?: string;
   }[];
+  ctaButton?: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
   children,
   pageTitle,
-  breadcrumbItems
+  breadcrumbItems,
+  ctaButton
 }) => {
   const { user } = useAuth();
   
@@ -40,7 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       
       <main className="flex flex-col flex-1 min-w-0 max-md:w-full">
-        <Header pageTitle={pageTitle} breadcrumbItems={breadcrumbItems} />
+        <Header pageTitle={pageTitle} breadcrumbItems={breadcrumbItems} ctaButton={ctaButton} />
         
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">

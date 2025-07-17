@@ -10,6 +10,7 @@ interface BreadcrumbItem {
 interface HeaderProps {
   pageTitle?: string;
   breadcrumbItems?: BreadcrumbItem[];
+  ctaButton?: React.ReactNode;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -17,7 +18,8 @@ export const Header: React.FC<HeaderProps> = ({
   breadcrumbItems = [
     { label: "Dashboard" },
     { label: "Aperçu général" }
-  ]
+  ],
+  ctaButton
 }) => {
   return (
     <header className="flex justify-between items-center self-stretch bg-slate-50 px-4 py-3 max-sm:px-4 max-sm:py-2">
@@ -37,7 +39,9 @@ export const Header: React.FC<HeaderProps> = ({
           ))}
         </nav>
       </div>
-      <div className="flex w-[290px] h-9 items-center gap-4" />
+      <div className="flex items-center gap-4">
+        {ctaButton}
+      </div>
     </header>
   );
 };

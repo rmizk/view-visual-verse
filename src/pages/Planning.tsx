@@ -21,18 +21,16 @@ const Planning: React.FC = () => {
     setShowCreationForm(false);
   };
 
-  return (
-    <Layout pageTitle="Planning" breadcrumbItems={planningBreadcrumbs}>
-      <div className="space-y-6">
-        {/* Page Title with CTA */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-slate-900">Planning</h1>
-          <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
-            <Plus className="w-4 h-4 mr-2" />
-            Créer un planning
-          </Button>
-        </div>
+  const ctaButton = (
+    <Button onClick={handleCreatePlanning} className="bg-slate-900 hover:bg-slate-800">
+      <Plus className="w-4 h-4 mr-2" />
+      Créer un planning
+    </Button>
+  );
 
+  return (
+    <Layout pageTitle="Planning" breadcrumbItems={planningBreadcrumbs} ctaButton={ctaButton}>
+      <div className="space-y-6">
         {/* Tab Navigation */}
         <TabNavigation 
           tabs={planningTabs}
