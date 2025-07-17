@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { TabNavigation } from '@/components/TabNavigation';
@@ -158,42 +157,33 @@ const Employes: React.FC = () => {
     { label: "Employés" }
   ];
 
-  return (
-    <Layout pageTitle="Entreprise" breadcrumbItems={breadcrumbItems}>
-      {/* Header */}
-      <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-        <div className="flex items-center gap-3">
-          {viewMode === 'details' && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleBackToList}
-              className="h-8 w-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          )}
-          <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-            {viewMode === 'details' && selectedEmployee 
-              ? `${selectedEmployee.prenom} ${selectedEmployee.nom}` 
-              : 'Employés'}
-          </h1>
-        </div>
-        {viewMode === 'list' && (
-          <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
-            <button 
-              onClick={handleCreateEmployee}
-              className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-            >
-              <UserPlus className="w-4 h-4 text-slate-50" />
-              <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-                Nouvel employé
-              </span>
-            </button>
-          </div>
-        )}
-      </div>
+  const ctaButton = viewMode === 'list' ? (
+    <button 
+      onClick={handleCreateEmployee}
+      className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+    >
+      <UserPlus className="w-4 h-4 text-slate-50" />
+      <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
+        Nouvel employé
+      </span>
+    </button>
+  ) : (
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={handleBackToList}
+      className="h-8 w-8"
+    >
+      <ArrowLeft className="w-4 h-4" />
+    </Button>
+  );
 
+  return (
+    <Layout
+      pageTitle="Entreprise"
+      breadcrumbItems={breadcrumbItems}
+      ctaButton={ctaButton}
+    >
       {/* Tab Navigation - only show in list mode */}
       {viewMode === 'list' && (
         <TabNavigation 

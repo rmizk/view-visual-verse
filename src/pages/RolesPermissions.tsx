@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -61,21 +60,19 @@ const RolesPermissions: React.FC = () => {
     console.log('Supprimer le rôle:', roleId);
   };
 
-  return (
-    <Layout pageTitle="Rôles & Permissions" breadcrumbItems={breadcrumbItems}>
-      <div className="space-y-6">
-        {/* Page Header */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-slate-900">Rôles & Permissions</h1>
-          <Button 
-            onClick={handleCreateRole}
-            className="bg-slate-900 hover:bg-slate-800"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Créer un rôle
-          </Button>
-        </div>
+  const ctaButton = (
+    <Button 
+      onClick={handleCreateRole}
+      className="bg-slate-900 hover:bg-slate-800"
+    >
+      <Plus className="w-4 h-4 mr-2" />
+      Créer un rôle
+    </Button>
+  );
 
+  return (
+    <Layout pageTitle="Rôles & Permissions" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
+      <div className="space-y-6">
         {/* Tabs */}
         <Tabs defaultValue="roles" className="w-full">
           <TabsList className="grid w-full grid-cols-2">

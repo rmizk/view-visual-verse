@@ -40,30 +40,24 @@ const Index: React.FC = () => {
     }
   ];
 
+  const ctaButton = (
+    <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+      <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
+        Download
+      </span>
+    </button>
+  );
+
   return (
     <div className="flex h-screen w-full bg-white rounded-lg max-md:flex-col">
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       
       <main className="flex flex-col flex-1 min-w-0 max-md:w-full">
-        <Header />
+        <Header ctaButton={ctaButton} />
         
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">
             <div className="p-8 max-sm:p-4 space-y-6">
-              {/* Dashboard Header */}
-              <div className="flex h-10 justify-between items-center max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-                <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-                  Dashboard
-                </h1>
-                <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
-                  <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
-                    <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
-                      Download
-                    </span>
-                  </button>
-                </div>
-              </div>
-
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
                 {statsData.map((stat, index) => (

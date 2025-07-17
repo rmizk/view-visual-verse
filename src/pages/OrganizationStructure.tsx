@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { EmptyState } from '@/components/organization/EmptyState';
 import { StructureBuilder } from '@/components/organization/StructureBuilder';
+import { Plus } from 'lucide-react';
 
 interface OrganizationNode {
   id: string;
@@ -43,15 +44,6 @@ const OrganizationStructure = () => {
       case 'view':
         return (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Structure organisationnelle</h2>
-              <button
-                onClick={() => setCurrentView('builder')}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Modifier
-              </button>
-            </div>
             {/* This would show the saved structure - we can implement this later */}
             <div className="p-8 border rounded-lg bg-gray-50">
               <p className="text-gray-600">Structure sauvegardée avec {organizationStructure.length} nœud(s) racine</p>
@@ -63,6 +55,18 @@ const OrganizationStructure = () => {
     }
   };
 
+  const ctaButton = currentView === 'view' ? (
+    <button
+      onClick={() => setCurrentView('builder')}
+      className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+    >
+      <Plus className="w-4 h-4 text-slate-50" />
+      <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
+        Modifier
+      </span>
+    </button>
+  ) : null;
+
   return (
     <Layout
       pageTitle="Structure organisationnelle"
@@ -70,6 +74,7 @@ const OrganizationStructure = () => {
         { label: "Paramètres", href: "/parametres" },
         { label: "Structure organisationnelle" }
       ]}
+      ctaButton={ctaButton}
     >
       <div className="container mx-auto px-6 py-8 max-w-6xl">
         {renderContent()}

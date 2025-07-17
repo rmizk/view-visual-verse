@@ -11,12 +11,6 @@ const Notifications: React.FC = () => {
   return (
     <Layout pageTitle="Notifications" breadcrumbItems={breadcrumbItems}>
       <div className="space-y-6">
-        <div className="flex h-10 justify-between items-center max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-          <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-            Notifications
-          </h1>
-        </div>
-
         <div className="bg-white border border-slate-200 rounded-lg p-6">
           <div className="space-y-4">
             <div className="border-b border-slate-200 pb-4">

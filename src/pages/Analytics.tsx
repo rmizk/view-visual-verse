@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { TabNavigation } from '@/components/TabNavigation';
@@ -52,27 +51,23 @@ const Analytics: React.FC = () => {
     { label: "Analyse" }
   ];
 
-  return (
-    <Layout pageTitle="Dashboard" breadcrumbItems={breadcrumbItems}>
-      <div className="flex flex-col items-start gap-4 flex-[1_0_0] self-stretch border-t-slate-200 bg-slate-50 pt-6 pb-8 px-8 rounded-[0px_0px_8px_8px] border-t border-solid max-sm:p-4">
-        {/* Dashboard Header */}
-        <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-          <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-            Analyse des performances
-          </h1>
-          <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
-            <DateRangePicker 
-              value={dateRange}
-              onChange={setDateRange}
-            />
-            <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
-              <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
-                Exporter
-              </span>
-            </button>
-          </div>
-        </div>
+  const ctaButton = (
+    <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
+      <DateRangePicker 
+        value={dateRange}
+        onChange={setDateRange}
+      />
+      <button className="flex min-w-16 justify-center items-center bg-slate-900 px-2 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+        <span className="text-slate-50 text-sm font-normal leading-[23.94px] px-1 py-0">
+          Exporter
+        </span>
+      </button>
+    </div>
+  );
 
+  return (
+    <Layout pageTitle="Dashboard" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
+      <div className="flex flex-col items-start gap-4 flex-[1_0_0] self-stretch border-t-slate-200 bg-slate-50 pt-6 pb-8 px-8 rounded-[0px_0px_8px_8px] border-t border-solid max-sm:p-4">
         {/* Tab Navigation */}
         <TabNavigation 
           tabs={tabs}

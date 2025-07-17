@@ -202,23 +202,43 @@ const CreateRole: React.FC = () => {
     }, {} as Record<string, { isFullySelected: boolean; isPartiallySelected: boolean; modulePermissions: string[] }>);
   }, [modules, selectedPermissions]);
 
-  return (
-    <Layout pageTitle="Créer un rôle" breadcrumbItems={breadcrumbItems}>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleCancel}
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <h1 className="text-3xl font-bold text-foreground">Créer un nouveau rôle</h1>
-          </div>
-        </div>
+  const ctaButton = currentStep === 1 ? (
+    <Button 
+      type="button" 
+      variant="outline" 
+      onClick={handleCancel}
+      className="flex items-center gap-2"
+    >
+      <X className="w-4 h-4" />
+      Annuler
+    </Button>
+  ) : (
+    <div className="flex gap-3">
+      <Button 
+        type="button" 
+        variant="outline" 
+        onClick={handleCancel}
+        className="flex items-center gap-2"
+      >
+        <X className="w-4 h-4" />
+        Annuler
+      </Button>
+      
+      <Button 
+        type="button" 
+        variant="outline" 
+        onClick={() => setCurrentStep(1)}
+        className="flex items-center gap-2"
+      >
+        <ChevronLeft className="w-4 h-4" />
+        Précédent
+      </Button>
+    </div>
+  );
 
+  return (
+    <Layout pageTitle="Créer un rôle" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
+      <div className="space-y-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           {currentStep === 1 && (
             <Card>
@@ -259,17 +279,7 @@ const CreateRole: React.FC = () => {
                 </div>
 
                 {/* Navigation buttons for step 1 */}
-                <div className="flex justify-between pt-6">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={handleCancel}
-                    className="flex items-center gap-2"
-                  >
-                    <X className="w-4 h-4" />
-                    Annuler
-                  </Button>
-                  
+                <div className="flex justify-end pt-6">
                   <Button 
                     type="submit"
                     className="bg-primary hover:bg-primary/90 flex items-center gap-2"
@@ -368,29 +378,7 @@ const CreateRole: React.FC = () => {
                   </Accordion>
 
                   {/* Navigation buttons for step 2 */}
-                  <div className="flex justify-between pt-6">
-                    <div className="flex gap-3">
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={handleCancel}
-                        className="flex items-center gap-2"
-                      >
-                        <X className="w-4 h-4" />
-                        Annuler
-                      </Button>
-                      
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={() => setCurrentStep(1)}
-                        className="flex items-center gap-2"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                        Précédent
-                      </Button>
-                    </div>
-
+                  <div className="flex justify-end pt-6">
                     <Button 
                       type="submit" 
                       className="bg-primary hover:bg-primary/90 flex items-center gap-2"
