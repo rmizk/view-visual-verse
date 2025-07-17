@@ -111,24 +111,18 @@ const Pointeuse: React.FC = () => {
   const pointeusesStartIndex = (currentPage - 1) * itemsPerPage;
   const paginatedPointeuses = filteredPointeuses.slice(pointeusesStartIndex, pointeusesStartIndex + itemsPerPage);
 
-  return (
-    <Layout pageTitle="Pointeuse" breadcrumbItems={breadcrumbItems}>
-      {/* Header */}
-      <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-        <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-          Pointeuse
-        </h1>
-        {!isAddPointeuseFormOpen && (
-          <Button 
-            onClick={handleAddPointeuse}
-            className="bg-slate-900 hover:bg-slate-800"
-          >
-            <Plus className="w-4 h-4" />
-            Ajouter pointeuse
-          </Button>
-        )}
-      </div>
+  const ctaButton = !isAddPointeuseFormOpen ? (
+    <Button 
+      onClick={handleAddPointeuse}
+      className="bg-slate-900 hover:bg-slate-800"
+    >
+      <Plus className="w-4 h-4" />
+      Ajouter pointeuse
+    </Button>
+  ) : null;
 
+  return (
+    <Layout pageTitle="Pointeuse" breadcrumbItems={breadcrumbItems} ctaButton={ctaButton}>
       {/* Search and Filters for pointeuse */}
       {!isAddPointeuseFormOpen && (
         <div className="flex flex-col sm:flex-row gap-4 w-full">

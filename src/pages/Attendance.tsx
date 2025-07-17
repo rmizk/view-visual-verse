@@ -256,50 +256,58 @@ const Attendance: React.FC = () => {
   const pointeusesStartIndex = (currentPage - 1) * itemsPerPage;
   const paginatedPointeuses = filteredPointeuses.slice(pointeusesStartIndex, pointeusesStartIndex + itemsPerPage);
 
+  // Dynamic CTA button based on current view/tab
+  const getCTAButton = () => {
+    if (viewMode === 'checkins') return null;
+    
+    if (activeTab === 'presence') {
+      return (
+        <button 
+          onClick={handleExportData}
+          className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+        >
+          <Download className="w-4 h-4 text-slate-50" />
+          <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
+            Exporter données
+          </span>
+        </button>
+      );
+    }
+    
+    if (activeTab === 'pointeuse' && !isAddPointeuseFormOpen) {
+      return (
+        <Button 
+          onClick={handleAddPointeuse}
+          className="bg-slate-900 hover:bg-slate-800"
+        >
+          <Plus className="w-4 h-4" />
+          Ajouter pointeuse
+        </Button>
+      );
+    }
+    
+    return null;
+  };
+
   return (
-    <Layout pageTitle="Présence et pointage" breadcrumbItems={breadcrumbItems}>
-      {/* Header */}
-      <div className="flex h-10 justify-between items-center self-stretch max-sm:flex-col max-sm:items-start max-sm:gap-4 max-sm:h-auto">
-        <div className="flex items-center gap-3">
-          {viewMode === 'checkins' && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleBackToOverview}
-              className="h-8 w-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          )}
-          <h1 className="text-slate-950 text-3xl font-bold leading-9 tracking-[-0.75px]">
-            {viewMode === 'checkins' && selectedEmployee 
-              ? `Pointages de ${selectedEmployee.nom}` 
-              : 'Présence et pointage'}
-          </h1>
-        </div>
-        {viewMode === 'overview' && activeTab === 'presence' && (
-          <div className="flex items-start gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
-            <button 
-              onClick={handleExportData}
-              className="flex min-w-16 justify-center items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-            >
-              <Download className="w-4 h-4 text-slate-50" />
-              <span className="text-slate-50 text-sm font-normal leading-[23.94px]">
-                Exporter données
-              </span>
-            </button>
-          </div>
-        )}
-        {activeTab === 'pointeuse' && viewMode === 'overview' && !isAddPointeuseFormOpen && (
-          <Button 
-            onClick={handleAddPointeuse}
-            className="bg-slate-900 hover:bg-slate-800"
+    <Layout 
+      pageTitle={viewMode === 'checkins' && selectedEmployee ? `Pointages de ${selectedEmployee.nom}` : 'Présence et pointage'} 
+      breadcrumbItems={breadcrumbItems} 
+      ctaButton={getCTAButton()}
+    >
+      {/* Back button for checkins view */}
+      {viewMode === 'checkins' && (
+        <div className="flex items-center gap-3 mb-4">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleBackToOverview}
+            className="h-8 w-8"
           >
-            <Plus className="w-4 h-4" />
-            Ajouter pointeuse
+            <ArrowLeft className="w-4 h-4" />
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Tab Navigation - only show in overview mode */}
       {viewMode === 'overview' && (
