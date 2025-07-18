@@ -139,9 +139,9 @@ export default function Pointeuse() {
                   <TableCell className="font-medium">{pointeuse.nom}</TableCell>
                   <TableCell>{pointeuse.localisation}</TableCell>
                   <TableCell>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex gap-1">
                       {getStatusBadge(pointeuse.statut)}
-                      {getStatusText(pointeuse.statut)}
+                      
                     </div>
                   </TableCell>
                   <TableCell>{pointeuse.derniereActivite}</TableCell>
@@ -165,7 +165,7 @@ export default function Pointeuse() {
         </div>
 
         {/* Daily Statistics */}
-        <div className="bg-white rounded-lg border p-6">
+        {/* <div className="bg-white rounded-lg border p-6">
           <h3 className="text-lg font-semibold mb-4">Statistiques du jour</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
@@ -185,7 +185,7 @@ export default function Pointeuse() {
               <div className="text-sm text-gray-600">Anomalies</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );
