@@ -77,7 +77,7 @@ export default function OrganizationStructure() {
       ]}
       ctaButton={ctaButton}
     >
-      <div className="container mx-auto px-6 py-8 max-w-6xl">
+      <div className="container mx-auto px-0 max-w-6xl">
         {renderContent()}
       </div>
     </Layout>

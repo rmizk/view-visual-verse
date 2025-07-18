@@ -61,8 +61,8 @@ export default function RolesPermissions() {
       ]}
       ctaButton={ctaButton}
     >
-      <div className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {roles.map((role) => (
             <Card key={role.id} className="hover:shadow-md transition-shadow">
               <CardHeader>

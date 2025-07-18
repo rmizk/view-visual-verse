@@ -83,7 +83,7 @@ export default function Presence() {
       ]}
       ctaButton={ctaButton}
     >
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <DateRangePicker
             value={dateRange}

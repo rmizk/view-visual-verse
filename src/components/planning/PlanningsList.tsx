@@ -105,7 +105,7 @@ export const PlanningsList: React.FC<PlanningsListProps> = ({ showCreateButton =
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
@@ -145,7 +145,7 @@ export const PlanningsList: React.FC<PlanningsListProps> = ({ showCreateButton =
       </div>
 
       {/* Planning Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPlannings.map((planning) => (
           <Card key={planning.id} className="border border-slate-200 hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
@@ -164,7 +164,7 @@ export const PlanningsList: React.FC<PlanningsListProps> = ({ showCreateButton =
                 </span>
               </div>
               
-              <div className="space-y-3 mb-6">
+              <div className="space-y-2 mb-6">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-slate-400" />
                   <span className="text-sm text-slate-600">{planning.employees} employés</span>

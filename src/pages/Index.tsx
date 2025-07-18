@@ -34,20 +34,20 @@ const Index: React.FC = () => {
         
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">
-            <div className="p-8 max-sm:p-4 space-y-6">
+            <div className="p-4 max-sm:p-4 space-y-4">
               {/* Dashboard Stats */}
               <DashboardStats />
 
               {/* Main Content Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* Left Column - Takes 2/3 on large screens */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-4">
                   <UpcomingShifts />
                   <RecentClockEvents />
                 </div>
 
                 {/* Right Column - Takes 1/3 on large screens */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                   <RecentActivities />
                   <PendingRequests />
                 </div>

@@ -22,7 +22,7 @@ const Profil: React.FC = () => {
     label: 'Sécurité'
   }];
   const breadcrumbItems = [{
-    label: "Profil utilisateur"
+    label: "Profil"
   }];
   const handleLogout = () => {
     logout();
@@ -46,7 +46,7 @@ const Profil: React.FC = () => {
       <TabNavigation tabs={tabs} onTabChange={setActiveTab} defaultActiveTab="personnel" />
 
       {/* Profile Content */}
-      <div className="flex flex-col items-start gap-4 self-stretch">
+      <div className="flex flex-col items-start gap-0 self-stretch">
         <div className="w-full bg-white border border-slate-200 rounded-lg p-6">
           {activeTab === 'personnel' && <div className="space-y-6">
               <div className="flex items-center gap-6 mb-6">

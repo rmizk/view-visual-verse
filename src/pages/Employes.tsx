@@ -127,7 +127,7 @@ export default function Employes() {
       ]}
       ctaButton={ctaButton}
     >
-      <div className="space-y-6">
+      <div className="space-y-4">
         <EmployeeList 
           employees={employees}
           searchQuery={searchQuery}

@@ -55,7 +55,7 @@ export default function Rapports() {
       ]}
       ctaButton={ctaButton}
     >
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <DateRangePicker
             value={dateRange}
@@ -67,7 +67,7 @@ export default function Rapports() {
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {reports.map((report) => {
             const IconComponent = report.icon;
             return (

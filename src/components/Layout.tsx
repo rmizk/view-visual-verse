@@ -46,7 +46,7 @@ export const Layout: React.FC<LayoutProps> = ({
         
         <div className="flex flex-col flex-1 overflow-hidden border-t-slate-200 bg-slate-50 border-t border-solid">
           <div className="flex-1 overflow-y-auto">
-            <div className="p-8 max-sm:p-4 space-y-6 px-[33px]">
+            <div className="p-4 max-sm:p-4 space-y-4 px-[16px]">
               {children}
             </div>
           </div>
