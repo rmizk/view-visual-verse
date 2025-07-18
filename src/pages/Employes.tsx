@@ -43,7 +43,7 @@ const mockEmployees: Employee[] = [
     telephone: '+33 1 23 45 67 90',
     departement: 'Marketing',
     poste: 'Chef de projet',
-    statut: 'present',
+    statut: 'absent',
     dateEmbauche: '2023-03-01',
     role: 'manager'
   },

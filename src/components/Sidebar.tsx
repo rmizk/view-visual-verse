@@ -234,7 +234,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                             <Link
                               key={child.href}
                               to={child.href}
-                              className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
+                              className={`flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors ${
                                 isActiveRoute(child.href) 
                                   ? 'bg-slate-200 text-slate-900 font-medium' 
                                   : 'hover:bg-slate-100 text-slate-600'

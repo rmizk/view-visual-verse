@@ -86,11 +86,11 @@ export const RecentClockEvents: React.FC = () => {
         </button>
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-2">
         {clockEvents.map((event) => {
           const EventIcon = getEventIcon(event.type);
           return (
-            <div key={event.id} className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg transition-colors">
+            <div key={event.id} className="flex items-center gap-3 px-0 py-1 hover:bg-slate-50 rounded-lg transition-colors">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={event.avatar} alt={event.employeeName} />
                 <AvatarFallback>{event.employeeName.split(' ').map(n => n[0]).join('')}</AvatarFallback>

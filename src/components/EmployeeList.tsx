@@ -181,10 +181,10 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({
               <tbody className="bg-white divide-y divide-slate-200">
                 {paginatedEmployees.map((employee) => (
                   <tr key={employee.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-2 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center">
+                          <div className="h-10 w-10 rounded-md bg-slate-200 flex items-center justify-center">
                             <span className="text-sm font-medium text-slate-700">
                               {employee.prenom[0]}{employee.nom[0]}
                             </span>
@@ -237,15 +237,15 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({
                         </Button>
                         <Button 
                           variant="outline"
-                          size="sm"
+                          size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
                             alert(`Modification de ${employee.prenom} ${employee.nom}`);
                           }}
-                          className="h-8"
+                          className="h-8 w-8"
                         >
-                          <Edit className="w-3 h-3 mr-1" />
-                          Modifier
+                          <Edit className="w-3 h-3" />
+                          
                         </Button>
                         <Button 
                           variant="outline"
